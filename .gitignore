@@ -1,0 +1,8 @@
+# Third-party libraries
+extern
+
+# CMake build folder
+build
+
+# VSCode folder
+.vscode
