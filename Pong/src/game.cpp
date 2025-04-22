@@ -123,15 +123,25 @@ void Game::updateGame() {
     ballPos.x += ballVel.x * deltaTime;
     ballPos.y += ballVel.y * deltaTime;
 
+    // Intersect with paddle
+    float diff = paddlePos.y - ballPos.y;
+    // Absolute of diff
+    diff = (diff > 0.0f) ? diff : -diff;
+
     // Collision
+    // Paddle or right wall
+    if(diff <= paddleH / 2.0f && ballPos.x <= (paddlePos.x + thickness / 2.0f)
+          && ballPos.x > (paddlePos.x - thickness / 2.0f) && ballVel.x < 0.0f) {
+        ballVel.x *= -1.0f;
+    } else if(ballPos.x >= windowWidth - thickness && ballVel.x > 0.0f) {
+        ballVel.x *= -1;
+    }
+
+    // Top/bottom walls
     if(ballPos.y <= thickness && ballVel.y < 0.0f) {
         ballVel.y *= -1;
     } else if(ballPos.y >= windowHeight - thickness && ballVel.y > 0.0f) {
         ballVel.y *= -1;
-    }
-
-    if(ballPos.x >= windowWidth - thickness && ballVel.x > 0.0f) {
-        ballVel.x *= -1;
     }
 }
 
