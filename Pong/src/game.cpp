@@ -4,14 +4,16 @@ const int windowWidth = 1024;
 const int windowHeight = 768;
 const int thickness = 15;
 const float paddleH = 100.0f;
+const float paddleSpeed = 300.0f;
 
 Game::Game() :
     isRunning(true),
     window(nullptr),
     renderer(nullptr),
     ticksCount(0),
+    ballPos({ windowWidth / 2.0f, windowHeight / 2.0f }),
     paddlePos({ 10.0f, windowHeight / 2.0f }),
-    ballPos({ windowWidth / 2.0f, windowHeight / 2.0f }) {}
+    paddleDir(0) {}
 
 bool Game::initialize() {
     // Initialize SDL
@@ -76,6 +78,15 @@ void Game::processInput() {
     if(state[SDL_SCANCODE_ESCAPE]) {
         isRunning = false;
     }
+
+    // Paddle position
+    paddleDir = 0;
+    if(state[SDL_SCANCODE_W]) {
+        paddleDir -= 1;
+    }
+    if(state[SDL_SCANCODE_S]) {
+        paddleDir += 1;
+    }
 }
 
 void Game::updateGame() {
@@ -91,6 +102,20 @@ void Game::updateGame() {
     // Clamp maximum delta time value
     if(deltaTime > 0.05f) {
         deltaTime = 0.05;
+    }
+
+    // Moving paddle
+    if(paddleDir != 0) {
+        paddlePos.y += paddleDir * paddleSpeed * deltaTime;
+
+        // Make sure paddle doesn't move off screen
+        if(paddlePos.y < (paddleH / 2.0f + thickness)) {
+            paddlePos.y = paddleH / 2.0f + thickness;
+        }
+
+        else if(paddlePos.y > (windowHeight - paddleH / 2.0f - thickness)) {
+            paddlePos.y = windowHeight - paddleH / 2.0f - thickness;
+        }
     }
 }
 

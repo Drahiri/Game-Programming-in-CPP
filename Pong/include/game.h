@@ -30,8 +30,9 @@ private:
     Uint32 ticksCount;
 
     // Game objects
-    Vector2 paddlePos;
     Vector2 ballPos;
+    Vector2 paddlePos;
+    int paddleDir;
 };
 
 #endif
