@@ -2,9 +2,11 @@ project(Pong VERSION 1.0 LANGUAGES CXX)
 
 set(SOURCE_FILES
     "src/main.cpp"
+    "src/game.cpp"
 )
 
 set(HEADER_FILES
+    "include/game.h"
 
 )
 
