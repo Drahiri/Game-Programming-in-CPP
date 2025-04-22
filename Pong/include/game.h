@@ -26,6 +26,9 @@ private:
     SDL_Window* window;
     SDL_Renderer* renderer;
 
+    // Time keeping
+    Uint32 ticksCount;
+
     // Game objects
     Vector2 paddlePos;
     Vector2 ballPos;

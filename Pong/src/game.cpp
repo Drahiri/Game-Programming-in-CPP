@@ -9,6 +9,7 @@ Game::Game() :
     isRunning(true),
     window(nullptr),
     renderer(nullptr),
+    ticksCount(0),
     paddlePos({ 10.0f, windowHeight / 2.0f }),
     ballPos({ windowWidth / 2.0f, windowHeight / 2.0f }) {}
 
@@ -77,7 +78,21 @@ void Game::processInput() {
     }
 }
 
-void Game::updateGame() {}
+void Game::updateGame() {
+    // Limit frame rate
+    while(SDL_GetTicks() < ticksCount + 16) {}
+
+    // Delta time is the difference in ticks from last frame
+    // (converted to seconds)
+    Uint32 currectTick = SDL_GetTicks();
+    float deltaTime = (currectTick - ticksCount) / 1000.0f;
+    ticksCount = currectTick;
+
+    // Clamp maximum delta time value
+    if(deltaTime > 0.05f) {
+        deltaTime = 0.05;
+    }
+}
 
 void Game::generateOutput() {
     // Clearing renderer
