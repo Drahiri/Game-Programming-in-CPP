@@ -1,5 +1,9 @@
 #include "game.h"
 
+const int windowWidth = 1024;
+const int windowHeight = 768;
+const int thickness = 15;
+
 Game::Game() : isRunning(true), window(nullptr), renderer(nullptr) {}
 
 bool Game::initialize() {
@@ -10,7 +14,7 @@ bool Game::initialize() {
     }
 
     // Creating Window
-    window = SDL_CreateWindow("Game Programming - Pong", 1024, 768, 0);
+    window = SDL_CreateWindow("Game Programming - Pong", windowWidth, windowHeight, 0);
     if(!window) {
         SDL_Log("Failed to create window: %s", SDL_GetError());
         return false;
@@ -73,6 +77,24 @@ void Game::generateOutput() {
     // Clearing renderer
     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
     SDL_RenderClear(renderer);
+
+    // Drawing objects
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
+    // Top wall
+    SDL_FRect wall{ 0, 0, windowWidth, thickness };
+    SDL_RenderFillRect(renderer, &wall);
+
+    // Bottom wall
+    wall.y = windowHeight - thickness;
+    SDL_RenderFillRect(renderer, &wall);
+
+    // Right wall
+    wall.x = windowWidth - thickness;
+    wall.y = 0;
+    wall.w = thickness;
+    wall.h = windowHeight;
+    SDL_RenderFillRect(renderer, &wall);
 
     // Swapping buffers
     SDL_RenderPresent(renderer);
