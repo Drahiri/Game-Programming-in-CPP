@@ -136,6 +136,10 @@ void Game::updateGame() {
     } else if(ballPos.x >= windowWidth - thickness && ballVel.x > 0.0f) {
         ballVel.x *= -1;
     }
+    // End game if off screen
+    else if(ballPos.x < 0.0f) {
+        isRunning = false;
+    }
 
     // Top/bottom walls
     if(ballPos.y <= thickness && ballVel.y < 0.0f) {
