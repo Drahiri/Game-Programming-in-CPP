@@ -3,6 +3,11 @@
 
 #include <SDL3/SDL.h>
 
+struct Vector2 {
+    float x;
+    float y;
+};
+
 class Game {
 public:
     Game();
@@ -20,6 +25,10 @@ private:
     bool isRunning;
     SDL_Window* window;
     SDL_Renderer* renderer;
+
+    // Game objects
+    Vector2 paddlePos;
+    Vector2 ballPos;
 };
 
 #endif

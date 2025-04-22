@@ -3,8 +3,14 @@
 const int windowWidth = 1024;
 const int windowHeight = 768;
 const int thickness = 15;
+const float paddleH = 100.0f;
 
-Game::Game() : isRunning(true), window(nullptr), renderer(nullptr) {}
+Game::Game() :
+    isRunning(true),
+    window(nullptr),
+    renderer(nullptr),
+    paddlePos({ 10.0f, windowHeight / 2.0f }),
+    ballPos({ windowWidth / 2.0f, windowHeight / 2.0f }) {}
 
 bool Game::initialize() {
     // Initialize SDL
@@ -95,6 +101,20 @@ void Game::generateOutput() {
     wall.w = thickness;
     wall.h = windowHeight;
     SDL_RenderFillRect(renderer, &wall);
+
+    // Ball
+    SDL_FRect ball{ static_cast<int>(ballPos.x - thickness / 2.0),
+        static_cast<int>(ballPos.y - thickness / 2.0f),
+        thickness,
+        thickness };
+    SDL_RenderFillRect(renderer, &ball);
+
+    // Paddle
+    SDL_FRect paddle{ static_cast<int>(paddlePos.x),
+        static_cast<int>(paddlePos.y - paddleH / 2.0f),
+        thickness,
+        paddleH };
+    SDL_RenderFillRect(renderer, &paddle);
 
     // Swapping buffers
     SDL_RenderPresent(renderer);
