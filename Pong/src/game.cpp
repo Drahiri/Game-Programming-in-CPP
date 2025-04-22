@@ -69,4 +69,11 @@ void Game::processInput() {
 
 void Game::updateGame() {}
 
-void Game::generateOutput() {}
+void Game::generateOutput() {
+    // Clearing renderer
+    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+    SDL_RenderClear(renderer);
+
+    // Swapping buffers
+    SDL_RenderPresent(renderer);
+}
