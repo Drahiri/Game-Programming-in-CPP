@@ -1,6 +1,6 @@
 #include "game.h"
 
-Game::Game() : window(nullptr), isRunning(true) {}
+Game::Game() : isRunning(true), window(nullptr), renderer(nullptr) {}
 
 bool Game::initialize() {
     // Initialize SDL
@@ -16,6 +16,17 @@ bool Game::initialize() {
         return false;
     }
 
+    // Creating Renderer
+    SDL_PropertiesID props = SDL_CreateProperties();
+    SDL_SetPointerProperty(props, SDL_PROP_RENDERER_CREATE_WINDOW_POINTER, window);
+    SDL_SetNumberProperty(props, SDL_PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER, 1);
+
+    renderer = SDL_CreateRendererWithProperties(props);
+    if(!renderer) {
+        SDL_Log("Failed to create renderer: %s", SDL_GetError());
+        return false;
+    }
+
     return true;
 }
 
@@ -28,6 +39,7 @@ void Game::runLoop() {
 }
 
 void Game::shutdown() {
+    SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
 
     SDL_Quit();
