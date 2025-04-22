@@ -31,6 +31,8 @@ private:
 
     // Game objects
     Vector2 ballPos;
+    Vector2 ballVel;
+
     Vector2 paddlePos;
     int paddleDir;
 };

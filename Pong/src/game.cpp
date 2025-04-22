@@ -12,6 +12,7 @@ Game::Game() :
     renderer(nullptr),
     ticksCount(0),
     ballPos({ windowWidth / 2.0f, windowHeight / 2.0f }),
+    ballVel({ -200.0f, 235.0f }),
     paddlePos({ 10.0f, windowHeight / 2.0f }),
     paddleDir(0) {}
 
@@ -116,6 +117,21 @@ void Game::updateGame() {
         else if(paddlePos.y > (windowHeight - paddleH / 2.0f - thickness)) {
             paddlePos.y = windowHeight - paddleH / 2.0f - thickness;
         }
+    }
+
+    // Moving ball
+    ballPos.x += ballVel.x * deltaTime;
+    ballPos.y += ballVel.y * deltaTime;
+
+    // Collision
+    if(ballPos.y <= thickness && ballVel.y < 0.0f) {
+        ballVel.y *= -1;
+    } else if(ballPos.y >= windowHeight - thickness && ballVel.y > 0.0f) {
+        ballVel.y *= -1;
+    }
+
+    if(ballPos.x >= windowWidth - thickness && ballVel.x > 0.0f) {
+        ballVel.x *= -1;
     }
 }
 
