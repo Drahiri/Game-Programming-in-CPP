@@ -13,8 +13,10 @@ Game::Game() :
     ticksCount(0),
     ballPos({ windowWidth / 2.0f, windowHeight / 2.0f }),
     ballVel({ -200.0f, 235.0f }),
-    paddlePos({ 10.0f, windowHeight / 2.0f }),
-    paddleDir(0) {}
+    paddlePos1({ 10.0f + thickness / 2.0f, windowHeight / 2.0f }),
+    paddleDir1(0),
+    paddlePos2({ windowWidth - thickness / 2.0f - 10.0f, windowHeight / 2.0f }),
+    paddleDir2(0) {}
 
 bool Game::initialize() {
     // Initialize SDL
@@ -81,12 +83,20 @@ void Game::processInput() {
     }
 
     // Paddle position
-    paddleDir = 0;
+    paddleDir1 = 0;
     if(state[SDL_SCANCODE_W]) {
-        paddleDir -= 1;
+        paddleDir1 -= 1;
     }
     if(state[SDL_SCANCODE_S]) {
-        paddleDir += 1;
+        paddleDir1 += 1;
+    }
+
+    paddleDir2 = 0;
+    if(state[SDL_SCANCODE_I]) {
+        paddleDir2 -= 1;
+    }
+    if(state[SDL_SCANCODE_K]) {
+        paddleDir2 += 1;
     }
 }
 
@@ -106,16 +116,29 @@ void Game::updateGame() {
     }
 
     // Moving paddle
-    if(paddleDir != 0) {
-        paddlePos.y += paddleDir * paddleSpeed * deltaTime;
+    if(paddleDir1 != 0) {
+        paddlePos1.y += paddleDir1 * paddleSpeed * deltaTime;
 
         // Make sure paddle doesn't move off screen
-        if(paddlePos.y < (paddleH / 2.0f + thickness)) {
-            paddlePos.y = paddleH / 2.0f + thickness;
+        if(paddlePos1.y < (paddleH / 2.0f + thickness)) {
+            paddlePos1.y = paddleH / 2.0f + thickness;
         }
 
-        else if(paddlePos.y > (windowHeight - paddleH / 2.0f - thickness)) {
-            paddlePos.y = windowHeight - paddleH / 2.0f - thickness;
+        else if(paddlePos1.y > (windowHeight - paddleH / 2.0f - thickness)) {
+            paddlePos1.y = windowHeight - paddleH / 2.0f - thickness;
+        }
+    }
+
+    if(paddleDir2 != 0) {
+        paddlePos2.y += paddleDir2 * paddleSpeed * deltaTime;
+
+        // Make sure paddle doesn't move off screen
+        if(paddlePos2.y < (paddleH / 2.0f + thickness)) {
+            paddlePos2.y = paddleH / 2.0f + thickness;
+        }
+
+        else if(paddlePos2.y > (windowHeight - paddleH / 2.0f - thickness)) {
+            paddlePos2.y = windowHeight - paddleH / 2.0f - thickness;
         }
     }
 
@@ -124,20 +147,26 @@ void Game::updateGame() {
     ballPos.y += ballVel.y * deltaTime;
 
     // Intersect with paddle
-    float diff = paddlePos.y - ballPos.y;
+    float diff1 = paddlePos1.y - ballPos.y;
     // Absolute of diff
-    diff = (diff > 0.0f) ? diff : -diff;
+    diff1 = (diff1 > 0.0f) ? diff1 : -diff1;
+
+    float diff2 = paddlePos2.y - ballPos.y;
+    diff2 = (diff2 > 0.0f) ? diff2 : -diff2;
 
     // Collision
-    // Paddle or right wall
-    if(diff <= paddleH / 2.0f && ballPos.x <= (paddlePos.x + thickness / 2.0f)
-          && ballPos.x > (paddlePos.x - thickness / 2.0f) && ballVel.x < 0.0f) {
+    // Paddle1
+    if(diff1 <= paddleH / 2.0f && ballPos.x <= (paddlePos1.x + thickness / 2.0f)
+          && ballPos.x >= (paddlePos1.x - thickness / 2.0f) && ballVel.x < 0.0f) {
         ballVel.x *= -1.0f;
-    } else if(ballPos.x >= windowWidth - thickness && ballVel.x > 0.0f) {
+    }
+    // Paddle 2
+    else if(diff2 <= paddleH / 2.0f && ballPos.x >= (paddlePos2.x - thickness / 2.0f)
+            && ballPos.x <= (paddlePos2.x + thickness / 2.0f) && ballVel.x > 0.0f) {
         ballVel.x *= -1;
     }
     // End game if off screen
-    else if(ballPos.x < 0.0f) {
+    else if(ballPos.x < 0.0f || ballPos.x > windowWidth) {
         isRunning = false;
     }
 
@@ -165,13 +194,6 @@ void Game::generateOutput() {
     wall.y = windowHeight - thickness;
     SDL_RenderFillRect(renderer, &wall);
 
-    // Right wall
-    wall.x = windowWidth - thickness;
-    wall.y = 0;
-    wall.w = thickness;
-    wall.h = windowHeight;
-    SDL_RenderFillRect(renderer, &wall);
-
     // Ball
     SDL_FRect ball{ static_cast<int>(ballPos.x - thickness / 2.0),
         static_cast<int>(ballPos.y - thickness / 2.0f),
@@ -180,10 +202,14 @@ void Game::generateOutput() {
     SDL_RenderFillRect(renderer, &ball);
 
     // Paddle
-    SDL_FRect paddle{ static_cast<int>(paddlePos.x),
-        static_cast<int>(paddlePos.y - paddleH / 2.0f),
+    SDL_FRect paddle{ static_cast<int>(paddlePos1.x - thickness / 2.0f),
+        static_cast<int>(paddlePos1.y - paddleH / 2.0f),
         thickness,
         paddleH };
+    SDL_RenderFillRect(renderer, &paddle);
+
+    paddle.x = static_cast<int>(paddlePos2.x - thickness / 2.0f);
+    paddle.y = static_cast<int>(paddlePos2.y - paddleH / 2.0f);
     SDL_RenderFillRect(renderer, &paddle);
 
     // Swapping buffers

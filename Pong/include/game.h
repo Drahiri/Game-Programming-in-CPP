@@ -33,8 +33,12 @@ private:
     Vector2 ballPos;
     Vector2 ballVel;
 
-    Vector2 paddlePos;
-    int paddleDir;
+    // Player 1
+    Vector2 paddlePos1;
+    int paddleDir1;
+    // Player2
+    Vector2 paddlePos2;
+    int paddleDir2;
 };
 
 #endif
