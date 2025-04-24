@@ -2,10 +2,16 @@
 #define GAME_H
 
 #include <SDL3/SDL.h>
+#include <vector>
 
 struct Vector2 {
     float x;
     float y;
+};
+
+struct Ball {
+    Vector2 position;
+    Vector2 velocity;
 };
 
 class Game {
@@ -30,8 +36,7 @@ private:
     Uint32 ticksCount;
 
     // Game objects
-    Vector2 ballPos;
-    Vector2 ballVel;
+    std::vector<Ball> balls;
 
     // Player 1
     Vector2 paddlePos1;
