@@ -173,17 +173,13 @@ void Game::generateOutput() {
     SDL_RenderFillRect(renderer, &wall);
 
     // Ball
-    SDL_FRect ball{ static_cast<int>(ballPos.x - thickness / 2.0),
-        static_cast<int>(ballPos.y - thickness / 2.0f),
-        thickness,
-        thickness };
+    SDL_FRect ball{
+        ballPos.x - thickness / 2.0f, ballPos.y - thickness / 2.0f, thickness, thickness
+    };
     SDL_RenderFillRect(renderer, &ball);
 
     // Paddle
-    SDL_FRect paddle{ static_cast<int>(paddlePos.x),
-        static_cast<int>(paddlePos.y - paddleH / 2.0f),
-        thickness,
-        paddleH };
+    SDL_FRect paddle{ paddlePos.x, paddlePos.y - paddleH / 2.0f, thickness, paddleH };
     SDL_RenderFillRect(renderer, &paddle);
 
     // Swapping buffers
