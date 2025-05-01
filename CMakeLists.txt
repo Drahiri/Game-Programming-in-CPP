@@ -9,4 +9,4 @@ list(APPEND CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/extern")
 
 find_package(SDL3 REQUIRED CONFIG)
 
-add_subdirectory(Pong)
+add_subdirectory(Chapter01)
