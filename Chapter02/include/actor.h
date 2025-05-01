@@ -43,7 +43,7 @@ public:
 
     // Add/remove components
     void addComponent(Component* component);
-    void removeComponent(Component* components);
+    void removeComponent(Component* component);
 
 private:
     // Actor's state

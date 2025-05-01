@@ -1,6 +1,9 @@
 #include "actor.h"
 
+#include "component.h"
 #include "game.h"
+
+#include <algorithm>
 
 Actor::Actor(Game* game) :
     state(State::Active),
@@ -9,7 +12,12 @@ Actor::Actor(Game* game) :
     rotation(0.0f),
     game(game) {}
 
-Actor::~Actor() {}
+Actor::~Actor() {
+    // Because ~Component call removeComponent, need a different style loop
+    while(!components.empty()) {
+        delete components.back();
+    }
+}
 
 void Actor::update(float deltaTime) {
     if(state != State::Active) {
@@ -22,7 +30,7 @@ void Actor::update(float deltaTime) {
 
 void Actor::updateComponents(float deltaTime) {
     for(auto component: components) {
-        // TODO: update components
+        component->update(deltaTime);
     }
 }
 
@@ -61,9 +69,23 @@ void Actor::setRotation(float newRotation) {
 }
 
 void Actor::addComponent(Component* component) {
-    // TODO: adding components
+    // Find the insertion point in the sorted vector
+    // (The first element with a order higher than me)
+    int componentOrder = component->getUpdateOrder();
+    auto iter = components.begin();
+
+    for(; iter != components.end(); iter++) {
+        if(componentOrder < (*iter)->getUpdateOrder()) {
+            break;
+        }
+    }
+
+    components.insert(iter, component);
 }
 
-void Actor::removeComponent(Component* components) {
-    // TODO: Removing components
+void Actor::removeComponent(Component* component) {
+    auto iter = std::find(components.begin(), components.end(), component);
+    if(iter != components.end()) {
+        components.erase(iter);
+    }
 }
