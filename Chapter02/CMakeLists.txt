@@ -3,11 +3,14 @@ project(Chapter02 VERSION 1.0 LANGUAGES CXX)
 set(SOURCE_FILES
     "src/main.cpp"
     "src/game.cpp"
+
+    "src/math.cpp"
 )
 
 set(HEADER_FILES
     "include/game.h"
 
+    "include/math.h"
 )
 
 add_executable(Chapter02 ${SOURCE_FILES} ${HEADER_FILES})
