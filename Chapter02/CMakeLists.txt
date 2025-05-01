@@ -4,6 +4,7 @@ set(SOURCE_FILES
     "src/main.cpp"
     "src/game.cpp"
     "src/actor.cpp"
+    "src/component.cpp"
 
     "src/math.cpp"
 )
@@ -11,6 +12,7 @@ set(SOURCE_FILES
 set(HEADER_FILES
     "include/game.h"
     "include/actor.h"
+    "include/component.h"
 
     "include/math.h"
 )
