@@ -6,6 +6,7 @@ set(SOURCE_FILES
     "src/actor.cpp"
     "src/component.cpp"
     "src/sprite_component.cpp"
+    "src/anim_sprite_component.cpp"
 
     "src/math.cpp"
 )
@@ -15,6 +16,7 @@ set(HEADER_FILES
     "include/actor.h"
     "include/component.h"
     "include/sprite_component.h"
+    "include/anim_sprite_component.h"
 
     "include/math.h"
 )
