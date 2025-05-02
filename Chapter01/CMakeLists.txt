@@ -13,6 +13,3 @@ set(HEADER_FILES
 add_executable(Chapter01 ${SOURCE_FILES} ${HEADER_FILES})
 target_include_directories(Chapter01 PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include") #SDL3::Headers)
 target_link_libraries(Chapter01 PRIVATE SDL3::SDL3)
-set_target_properties(Chapter01 PROPERTIES 
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/build"
-)
