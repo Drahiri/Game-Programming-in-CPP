@@ -1,5 +1,6 @@
 project(Chapter02 VERSION 1.0 LANGUAGES CXX)
 
+
 set(SOURCE_FILES
     "src/main.cpp"
     "src/game.cpp"
@@ -31,3 +32,8 @@ target_link_libraries(Chapter02 PRIVATE SDL3::SDL3 SDL3_image::SDL3_image)
 set_target_properties(Chapter02 PROPERTIES 
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/build"
 )
+
+add_custom_command(TARGET Chapter02 POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+                ${CMAKE_CURRENT_SOURCE_DIR}/assets
+                ${CMAKE_CURRENT_SOURCE_DIR}/build/assets)
