@@ -1,6 +1,8 @@
 #include "game.h"
 
 #include "actor.h"
+#include "bg_sprite_component.h"
+#include "ship.h"
 #include "sprite_component.h"
 
 #include <algorithm>
@@ -14,7 +16,8 @@ Game::Game() :
     window(nullptr),
     renderer(nullptr),
     ticksCount(0),
-    updatingActors(true) {}
+    updatingActors(true),
+    ship(nullptr) {}
 
 bool Game::initialize() {
     // Initialize SDL
@@ -41,6 +44,8 @@ bool Game::initialize() {
         return false;
     }
 
+    loadData();
+
     return true;
 }
 
@@ -54,9 +59,7 @@ void Game::runLoop() {
 
 void Game::shutdown() {
     // Because ~Actor calls RemoveActor, use a different style loop
-    while(!actors.empty()) {
-        delete actors.back();
-    }
+    unloadData();
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
@@ -110,6 +113,8 @@ void Game::processInput() {
     if(state[SDL_SCANCODE_ESCAPE]) {
         isRunning = false;
     }
+
+    ship->processKeyboard(state);
 }
 
 void Game::updateGame() {
@@ -183,7 +188,7 @@ SDL_Texture* Game::getTexture(const std::string& filename) {
         // Load from file
         SDL_Surface* surf = IMG_Load(filename.c_str());
         if(!surf) {
-            SDL_Log("Failed to create surface for %s", filename.c_str());
+            SDL_Log("Failed to create surface for %s: %s", filename.c_str(), SDL_GetError());
             return nullptr;
         }
 
@@ -211,13 +216,52 @@ void Game::addSprite(SpriteComponent* sprite) {
         }
     }
 
-    // Inseert element before position of iterator
+    // Insert element before position of iterator
     sprites.insert(iter, sprite);
 }
 
 void Game::removeSprite(SpriteComponent* sprite) {
     auto iter = std::find(sprites.begin(), sprites.end(), sprite);
     sprites.erase(iter);
+}
+
+void Game::loadData() {
+    // Create player's ship
+    ship = new Ship(this);
+    ship->setPosition(Vector2{ 100.0f, 384.0f });
+    ship->setScale(1.0f);
+
+    // Create actor for the background (this doesn't need a subclass)
+    Actor* temp = new Actor(this);
+    temp->setPosition(Vector2{ windowWidth / 2.0f, windowHeight / 2.0f });
+
+    // Create new "far back" background
+    BGSpriteComponent* bg = new BGSpriteComponent(temp);
+    bg->setScreenSize(getScreenSize());
+    std::vector<SDL_Texture*> bgtexs = { getTexture("assets/Farback01.png"),
+        getTexture("assets/Farback02.png") };
+    bg->setBGTextures(bgtexs);
+    bg->setScrollSpeed(-100.0f);
+    // Create the closer background
+    bg = new BGSpriteComponent(temp);
+    bg->setScreenSize(getScreenSize());
+    bgtexs = { getTexture("assets/Stars.png"), getTexture("assets/Stars.png") };
+    bg->setBGTextures(bgtexs);
+    bg->setScrollSpeed(-200.0f);
+}
+
+void Game::unloadData() {
+    delete ship;
+    // Delete actors
+    while(!actors.empty()) {
+        delete actors.back();
+    }
+
+    // Destroy textures
+    for(auto i: textures) {
+        SDL_DestroyTexture(i.second);
+    }
+    textures.clear();
 }
 
 Vector2 Game::getScreenSize() const {

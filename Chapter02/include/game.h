@@ -10,6 +10,7 @@
 
 class Actor;
 class SpriteComponent;
+class Ship;
 
 class Game {
 public:
@@ -34,6 +35,9 @@ private:
     void updateGame();
     void generateOutput();
 
+    void loadData();
+    void unloadData();
+
     bool isRunning;
     SDL_Window* window;
     SDL_Renderer* renderer;
@@ -45,6 +49,8 @@ private:
     bool updatingActors;
     std::vector<Actor*> actors;
     std::vector<Actor*> pendingActors;
+
+    Ship* ship;
 
     // Textures
     std::map<std::string, SDL_Texture*> textures;
