@@ -1,6 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "math.h"
+
 #include <map>
 #include <SDL3/SDL.h>
 #include <string>
@@ -20,16 +22,17 @@ public:
     void addActor(Actor* actor);
     void removeActor(Actor* actor);
 
+    SDL_Texture* getTexture(const std::string& filename);
     void addSprite(SpriteComponent* sprite);
     void removeSprite(SpriteComponent* sprite);
+
+    Vector2 getScreenSize() const;
 
 private:
     // Helper functions for the game loop
     void processInput();
     void updateGame();
     void generateOutput();
-
-    SDL_Texture* getTexture(const std::string& filename);
 
     bool isRunning;
     SDL_Window* window;

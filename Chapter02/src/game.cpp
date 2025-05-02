@@ -219,3 +219,7 @@ void Game::removeSprite(SpriteComponent* sprite) {
     auto iter = std::find(sprites.begin(), sprites.end(), sprite);
     sprites.erase(iter);
 }
+
+Vector2 Game::getScreenSize() const {
+    return Vector2{ windowWidth, windowHeight };
+}
