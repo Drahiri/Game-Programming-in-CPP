@@ -20,6 +20,13 @@ void SpriteComponent::draw(SDL_Renderer* renderer) {}
 
 void SpriteComponent::setTexture(SDL_Texture* newTexture) {
     texture = newTexture;
+
+    // Get width/height of texture
+    float w = 0.0f;
+    float h = 0.0f;
+    SDL_GetTextureSize(texture, &w, &h);
+    texWidth = static_cast<int>(w);
+    texHeight = static_cast<int>(h);
 }
 
 int SpriteComponent::getDrawOrder() const {
