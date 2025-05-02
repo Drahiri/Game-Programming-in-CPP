@@ -16,7 +16,27 @@ SpriteComponent::~SpriteComponent() {
     owner->getGame()->removeSprite(this);
 }
 
-void SpriteComponent::draw(SDL_Renderer* renderer) {}
+void SpriteComponent::draw(SDL_Renderer* renderer) {
+    if(texture) {
+        SDL_FRect r;
+        // Scale the width/height by owner's scale
+        r.w = texWidth * owner->getScale();
+        r.h = texHeight * owner->getScale();
+
+        // Center the rectangle around the position of owner
+        r.x = owner->getPosition().x - r.w / 2.0f;
+        r.y = owner->getPosition().y - r.h / 2.0f;
+
+        // Draw
+        SDL_RenderTextureRotated(renderer,
+              texture,
+              nullptr,
+              &r,
+              -Math::ToDegrees(owner->getRotation()),
+              nullptr,
+              SDL_FLIP_NONE);
+    }
+}
 
 void SpriteComponent::setTexture(SDL_Texture* newTexture) {
     texture = newTexture;

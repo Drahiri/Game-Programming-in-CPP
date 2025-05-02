@@ -164,7 +164,9 @@ void Game::generateOutput() {
     SDL_RenderClear(renderer);
 
     // Drawing objects
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    for(auto sprite: sprites) {
+        sprite->draw(renderer);
+    }
 
     // Swapping buffers
     SDL_RenderPresent(renderer);
