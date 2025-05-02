@@ -41,6 +41,8 @@ public:
     float getRotation() const;
     void setRotation(float newRotation);
 
+    Game* getGame() const;
+
     // Add/remove components
     void addComponent(Component* component);
     void removeComponent(Component* component);

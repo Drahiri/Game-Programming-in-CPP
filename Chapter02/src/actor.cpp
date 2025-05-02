@@ -71,6 +71,10 @@ void Actor::setRotation(float newRotation) {
     rotation = newRotation;
 }
 
+Game* Actor::getGame() const {
+    return game;
+}
+
 void Actor::addComponent(Component* component) {
     // Find the insertion point in the sorted vector
     // (The first element with a order higher than me)
