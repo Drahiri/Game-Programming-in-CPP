@@ -20,7 +20,7 @@ public:
     int getTexHeight() const;
     int getTexWidth() const;
 
-private:
+protected:
     // Texture to draw
     SDL_Texture* texture;
     // Draw order used for painter's algorithm
