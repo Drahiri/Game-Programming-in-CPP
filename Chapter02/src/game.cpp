@@ -3,6 +3,7 @@
 #include "actor.h"
 
 #include <algorithm>
+#include <SDL3_image/SDL_image.h>
 
 const int windowWidth = 1024;
 const int windowHeight = 768;
@@ -166,4 +167,32 @@ void Game::generateOutput() {
 
     // Swapping buffers
     SDL_RenderPresent(renderer);
+}
+
+SDL_Texture* Game::getTexture(const std::string& filename) {
+    SDL_Texture* tex = nullptr;
+
+    // Is the texture already in the map?
+    auto iter = textures.find(filename);
+    if(iter != textures.end()) {
+        tex = iter->second;
+    } else {
+        // Load from file
+        SDL_Surface* surf = IMG_Load(filename.c_str());
+        if(!surf) {
+            SDL_Log("Failed to create surface for %s", filename.c_str());
+            return nullptr;
+        }
+
+        tex = SDL_CreateTextureFromSurface(renderer, surf);
+        SDL_DestroySurface(surf);
+        if(!tex) {
+            SDL_Log("Failed to convert surface to texture for %s", filename.c_str());
+            return nullptr;
+        }
+
+        textures.emplace(filename.c_str(), tex);
+    }
+
+    return tex;
 }

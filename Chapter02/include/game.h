@@ -1,7 +1,9 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <map>
 #include <SDL3/SDL.h>
+#include <string>
 #include <vector>
 
 class Actor;
@@ -23,6 +25,8 @@ private:
     void updateGame();
     void generateOutput();
 
+    SDL_Texture* getTexture(const std::string& filename);
+
     bool isRunning;
     SDL_Window* window;
     SDL_Renderer* renderer;
@@ -34,6 +38,9 @@ private:
     bool updatingActors;
     std::vector<Actor*> actors;
     std::vector<Actor*> pendingActors;
+
+    // Textures
+    std::map<std::string, SDL_Texture*> textures;
 };
 
 #endif
