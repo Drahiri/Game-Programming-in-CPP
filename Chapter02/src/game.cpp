@@ -124,6 +124,36 @@ void Game::updateGame() {
     if(deltaTime > 0.05f) {
         deltaTime = 0.05;
     }
+
+    // Update all actors
+
+    updatingActors = true;
+
+    for(auto actor: actors) {
+        actor->update(deltaTime);
+    }
+
+    updatingActors = false;
+
+    // Move pending actors to actors
+    for(auto pending: pendingActors) {
+        actors.emplace_back(pending);
+    }
+
+    pendingActors.clear();
+
+    // Add any dead actors to a temp vector
+    std::vector<Actor*> deadActors;
+    for(auto actor: actors) {
+        if(actor->getState() == Actor::State::Dead) {
+            deadActors.emplace_back(actor);
+        }
+    }
+
+    // Delete dead actors (whick remove them from actors or pendingActors)
+    for(auto actor: deadActors) {
+        delete actor;
+    }
 }
 
 void Game::generateOutput() {
