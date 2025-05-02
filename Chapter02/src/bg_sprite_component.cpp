@@ -30,8 +30,8 @@ void BGSpriteComponent::draw(SDL_Renderer* renderer) {
             r.w = screenSize.x;
             r.h = screenSize.y;
             // Center the rectangle around the position of owner
-            r.x = owner->getPosition().x - r.w / 2.0f - bg.offset.x;
-            r.y = owner->getPosition().x - r.w / 2.0f - bg.offset.y;
+            r.x = owner->getPosition().x - r.w / 2.0f + bg.offset.x;
+            r.y = owner->getPosition().x - r.w / 2.0f + bg.offset.y;
 
             // Draw
             SDL_RenderTexture(renderer, bg.texture, nullptr, &r);
