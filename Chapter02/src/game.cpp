@@ -1,6 +1,7 @@
 #include "game.h"
 
 #include "actor.h"
+#include "sprite_component.h"
 
 #include <algorithm>
 #include <SDL3_image/SDL_image.h>
@@ -195,4 +196,24 @@ SDL_Texture* Game::getTexture(const std::string& filename) {
     }
 
     return tex;
+}
+
+void Game::addSprite(SpriteComponent* sprite) {
+    // Find the insertion point in the sorted vector
+    // (The first element with a higher draw order than me)
+    int spriteDrawOrder = sprite->getDrawOrder();
+    auto iter = sprites.begin();
+    for(; iter != sprites.end(); iter++) {
+        if(spriteDrawOrder < (*iter)->getDrawOrder()) {
+            break;
+        }
+    }
+
+    // Inseert element before position of iterator
+    sprites.insert(iter, sprite);
+}
+
+void Game::removeSprite(SpriteComponent* sprite) {
+    auto iter = std::find(sprites.begin(), sprites.end(), sprite);
+    sprites.erase(iter);
 }

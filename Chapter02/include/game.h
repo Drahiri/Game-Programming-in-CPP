@@ -7,6 +7,7 @@
 #include <vector>
 
 class Actor;
+class SpriteComponent;
 
 class Game {
 public:
@@ -18,6 +19,9 @@ public:
 
     void addActor(Actor* actor);
     void removeActor(Actor* actor);
+
+    void addSprite(SpriteComponent* sprite);
+    void removeSprite(SpriteComponent* sprite);
 
 private:
     // Helper functions for the game loop
@@ -41,6 +45,9 @@ private:
 
     // Textures
     std::map<std::string, SDL_Texture*> textures;
+
+    // Sprites
+    std::vector<SpriteComponent*> sprites;
 };
 
 #endif
