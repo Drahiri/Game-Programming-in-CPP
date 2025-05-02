@@ -10,9 +10,12 @@ Actor::Actor(Game* game) :
     position(Vector2::Zero),
     scale(1.0f),
     rotation(0.0f),
-    game(game) {}
+    game(game) {
+    this->game->addActor(this);
+}
 
 Actor::~Actor() {
+    game->removeActor(this);
     // Because ~Component call removeComponent, need a different style loop
     while(!components.empty()) {
         delete components.back();

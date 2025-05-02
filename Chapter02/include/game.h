@@ -2,6 +2,9 @@
 #define GAME_H
 
 #include <SDL3/SDL.h>
+#include <vector>
+
+class Actor;
 
 class Game {
 public:
@@ -10,6 +13,9 @@ public:
     bool initialize();
     void runLoop();
     void shutdown();
+
+    void addActor(Actor* actor);
+    void removeActor(Actor* actor);
 
 private:
     // Helper functions for the game loop
@@ -23,6 +29,11 @@ private:
 
     // Time keeping
     Uint32 ticksCount;
+
+    // Objects
+    bool updatingActors;
+    std::vector<Actor*> actors;
+    std::vector<Actor*> pendingActors;
 };
 
 #endif

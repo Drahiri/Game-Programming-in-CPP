@@ -1,9 +1,18 @@
 #include "game.h"
 
+#include "actor.h"
+
+#include <algorithm>
+
 const int windowWidth = 1024;
 const int windowHeight = 768;
 
-Game::Game() : isRunning(true), window(nullptr), renderer(nullptr), ticksCount(0) {}
+Game::Game() :
+    isRunning(true),
+    window(nullptr),
+    renderer(nullptr),
+    ticksCount(0),
+    updatingActors(true) {}
 
 bool Game::initialize() {
     // Initialize SDL
@@ -42,10 +51,41 @@ void Game::runLoop() {
 }
 
 void Game::shutdown() {
+    // Because ~Actor calls RemoveActor, use a different style loop
+    while(!actors.empty()) {
+        delete actors.back();
+    }
+
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
 
     SDL_Quit();
+}
+
+void Game::addActor(Actor* actor) {
+    // If updating actors, need to add to pending
+    if(updatingActors) {
+        pendingActors.emplace_back(actor);
+    } else {
+        actors.emplace_back(actor);
+    }
+}
+
+void Game::removeActor(Actor* actor) {
+    // Is it in actors?
+    auto iter = std::find(actors.begin(), actors.end(), actor);
+    if(iter != actors.end()) {
+        // Swap to end of vector and pop off (avoid erase copies)
+        std::iter_swap(iter, actors.end() - 1);
+        actors.pop_back();
+    }
+
+    // Is it in pending actors?
+    iter = std::find(pendingActors.begin(), pendingActors.end(), actor);
+    if(iter != pendingActors.end()) {
+        std::iter_swap(iter, pendingActors.end() - 1);
+        pendingActors.pop_back();
+    }
 }
 
 void Game::processInput() {
