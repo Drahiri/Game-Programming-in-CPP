@@ -2,7 +2,7 @@
 
 #include "actor.h"
 #include "bg_sprite_component.h"
-#include "ship.h"
+#include "character.h"
 #include "sprite_component.h"
 
 #include <algorithm>
@@ -17,7 +17,7 @@ Game::Game() :
     renderer(nullptr),
     ticksCount(0),
     updatingActors(true),
-    ship(nullptr) {}
+    character(nullptr) {}
 
 bool Game::initialize() {
     // Initialize SDL
@@ -114,7 +114,7 @@ void Game::processInput() {
         isRunning = false;
     }
 
-    ship->processKeyboard(state);
+    character->processKeyboard(state);
 }
 
 void Game::updateGame() {
@@ -226,32 +226,14 @@ void Game::removeSprite(SpriteComponent* sprite) {
 }
 
 void Game::loadData() {
-    // Create player's ship
-    ship = new Ship(this);
-    ship->setPosition(Vector2{ 100.0f, 384.0f });
-    ship->setScale(1.0f);
-
-    // Create actor for the background (this doesn't need a subclass)
-    Actor* temp = new Actor(this);
-    temp->setPosition(Vector2{ windowWidth / 2.0f, windowHeight / 2.0f });
-
-    // Create new "far back" background
-    BGSpriteComponent* bg = new BGSpriteComponent(temp);
-    bg->setScreenSize(getScreenSize());
-    std::vector<SDL_Texture*> bgtexs = { getTexture("assets/Farback01.png"),
-        getTexture("assets/Farback02.png") };
-    bg->setBGTextures(bgtexs);
-    bg->setScrollSpeed(-100.0f);
-    // Create the closer background
-    bg = new BGSpriteComponent(temp);
-    bg->setScreenSize(getScreenSize());
-    bgtexs = { getTexture("assets/Stars.png"), getTexture("assets/Stars.png") };
-    bg->setBGTextures(bgtexs);
-    bg->setScrollSpeed(-200.0f);
+    // Create player's character
+    character = new Character(this);
+    character->setPosition(Vector2{ windowWidth / 2.0f, windowHeight / 2.0f });
+    character->setScale(1.0f);
 }
 
 void Game::unloadData() {
-    delete ship;
+    delete character;
     // Delete actors
     while(!actors.empty()) {
         delete actors.back();

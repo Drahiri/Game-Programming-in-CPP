@@ -10,7 +10,7 @@
 
 class Actor;
 class SpriteComponent;
-class Ship;
+class Character;
 
 class Game {
 public:
@@ -50,7 +50,7 @@ private:
     std::vector<Actor*> actors;
     std::vector<Actor*> pendingActors;
 
-    Ship* ship;
+    Character* character;
 
     // Textures
     std::map<std::string, SDL_Texture*> textures;
