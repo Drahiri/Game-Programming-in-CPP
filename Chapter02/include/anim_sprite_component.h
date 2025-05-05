@@ -20,10 +20,13 @@ public:
     float getAnimFPS(const std::string& animation) const;
     void setAnimFPS(const std::string& animation, float fps);
 
+    void setAnimLoop(const std::string& animation, bool looping);
+
 private:
     struct Animation {
         std::vector<SDL_Texture*> textures;
         float fps;
+        bool looping;
     };
 
     // All textures in the animation

@@ -28,6 +28,7 @@ Character::Character(Game* game) : Actor(game), jumping(false), punching(false) 
 
     asc->addAnimation("jumping", anims);
     asc->setAnimFPS("jumping", 6);
+    asc->setAnimLoop("jumping", false);
 
     anims = { game->getTexture("assets/Character16.png"),
         game->getTexture("assets/Character17.png"),
@@ -35,6 +36,7 @@ Character::Character(Game* game) : Actor(game), jumping(false), punching(false) 
 
     asc->addAnimation("punching", anims);
     asc->setAnimFPS("punching", 6);
+    asc->setAnimLoop("punching", false);
 }
 
 Character::~Character() {

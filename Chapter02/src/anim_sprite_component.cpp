@@ -14,7 +14,11 @@ void AnimSpriteComponent::update(float deltaTime) {
 
         // Wrap current frame if needed
         while(currentFrame >= animations.at(currentAnimation).textures.size()) {
-            currentFrame -= animations.at(currentAnimation).textures.size();
+            if(animations.at(currentAnimation).looping) {
+                currentFrame -= animations.at(currentAnimation).textures.size();
+            } else {
+                currentFrame = animations.at(currentAnimation).textures.size() - 1;
+            }
         }
 
         // Set the current texture
@@ -24,7 +28,7 @@ void AnimSpriteComponent::update(float deltaTime) {
 
 void AnimSpriteComponent::addAnimation(
       const std::string& name, const std::vector<SDL_Texture*>& textures) {
-    Animation animation{ textures, 24 };
+    Animation animation{ textures, 24, true };
     animations.emplace(name, animation);
     if(animations.size() > 0) {
         // Set the active texture to first frame
@@ -46,4 +50,8 @@ float AnimSpriteComponent::getAnimFPS(const std::string& animation) const {
 
 void AnimSpriteComponent::setAnimFPS(const std::string& animation, float fps) {
     animations[animation].fps = fps;
+}
+
+void AnimSpriteComponent::setAnimLoop(const std::string& animation, bool looping) {
+    animations[animation].looping = looping;
 }
