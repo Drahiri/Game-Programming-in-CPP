@@ -3,6 +3,8 @@
 
 #include "sprite_component.h"
 
+#include <map>
+#include <string>
 #include <vector>
 
 class Actor;
@@ -13,17 +15,24 @@ public:
     // Update animation every frame (overriden from component)
     void update(float deltaTime) override;
     // Set the textures used for animation
-    void setAnimTextures(const std::vector<SDL_Texture*>& textures);
-    float getAnimFPS() const;
-    void setAnimFPS(float fps);
+    void addAnimation(const std::string& name, const std::vector<SDL_Texture*>& textures);
+    void playAnimation(const std::string& name);
+    float getAnimFPS(const std::string& animation) const;
+    void setAnimFPS(const std::string& animation, float fps);
 
 private:
+    struct Animation {
+        std::vector<SDL_Texture*> textures;
+        float fps;
+    };
+
     // All textures in the animation
-    std::vector<SDL_Texture*> animTextures;
+    std::map<std::string, Animation> animations;
+
+    // Current played animation
+    std::string currentAnimation;
     // Current frame displayed
     float currentFrame;
-    // Animation frame rate
-    float animFPS;
 };
 
 #endif

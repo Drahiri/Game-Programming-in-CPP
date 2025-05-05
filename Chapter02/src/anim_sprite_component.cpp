@@ -2,39 +2,48 @@
 
 AnimSpriteComponent::AnimSpriteComponent(Actor* owner, int drawOrder) :
     SpriteComponent(owner, drawOrder),
-    currentFrame(0),
-    animFPS(24) {}
+    currentAnimation(""),
+    currentFrame(0) {}
 
 void AnimSpriteComponent::update(float deltaTime) {
     SpriteComponent::update(deltaTime);
 
-    if(animTextures.size() > 0) {
+    if(animations.size() > 0) {
         // Update the current frame based on frame rate and delta time
-        currentFrame += animFPS * deltaTime;
+        currentFrame += animations[currentAnimation].fps * deltaTime;
 
         // Wrap current frame if needed
-        while(currentFrame >= animTextures.size()) {
-            currentFrame -= animTextures.size();
+        while(currentFrame >= animations.at(currentAnimation).textures.size()) {
+            currentFrame -= animations.at(currentAnimation).textures.size();
         }
 
         // Set the current texture
-        setTexture(animTextures[static_cast<int>(currentFrame)]);
+        setTexture(animations[currentAnimation].textures[static_cast<int>(currentFrame)]);
     }
 }
 
-void AnimSpriteComponent::setAnimTextures(const std::vector<SDL_Texture*>& textures) {
-    animTextures = textures;
-    if(animTextures.size() > 0) {
+void AnimSpriteComponent::addAnimation(
+      const std::string& name, const std::vector<SDL_Texture*>& textures) {
+    Animation animation{ textures, 24 };
+    animations.emplace(name, animation);
+    if(animations.size() > 0) {
         // Set the active texture to first frame
-        currentFrame = 0.0;
-        setTexture(textures[0]);
+        currentFrame = 0.0f;
+        setTexture(animations[name].textures[0]);
     }
 }
 
-float AnimSpriteComponent::getAnimFPS() const {
-    return animFPS;
+void AnimSpriteComponent::playAnimation(const std::string& name) {
+    if(name != currentAnimation) {
+        currentFrame = 0.0f;
+    }
+    currentAnimation = name;
 }
 
-void AnimSpriteComponent::setAnimFPS(float fps) {
-    animFPS = fps;
+float AnimSpriteComponent::getAnimFPS(const std::string& animation) const {
+    return animations.at(animation).fps;
+}
+
+void AnimSpriteComponent::setAnimFPS(const std::string& animation, float fps) {
+    animations[animation].fps = fps;
 }

@@ -4,10 +4,12 @@
 #include "actor.h"
 
 class Game;
+class AnimSpriteComponent;
 
 class Character : public Actor {
 public:
     Character(Game* game);
+    ~Character();
 
     void updateActor(float deltaTime) override;
     void processKeyboard(const bool* state);
@@ -16,6 +18,8 @@ public:
     bool getPunching() const;
 
 private:
+    AnimSpriteComponent* asc;
+
     bool jumping;
     bool punching;
 };

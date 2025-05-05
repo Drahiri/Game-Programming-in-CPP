@@ -10,7 +10,7 @@ Ship::Ship(Game* game) : Actor(game), rightSpeed(0.0f), downSpeed(0.0f) {
         game->getTexture("assets/Ship03.png"),
         game->getTexture("assets/Ship04.png") };
 
-    asc->setAnimTextures(anims);
+    asc->addAnimation(anims);
 }
 
 void Ship::updateActor(float deltaTime) {
