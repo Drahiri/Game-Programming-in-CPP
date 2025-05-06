@@ -21,6 +21,7 @@ public:
 
 private:
     Vector2 tileSize;
+    int tilesInTextureWidth;
     std::vector<std::vector<std::vector<int>>> layers;
 };
 

@@ -114,7 +114,9 @@ void Game::processInput() {
         isRunning = false;
     }
 
-    character->processKeyboard(state);
+    if(character) {
+        character->processKeyboard(state);
+    }
 }
 
 void Game::updateGame() {
@@ -226,17 +228,19 @@ void Game::removeSprite(SpriteComponent* sprite) {
 }
 
 void Game::loadData() {
-    // Create player's character
-    character = new Character(this);
-    character->setPosition(Vector2{ windowWidth / 2.0f, windowHeight / 2.0f });
-    character->setScale(1.0f);
-
+    // Tilemaps
     Actor* temp = new Actor(this);
-
     TileMapComponent* tmc = new TileMapComponent(temp);
-    tmc->addTileLayer("assets/MapLayer1.csv");
-    tmc->addTileLayer("assets/MapLayer2.csv");
+    tmc->setTexture(getTexture("assets/Tiles.png"));
+    tmc->setTileSize(Vector2{ 32.0f, 32.0f });
     tmc->addTileLayer("assets/MapLayer3.csv");
+    tmc->addTileLayer("assets/MapLayer2.csv");
+    tmc->addTileLayer("assets/MapLayer1.csv");
+
+    // Create player's character
+    // character = new Character(this);
+    // character->setPosition(Vector2{ windowWidth / 2.0f, windowHeight / 2.0f });
+    // character->setScale(1.0f);
 }
 
 void Game::unloadData() {
