@@ -11,6 +11,7 @@ set(SOURCE_FILES
     "src/bg_sprite_component.cpp"
     # "src/ship.cpp"
     "src/character.cpp"
+    "src/tile_map_component.cpp"
 
     "src/math.cpp"
 )
@@ -24,6 +25,7 @@ set(HEADER_FILES
     "include/bg_sprite_component.h"
     # "include/ship.h"
     "include/character.h"
+    "include/tile_map_component.h"
 
     "include/math.h"
 )

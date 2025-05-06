@@ -1,9 +1,9 @@
 #include "game.h"
 
 #include "actor.h"
-#include "bg_sprite_component.h"
 #include "character.h"
 #include "sprite_component.h"
+#include "tile_map_component.h"
 
 #include <algorithm>
 #include <SDL3_image/SDL_image.h>
@@ -230,6 +230,13 @@ void Game::loadData() {
     character = new Character(this);
     character->setPosition(Vector2{ windowWidth / 2.0f, windowHeight / 2.0f });
     character->setScale(1.0f);
+
+    Actor* temp = new Actor(this);
+
+    TileMapComponent* tmc = new TileMapComponent(temp);
+    tmc->addTileLayer("assets/MapLayer1.csv");
+    tmc->addTileLayer("assets/MapLayer2.csv");
+    tmc->addTileLayer("assets/MapLayer3.csv");
 }
 
 void Game::unloadData() {
