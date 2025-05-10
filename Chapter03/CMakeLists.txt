@@ -10,6 +10,7 @@ set(SOURCE_FILES
     "src/anim_sprite_component.cpp"
     "src/bg_sprite_component.cpp"
     "src/move_component.cpp"
+    "src/random.cpp"
     "src/ship.cpp"
 
     "src/math.cpp"
@@ -23,6 +24,7 @@ set(HEADER_FILES
     "include/anim_sprite_component.h"
     "include/bg_sprite_component.h"
     "include/move_component.h"
+    "include/random.h"
     "include/ship.h"
 
     "include/math.h"
