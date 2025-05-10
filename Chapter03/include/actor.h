@@ -41,6 +41,8 @@ public:
     float getRotation() const;
     void setRotation(float newRotation);
 
+    Vector2 getForward() const;
+
     Game* getGame() const;
 
     // Add/remove components
