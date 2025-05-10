@@ -1,6 +1,7 @@
 #include "game.h"
 
 #include "actor.h"
+#include "asteroid.h"
 #include "bg_sprite_component.h"
 #include "ship.h"
 #include "sprite_component.h"
@@ -248,6 +249,12 @@ void Game::loadData() {
     bgtexs = { getTexture("assets/Stars.png"), getTexture("assets/Stars.png") };
     bg->setBGTextures(bgtexs);
     bg->setScrollSpeed(-200.0f);
+
+    // Add Asteroids
+    const int numAsteroids = 20;
+    for(int i = 0; i < numAsteroids; i++) {
+        new Asteroid(this);
+    }
 }
 
 void Game::unloadData() {
