@@ -10,7 +10,6 @@ public:
     Ship(Game* game);
 
     void updateActor(float deltaTime) override;
-    void processKeyboard(const bool* state);
 
     float getRightSpeed() const;
     float getDownSpeed() const;
