@@ -49,6 +49,12 @@ public:
     void addComponent(Component* component);
     void removeComponent(Component* component);
 
+    // ProcessInput function called from Game (not overridable)
+    void processInput(const bool* keyState);
+
+    // Any actor-specific input code (overridable)
+    virtual void actorInput(const bool* keyState);
+
 private:
     // Actor's state
     State state;

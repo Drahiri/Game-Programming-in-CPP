@@ -10,6 +10,8 @@ Component::~Component() {
     owner->removeComponent(this);
 }
 
+void Component::processInput(const bool* keyState) {}
+
 void Component::update(float deltaTime) {}
 
 int Component::getUpdateOrder() const {

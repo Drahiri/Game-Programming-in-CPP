@@ -11,6 +11,8 @@ public:
     // Destructor
     virtual ~Component();
 
+    virtual void processInput(const bool* keyState);
+
     // Update this component by delta time
     virtual void update(float deltaTime);
     int getUpdateOrder() const;

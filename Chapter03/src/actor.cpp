@@ -79,6 +79,17 @@ Vector2 Actor::getForward() const {
     return Vector2(Math::Cos(rotation), -Math::Sin(rotation));
 }
 
+void Actor::processInput(const bool* keyState) {
+    if(state == State::Active) {
+        for(auto comp: components) {
+            comp->processInput(keyState);
+        }
+        actorInput(keyState);
+    }
+}
+
+void Actor::actorInput(const bool* keyState) {}
+
 void Actor::addComponent(Component* component) {
     // Find the insertion point in the sorted vector
     // (The first element with a order higher than me)
