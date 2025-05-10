@@ -12,6 +12,7 @@ set(SOURCE_FILES
     "src/move_component.cpp"
     "src/random.cpp"
     "src/ship.cpp"
+    "src/asteroid.cpp"
 
     "src/math.cpp"
 )
@@ -26,6 +27,7 @@ set(HEADER_FILES
     "include/move_component.h"
     "include/random.h"
     "include/ship.h"
+    "include/asteroid.h"
 
     "include/math.h"
 )
