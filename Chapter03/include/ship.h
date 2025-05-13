@@ -10,6 +10,7 @@ public:
     Ship(Game* game);
 
     void updateActor(float deltaTime) override;
+    void actorInput(const bool* keyState) override;
 
     float getRightSpeed() const;
     float getDownSpeed() const;
@@ -17,6 +18,7 @@ public:
 private:
     float rightSpeed;
     float downSpeed;
+    float laserCooldown;
 };
 
 #endif

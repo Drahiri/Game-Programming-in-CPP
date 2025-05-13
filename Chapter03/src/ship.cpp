@@ -3,8 +3,9 @@
 #include "anim_sprite_component.h"
 #include "game.h"
 #include "input_component.h"
+#include "laser.h"
 
-Ship::Ship(Game* game) : Actor(game), rightSpeed(0.0f), downSpeed(0.0f) {
+Ship::Ship(Game* game) : Actor(game), rightSpeed(0.0f), downSpeed(0.0f), laserCooldown(0.0f) {
     AnimSpriteComponent* asc = new AnimSpriteComponent(this);
     std::vector<SDL_Texture*> anims = { game->getTexture("assets/Ship01.png"),
         game->getTexture("assets/Ship02.png"),
@@ -22,15 +23,19 @@ Ship::Ship(Game* game) : Actor(game), rightSpeed(0.0f), downSpeed(0.0f) {
 }
 
 void Ship::updateActor(float deltaTime) {
-    Actor::updateActor(deltaTime);
+    laserCooldown -= deltaTime;
+}
 
-    // Update position based on speeds and delta time
-    Vector2 pos = getPosition();
+void Ship::actorInput(const bool* keyState) {
+    if(keyState[SDL_SCANCODE_SPACE] && laserCooldown <= 0.0f) {
+        // Create a laser and set it's position/rotation
+        Laser* laser = new Laser(getGame());
+        laser->setPosition(getPosition());
+        laser->setRotation(getRotation());
 
-    pos.x += rightSpeed * deltaTime;
-    pos.y += downSpeed * deltaTime;
-
-    setPosition(pos);
+        // Reset laser cooldown (half second)
+        laserCooldown = 0.5f;
+    }
 }
 
 float Ship::getRightSpeed() const {
