@@ -17,7 +17,7 @@ void BGSpriteComponent::update(float deltaTime) {
         // If this is completely off the screen reset to
         // the right of tle last bg texture
         if(bg.offset.x < -screenSize.x) {
-            bg.offset.x = (bgTextures.size() - 1) * screenSize.x - 1;
+            bg.offset.x = (bgTextures.size() - 1) * screenSize.x - 2;
         }
     }
 }
