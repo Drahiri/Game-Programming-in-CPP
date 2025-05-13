@@ -11,10 +11,11 @@ set(SOURCE_FILES
     "src/bg_sprite_component.cpp"
     "src/move_component.cpp"
     "src/input_component.cpp"
-    "src/random.cpp"
+    "src/circle_component.cpp"
     "src/ship.cpp"
     "src/asteroid.cpp"
-
+    
+    "src/random.cpp"
     "src/math.cpp"
 )
 
@@ -27,10 +28,11 @@ set(HEADER_FILES
     "include/bg_sprite_component.h"
     "include/move_component.h"
     "include/input_component.h"
-    "include/random.h"
+    "include/circle_component.h"
     "include/ship.h"
     "include/asteroid.h"
-
+    
+    "include/random.h"
     "include/math.h"
 )
 
