@@ -32,6 +32,9 @@ public:
 
     std::vector<Asteroid*>& getAsteroids();
 
+    void addAsteroid(Asteroid* ast);
+    void removeAsteroid(Asteroid* ast);
+
 private:
     // Helper functions for the game loop
     void processInput();

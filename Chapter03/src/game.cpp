@@ -257,7 +257,7 @@ void Game::loadData() {
     // Add Asteroids
     const int numAsteroids = 20;
     for(int i = 0; i < numAsteroids; i++) {
-        asteroids.push_back(new Asteroid(this));
+        new Asteroid(this);
     }
 }
 
@@ -283,4 +283,15 @@ Vector2 Game::getScreenSize() const {
 
 std::vector<Asteroid*>& Game::getAsteroids() {
     return asteroids;
+}
+
+void Game::addAsteroid(Asteroid* ast) {
+    asteroids.emplace_back(ast);
+}
+
+void Game::removeAsteroid(Asteroid* ast) {
+    auto iter = std::find(asteroids.begin(), asteroids.end(), ast);
+    if(iter != asteroids.end()) {
+        asteroids.erase(iter);
+    }
 }

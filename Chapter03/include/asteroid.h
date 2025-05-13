@@ -9,6 +9,7 @@ class CircleComponent;
 class Asteroid : public Actor {
 public:
     Asteroid(Game* game);
+    ~Asteroid();
 
     CircleComponent* getCircle() const;
 
