@@ -14,6 +14,7 @@ set(SOURCE_FILES
     "src/circle_component.cpp"
     "src/ship.cpp"
     "src/asteroid.cpp"
+    "src/laser.cpp"
     
     "src/random.cpp"
     "src/math.cpp"
@@ -31,6 +32,7 @@ set(HEADER_FILES
     "include/circle_component.h"
     "include/ship.h"
     "include/asteroid.h"
+    "include/laser.h"
     
     "include/random.h"
     "include/math.h"
