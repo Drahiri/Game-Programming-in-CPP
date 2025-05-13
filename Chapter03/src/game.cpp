@@ -257,7 +257,7 @@ void Game::loadData() {
     // Add Asteroids
     const int numAsteroids = 20;
     for(int i = 0; i < numAsteroids; i++) {
-        new Asteroid(this);
+        asteroids.push_back(new Asteroid(this));
     }
 }
 
@@ -267,6 +267,8 @@ void Game::unloadData() {
     while(!actors.empty()) {
         delete actors.back();
     }
+    // Clear asteroids vector, as pointers are cleared by actor
+    asteroids.clear();
 
     // Destroy textures
     for(auto i: textures) {
@@ -277,4 +279,8 @@ void Game::unloadData() {
 
 Vector2 Game::getScreenSize() const {
     return Vector2{ windowWidth, windowHeight };
+}
+
+std::vector<Asteroid*>& Game::getAsteroids() {
+    return asteroids;
 }

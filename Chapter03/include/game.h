@@ -11,6 +11,7 @@
 class Actor;
 class SpriteComponent;
 class Ship;
+class Asteroid;
 
 class Game {
 public:
@@ -28,6 +29,8 @@ public:
     void removeSprite(SpriteComponent* sprite);
 
     Vector2 getScreenSize() const;
+
+    std::vector<Asteroid*>& getAsteroids();
 
 private:
     // Helper functions for the game loop
@@ -57,6 +60,9 @@ private:
 
     // Sprites
     std::vector<SpriteComponent*> sprites;
+
+    // Asteroids
+    std::vector<Asteroid*> asteroids;
 };
 
 #endif
