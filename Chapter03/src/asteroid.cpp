@@ -24,3 +24,7 @@ Asteroid::Asteroid(Game* game) : Actor(game) {
     circle = new CircleComponent(this);
     circle->setRadius(40.0f);
 }
+
+CircleComponent* Asteroid::getCircle() const {
+    return circle;
+}

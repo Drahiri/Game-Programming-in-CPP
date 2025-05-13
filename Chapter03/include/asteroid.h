@@ -10,6 +10,8 @@ class Asteroid : public Actor {
 public:
     Asteroid(Game* game);
 
+    CircleComponent* getCircle() const;
+
 private:
     CircleComponent* circle;
 };
