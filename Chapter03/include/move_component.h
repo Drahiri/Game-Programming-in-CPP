@@ -2,6 +2,7 @@
 #define MOVE_COMPONENT_H
 
 #include "component.h"
+#include "math.h"
 
 class MoveComponent : public Component {
 public:
@@ -21,6 +22,9 @@ private:
     float angularSpeed;
     // Controls forward movement (units/second)
     float forwardSpeed;
+
+    // Screen size
+    Vector2 screenSize;
 };
 
 #endif
