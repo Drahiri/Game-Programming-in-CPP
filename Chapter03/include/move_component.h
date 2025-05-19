@@ -17,11 +17,17 @@ public:
     float getForwardSpeed() const;
     void setForwardSpeed(float speed);
 
+    bool getWrapable() const;
+    void setWrapable(bool shouldWrap);
+
 private:
     // Controls rotation (radians/second)
     float angularSpeed;
     // Controls forward movement (units/second)
     float forwardSpeed;
+
+    // Should screen wrap
+    bool wrapable;
 
     // Screen size
     Vector2 screenSize;

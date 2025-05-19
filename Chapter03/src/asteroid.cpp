@@ -19,6 +19,7 @@ Asteroid::Asteroid(Game* game) : Actor(game) {
     // Create a move component, andd set a forward speed
     MoveComponent* mc = new MoveComponent(this);
     mc->setForwardSpeed(150.0f);
+    mc->setWrapable(true);
 
     // Create circle component
     circle = new CircleComponent(this);
