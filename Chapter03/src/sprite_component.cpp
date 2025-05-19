@@ -8,7 +8,8 @@ SpriteComponent::SpriteComponent(Actor* owner, int drawOrder) :
     drawOrder(drawOrder),
     texture(nullptr),
     texHeight(0),
-    texWidth(0) {
+    texWidth(0),
+    visible(true) {
     this->owner->getGame()->addSprite(this);
 }
 
@@ -17,7 +18,7 @@ SpriteComponent::~SpriteComponent() {
 }
 
 void SpriteComponent::draw(SDL_Renderer* renderer) {
-    if(texture) {
+    if(texture && visible) {
         SDL_FRect r;
         // Scale the width/height by owner's scale
         r.w = texWidth * owner->getScale();
@@ -59,4 +60,12 @@ int SpriteComponent::getTexHeight() const {
 
 int SpriteComponent::getTexWidth() const {
     return texWidth;
+}
+
+void SpriteComponent::setVisible(bool isVisible) {
+    visible = isVisible;
+}
+
+bool SpriteComponent::getVisible() const {
+    return visible;
 }

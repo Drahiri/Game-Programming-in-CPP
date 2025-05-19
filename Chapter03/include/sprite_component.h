@@ -20,6 +20,9 @@ public:
     int getTexHeight() const;
     int getTexWidth() const;
 
+    void setVisible(bool isVisible);
+    bool getVisible() const;
+
 protected:
     // Texture to draw
     SDL_Texture* texture;
@@ -27,6 +30,7 @@ protected:
     int drawOrder;
     int texHeight;
     int texWidth;
+    bool visible;
 };
 
 #endif

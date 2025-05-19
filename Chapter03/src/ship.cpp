@@ -7,8 +7,13 @@
 #include "input_component.h"
 #include "laser.h"
 
-Ship::Ship(Game* game) : Actor(game), rightSpeed(0.0f), downSpeed(0.0f), laserCooldown(0.0f) {
-    AnimSpriteComponent* asc = new AnimSpriteComponent(this);
+Ship::Ship(Game* game) :
+    Actor(game),
+    rightSpeed(0.0f),
+    downSpeed(0.0f),
+    laserCooldown(0.0f),
+    invisibleTime(0.0f) {
+    asc = new AnimSpriteComponent(this);
     std::vector<SDL_Texture*> anims = { game->getTexture("assets/Ship01.png"),
         game->getTexture("assets/Ship02.png"),
         game->getTexture("assets/Ship03.png"),
@@ -29,6 +34,15 @@ Ship::Ship(Game* game) : Actor(game), rightSpeed(0.0f), downSpeed(0.0f), laserCo
 
 void Ship::updateActor(float deltaTime) {
     laserCooldown -= deltaTime;
+    invisibleTime -= deltaTime;
+
+    if(!asc->getVisible()) {
+        if(invisibleTime > 0.0f) {
+            return;
+        } else {
+            asc->setVisible(true);
+        }
+    }
 
     for(auto ast: getGame()->getAsteroids()) {
         if(intersect(*circle, *(ast->getCircle()))) {
@@ -40,6 +54,8 @@ void Ship::updateActor(float deltaTime) {
 
             setPosition(Vector2{ screenSize.x / 2.0f, screenSize.y / 2.0f });
             setRotation(0);
+            asc->setVisible(false);
+            invisibleTime = 1.0f;
             break;
         }
     }

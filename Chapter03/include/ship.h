@@ -5,6 +5,7 @@
 
 class Game;
 class CircleComponent;
+class AnimSpriteComponent;
 
 class Ship : public Actor {
 public:
@@ -20,7 +21,9 @@ private:
     float rightSpeed;
     float downSpeed;
     float laserCooldown;
+    float invisibleTime;
 
+    AnimSpriteComponent* asc;
     CircleComponent* circle;
 };
 
