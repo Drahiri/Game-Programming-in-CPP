@@ -4,6 +4,7 @@
 #include "actor.h"
 
 class Game;
+class CircleComponent;
 
 class Ship : public Actor {
 public:
@@ -19,6 +20,8 @@ private:
     float rightSpeed;
     float downSpeed;
     float laserCooldown;
+
+    CircleComponent* circle;
 };
 
 #endif

@@ -1,6 +1,8 @@
 #include "ship.h"
 
 #include "anim_sprite_component.h"
+#include "asteroid.h"
+#include "circle_component.h"
 #include "game.h"
 #include "input_component.h"
 #include "laser.h"
@@ -20,10 +22,27 @@ Ship::Ship(Game* game) : Actor(game), rightSpeed(0.0f), downSpeed(0.0f), laserCo
     ic->setCounterClockwiseKey(SDL_SCANCODE_D);
     ic->setMaxForwardSpeed(300.0f);
     ic->setMaxAngularSpeed(Math::TwoPi);
+
+    circle = new CircleComponent(this);
+    circle->setRadius(15.0f);
 }
 
 void Ship::updateActor(float deltaTime) {
     laserCooldown -= deltaTime;
+
+    for(auto ast: getGame()->getAsteroids()) {
+        if(intersect(*circle, *(ast->getCircle()))) {
+            // If this ship intersects with a asteroid
+            // set ship position to center and destroy asteroid
+            ast->setState(State::Dead);
+
+            Vector2 screenSize = getGame()->getScreenSize();
+
+            setPosition(Vector2{ screenSize.x / 2.0f, screenSize.y / 2.0f });
+            setRotation(0);
+            break;
+        }
+    }
 }
 
 void Ship::actorInput(const bool* keyState) {
