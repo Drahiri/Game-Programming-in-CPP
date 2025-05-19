@@ -10,6 +10,8 @@
 
 class Actor;
 class SpriteComponent;
+class Enemy;
+class Grid;
 
 class Game {
 public:
@@ -27,6 +29,10 @@ public:
     void removeSprite(SpriteComponent* sprite);
 
     Vector2 getScreenSize() const;
+
+    Grid* getGrid();
+    std::vector<Enemy*>& getEnemies();
+    Enemy* getNearestEnemy(const Vector2& pos);
 
 private:
     // Helper functions for the game loop
@@ -54,6 +60,11 @@ private:
 
     // Sprites
     std::vector<SpriteComponent*> sprites;
+
+    // Game-specific
+    std::vector<Enemy*> enemies;
+    Grid* grid;
+    float nextEnemy;
 };
 
 #endif

@@ -1,6 +1,8 @@
 #include "game.h"
 
 #include "actor.h"
+#include "enemy.h"
+#include "grid.h"
 #include "sprite_component.h"
 
 #include <algorithm>
@@ -109,6 +111,16 @@ void Game::processInput() {
     const bool* state = SDL_GetKeyboardState(NULL);
     if(state[SDL_SCANCODE_ESCAPE]) {
         isRunning = false;
+    }
+    if(state[SDL_SCANCODE_B]) {
+        grid->buildTower();
+    }
+
+    // Process mouse
+    float x, y;
+    Uint32 buttons = SDL_GetMouseState(&x, &y);
+    if(SDL_BUTTON_MASK(buttons) & SDL_BUTTON_LEFT) {
+        grid->processClick(x, y);
     }
 
     updatingActors = true;
@@ -226,7 +238,18 @@ void Game::removeSprite(SpriteComponent* sprite) {
     sprites.erase(iter);
 }
 
-void Game::loadData() {}
+void Game::loadData() {
+    grid = new Grid(this);
+    // For testing AIComponent
+    // Actor* a = new Actor(this)
+    // AIComponent* aic = new AIComponent(a);
+    //// Register states with AIComponent
+    // aic->registerState(new AIPatrol(aic));
+    // aic->registerState(new AIDeath(aic));
+    // aic->registerState(new AIAttack(aic));
+    //// Start in patrol state
+    // aic->changeState("Patrol");
+}
 
 void Game::unloadData() {
     // Delete actors
@@ -243,4 +266,30 @@ void Game::unloadData() {
 
 Vector2 Game::getScreenSize() const {
     return Vector2{ windowWidth, windowHeight };
+}
+
+Grid* Game::getGrid() {
+    return grid;
+}
+
+std::vector<Enemy*>& Game::getEnemies() {
+    return enemies;
+}
+
+Enemy* Game::getNearestEnemy(const Vector2& pos) {
+    Enemy* best = nullptr;
+    if(enemies.size() > 0) {
+        best = enemies[0];
+        // Save the distance squared of first enemy, and test if others are closer
+        float bestDistSq = (pos - enemies[0]->getPosition()).LengthSq();
+        for(size_t i = 1; i < enemies.size(); i++) {
+            float newDistSq = (pos - enemies[i]->getPosition()).LengthSq();
+            if(newDistSq < bestDistSq) {
+                bestDistSq = newDistSq;
+                best = enemies[i];
+            }
+        }
+    }
+
+    return best;
 }
