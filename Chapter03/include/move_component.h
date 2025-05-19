@@ -20,6 +20,11 @@ public:
     bool getWrapable() const;
     void setWrapable(bool shouldWrap);
 
+    float getMass() const;
+    void setMass(float newMass);
+
+    void addForce(Vector2 force);
+
 private:
     // Controls rotation (radians/second)
     float angularSpeed;
@@ -31,6 +36,11 @@ private:
 
     // Screen size
     Vector2 screenSize;
+
+    // Newtonian Physics
+    float mass;
+    Vector2 sumOfForces;
+    Vector2 velocity;
 };
 
 #endif

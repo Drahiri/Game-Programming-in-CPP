@@ -1,18 +1,17 @@
 #include "input_component.h"
 
+#include "actor.h"
+
 InputComponent::InputComponent(Actor* owner) : MoveComponent(owner) {}
 
 void InputComponent::processInput(const bool* keyState) {
     // Calculate forward speed for MoveComponent
-    float forwardSpeed = 0.0f;
     if(keyState[forwardKey]) {
-        forwardSpeed += maxForwardSpeed;
+        addForce(owner->getForward() * maxForwardSpeed);
     }
     if(keyState[backKey]) {
-        forwardSpeed -= maxForwardSpeed;
+        addForce(owner->getForward() * -maxForwardSpeed);
     }
-
-    setForwardSpeed(forwardSpeed);
 
     // Calculate angular speed for MoveComponent
     float angularSpeed = 0.0f;

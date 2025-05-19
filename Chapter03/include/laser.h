@@ -5,6 +5,7 @@
 
 class Game;
 class CircleComponent;
+class MoveComponent;
 
 class Laser : public Actor {
 public:
@@ -13,6 +14,7 @@ public:
     void updateActor(float deltaTime) override;
 
 private:
+    MoveComponent* mc;
     CircleComponent* circle;
     float deathTimer;
 };

@@ -17,9 +17,9 @@ Asteroid::Asteroid(Game* game) : Actor(game) {
     sc->setTexture(game->getTexture("assets/Asteroid.png"));
 
     // Create a move component, andd set a forward speed
-    MoveComponent* mc = new MoveComponent(this);
-    mc->setForwardSpeed(150.0f);
+    mc = new MoveComponent(this);
     mc->setWrapable(true);
+    mc->setMass(10.0f);
 
     // Create circle component
     circle = new CircleComponent(this);
@@ -30,6 +30,10 @@ Asteroid::Asteroid(Game* game) : Actor(game) {
 
 Asteroid::~Asteroid() {
     getGame()->removeAsteroid(this);
+}
+
+void Asteroid::updateActor(float deltaTime) {
+    mc->addForce(getForward() * 1500.0f);
 }
 
 CircleComponent* Asteroid::getCircle() const {
