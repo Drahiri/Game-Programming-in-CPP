@@ -25,7 +25,7 @@ void AIComponent::changeState(const std::string& name) {
         // We're entering the new state
         currentState->onEnter();
     } else {
-        SDL_Log("Could not find AIState %s in state map.");
+        SDL_Log("Could not find AIState %s in state map.", name.c_str());
         currentState = nullptr;
     }
 }
