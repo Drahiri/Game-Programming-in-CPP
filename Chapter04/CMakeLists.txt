@@ -3,6 +3,7 @@ project(Chapter04 VERSION 1.0 LANGUAGES CXX)
 
 set(SOURCE_FILES
     "src/actor.cpp"
+    "src/ai_component.cpp"
     "src/ai_state.cpp"
     "src/bullet.cpp"
     "src/circle_component.cpp"
@@ -21,6 +22,7 @@ set(SOURCE_FILES
 
 set(HEADER_FILES
     "include/actor.h"
+    "include/ai_component.h"
     "include/ai_state.h"
     "include/bullet.h"
     "include/circle_component.h"
