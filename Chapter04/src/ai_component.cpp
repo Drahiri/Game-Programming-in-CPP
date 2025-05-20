@@ -4,7 +4,7 @@
 
 #include <SDL3/SDL_log.h>
 
-AIComponent::AIComponent(Actor* owner) : Component(owner) {}
+AIComponent::AIComponent(Actor* owner) : Component(owner), currentState(nullptr) {}
 
 void AIComponent::update(float deltaTime) {
     if(currentState) {
