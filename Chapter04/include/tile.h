@@ -10,6 +10,7 @@ class Grid;
 class SpriteComponent;
 
 class Tile : public Actor {
+public:
     friend Grid;
     enum class TileState {
         Default,
