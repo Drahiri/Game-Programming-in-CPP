@@ -178,7 +178,7 @@ void Game::updateGame() {
 
 void Game::generateOutput() {
     // Clearing renderer
-    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 128, 0, 255);
     SDL_RenderClear(renderer);
 
     // Drawing objects
