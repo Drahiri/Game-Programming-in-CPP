@@ -32,6 +32,7 @@ set(HEADER_FILES
     "include/grid.h"
     "include/move_component.h"
     "include/sprite_component.h"
+    "include/search.h"
     "include/tile.h"
     "include/tower.h"
 
