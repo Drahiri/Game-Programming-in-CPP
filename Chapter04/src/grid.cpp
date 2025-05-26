@@ -75,8 +75,70 @@ void Grid::processClick(int x, int y) {
     }
 }
 
+// Implement A* pathfinding
 bool Grid::findPath(Tile* start, Tile* goal) {
-    return false;
+    for(size_t i = 0; i < numRows; i++) {
+        for(size_t j = 0; j < numCols; j++) {
+            tiles[i][j]->g = 0.0f;
+            tiles[i][j]->inOpenSet = false;
+            tiles[i][j]->inClosedSet = false;
+        }
+    }
+
+    std::vector<Tile*> openSet;
+
+    // Set current node to start and add to closed set
+    Tile* current = start;
+    current->inClosedSet = true;
+
+    do {
+        // Add adjacent nodes to open set
+        for(Tile* neighbor: current->adjacent) {
+            if(neighbor->blocked) {
+                continue;
+            }
+
+            // Only check nodes that aren't in the closed set
+            if(!neighbor->inClosedSet) {
+                if(!neighbor->inOpenSet) {
+                    // Not in open set, so set parent
+                    neighbor->parent = current;
+                    neighbor->h = (neighbor->getPosition() - goal->getPosition()).Length();
+                    // g(x) is the parent's g plus cost of traversing edge
+                    neighbor->g = current->g + tileSize;
+                    neighbor->f = neighbor->g + neighbor->h;
+                    openSet.emplace_back(neighbor);
+                    neighbor->inOpenSet = true;
+                } else {
+                    // Compute g(x) cost if current becomes the parent
+                    float newG = current->g + tileSize;
+                    if(newG < neighbor->g) {
+                        // Adopt this node
+                        neighbor->parent = current;
+                        neighbor->g = newG;
+                        // f(x) changes because g(x) changes
+                        neighbor->f = neighbor->g + neighbor->h;
+                    }
+                }
+            }
+        }
+
+        // If open set is empty, all possible paths are exhausted
+        if(openSet.empty()) {
+            break;
+        }
+
+        // Find lowest cost node in open set
+        auto iter = std::min_element(
+              openSet.begin(), openSet.end(), [](Tile* a, Tile* b) { return a->f < b->f; });
+        // Set to current and move from open to closed
+        current = *iter;
+        openSet.erase(iter);
+        current->inOpenSet = false;
+        current->inClosedSet = true;
+    } while(current != goal);
+
+    return (current == goal) ? true : false;
 }
 
 void Grid::updatePathTiles(Tile* start) {
@@ -89,11 +151,11 @@ void Grid::updatePathTiles(Tile* start) {
         }
     }
 
-    // Tile* t = start->parent;
-    // while(t != getEndTile()) {
-    //     t->setTileState(Tile::TileState::Path);
-    //     t = t->parent;
-    // }
+    Tile* t = start->parent;
+    while(t != getEndTile()) {
+        t->setTileState(Tile::TileState::Path);
+        t = t->parent;
+    }
 }
 
 void Grid::buildTower() {
