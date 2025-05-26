@@ -13,6 +13,7 @@ set(SOURCE_FILES
     "src/grid.cpp"
     "src/move_component.cpp"
     "src/nav_component.cpp"
+    "src/search.cpp"
     "src/sprite_component.cpp"
     "src/tile.cpp"
     "src/tower.cpp"
@@ -33,8 +34,8 @@ set(HEADER_FILES
     "include/grid.h"
     "include/move_component.h"
     "include/nav_component.h"
-    "include/sprite_component.h"
     "include/search.h"
+    "include/sprite_component.h"
     "include/tile.h"
     "include/tower.h"
 
