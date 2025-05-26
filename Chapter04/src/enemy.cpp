@@ -3,7 +3,7 @@
 #include "circle_component.h"
 #include "game.h"
 #include "grid.h"
-// #include "nav_component.h"
+#include "nav_component.h"
 #include "sprite_component.h"
 #include "tile.h"
 
@@ -18,9 +18,9 @@ Enemy::Enemy(Game* game) : Actor(game) {
     // Set position at start tile
     setPosition(getGame()->getGrid()->getStartTile()->getPosition());
     // Setup a nav component at the start tile
-    // NavComponent* nc = new NavComponent(this);
-    // nc->setForwardSpeed(150.0f);
-    // nc->startPath(getGame()->getGrid()->getStartTile());
+    NavComponent* nc = new NavComponent(this);
+    nc->setForwardSpeed(150.0f);
+    nc->startPath(getGame()->getGrid()->getStartTile());
     // Setup circle for collision
     circle = new CircleComponent(this);
     circle->setRadius(25.0f);
