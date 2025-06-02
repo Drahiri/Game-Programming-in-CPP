@@ -17,6 +17,8 @@ public:
     virtual void update(float deltaTime);
     int getUpdateOrder() const;
 
+    Actor* getOwner() const;
+
 protected:
     // Owning Actor
     Actor* owner;
