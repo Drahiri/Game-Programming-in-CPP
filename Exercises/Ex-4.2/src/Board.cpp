@@ -159,16 +159,68 @@ bool TryPlayerMove(BoardState* state, int column) {
     return false;
 }
 
+const BoardState* alphaBetaDecide(const BoardState* root, int maxDepth);
+
 void CPUMove(BoardState* state) {
-    // For now, this just randomly picks one of the possible moves
-    std::vector<BoardState*> moves = state->GetPossibleMoves(BoardState::Red);
+    // // For now, this just randomly picks one of the possible moves
+    // std::vector<BoardState*> moves = state->GetPossibleMoves(BoardState::Red);
 
-    int index = Random::GetIntRange(0, moves.size() - 1);
+    // int index = Random::GetIntRange(0, moves.size() - 1);
 
-    *state = *moves[index];
+    // *state = *moves[index];
 
-    // Clear up memory from possible moves
-    for(auto state: moves) {
-        delete state;
+    // // Clear up memory from possible moves
+    // for(auto state: moves) {
+    //     delete state;
+    // }
+
+    *state = *alphaBetaDecide(state, 10);
+}
+
+float alphaBetaMin(const BoardState* node, int depth, float alpha, float beta);
+
+const BoardState* alphaBetaDecide(const BoardState* root, int maxDepth) {
+    const BoardState* choice = nullptr;
+
+    float maxValue = -std::numeric_limits<float>::infinity();
+    float beta = std::numeric_limits<float>::infinity();
+    for(const BoardState* child: root->GetPossibleMoves(BoardState::Red)) {
+        float v = alphaBetaMin(child, maxDepth - 1, maxValue, beta);
+        if(v > maxValue) {
+            maxValue = v;
+            choice = child;
+        }
     }
+    return choice;
+}
+
+float alphaBetaMax(const BoardState* node, int depth, float alpha, float beta) {
+    if(depth == 0 || node->IsTerminal()) {
+        return node->GetScore();
+    }
+    float maxValue = -std::numeric_limits<float>::infinity();
+    for(const BoardState* child: node->GetPossibleMoves(BoardState::Yellow)) {
+        maxValue = std::max(maxValue, alphaBetaMin(child, depth - 1, alpha, beta));
+        if(maxValue >= beta) {
+            return maxValue; // Beta prune
+        }
+        alpha = std::max(maxValue, alpha); // Increase lower bound
+    }
+    return maxValue;
+}
+
+float alphaBetaMin(const BoardState* node, int depth, float alpha, float beta) {
+    if(depth == 0 || node->IsTerminal()) {
+        return node->GetScore();
+    }
+
+    float minValue = std::numeric_limits<float>::infinity();
+    for(const BoardState* child: node->GetPossibleMoves(BoardState::Red)) {
+        minValue = std::min(minValue, alphaBetaMax(child, depth - 1, alpha, beta));
+        if(minValue <= alpha) {
+            return minValue; // Alpha prune
+        }
+        beta = std::min(minValue, beta); // Decrease upper bound
+    }
+    return minValue;
 }
