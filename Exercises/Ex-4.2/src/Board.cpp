@@ -142,8 +142,90 @@ int BoardState::GetFourInARow() const {
 }
 
 float BoardState::CalculateHeuristic() const {
-    // TODO: You could change this to calculate an actual heuristic
-    return 0.0f;
+    // Checks how many same colors are in line
+    float heuristic = 0.0f;
+
+    // Check rows
+    for(int row = 0; row < 6; row++) {
+        for(int col = 0; col < 4; col++) {
+            float currentVal = 0.0f;
+            for(int offset = 0; offset < 3; offset++) {
+                switch(mBoard[row][col + offset]) {
+                case SquareState::Red:
+                    currentVal += 1;
+                    break;
+                case SquareState::Yellow:
+                    currentVal -= 1;
+                    break;
+                default:
+                    break;
+                }
+            }
+            heuristic += currentVal;
+        }
+    }
+
+    // Check colums
+    for(int col = 0; col < 7; col++) {
+        for(int row = 0; row < 3; row++) {
+            float currentVal = 0.0f;
+            for(int offset = 0; offset < 3; offset++) {
+                switch(mBoard[row + offset][col]) {
+                case SquareState::Red:
+                    currentVal += 1;
+                    break;
+                case SquareState::Yellow:
+                    currentVal -= 1;
+                    break;
+                default:
+                    break;
+                }
+            }
+            heuristic += currentVal;
+        }
+    }
+
+    // Check right diagonal
+    for(int col = 0; col < 4; col++) {
+        for(int row = 0; row < 3; row++) {
+            float currentVal = 0.0f;
+            for(int offset = 0; offset < 3; offset++) {
+                switch(mBoard[row + offset][col + offset]) {
+                case SquareState::Red:
+                    currentVal += 1;
+                    break;
+                case SquareState::Yellow:
+                    currentVal -= 1;
+                    break;
+                default:
+                    break;
+                }
+            }
+            heuristic += currentVal;
+        }
+    }
+
+    // Check left diagonal
+    for(int col = 0; col < 4; col++) {
+        for(int row = 3; row < 6; row++) {
+            float currentVal = 0.0f;
+            for(int offset = 0; offset < 3; offset++) {
+                switch(mBoard[row - offset][col - offset]) {
+                case SquareState::Red:
+                    currentVal += 1;
+                    break;
+                case SquareState::Yellow:
+                    currentVal -= 1;
+                    break;
+                default:
+                    break;
+                }
+            }
+            heuristic += currentVal;
+        }
+    }
+
+    return heuristic;
 }
 
 bool TryPlayerMove(BoardState* state, int column) {
@@ -174,7 +256,7 @@ void CPUMove(BoardState* state) {
     //     delete state;
     // }
 
-    *state = *alphaBetaDecide(state, 10);
+    *state = *alphaBetaDecide(state, 5);
 }
 
 float alphaBetaMin(const BoardState* node, int depth, float alpha, float beta);
@@ -202,7 +284,7 @@ float alphaBetaMax(const BoardState* node, int depth, float alpha, float beta) {
     for(const BoardState* child: node->GetPossibleMoves(BoardState::Yellow)) {
         maxValue = std::max(maxValue, alphaBetaMin(child, depth - 1, alpha, beta));
         if(maxValue >= beta) {
-            return maxValue; // Beta prune
+            break; // Beta prune
         }
         alpha = std::max(maxValue, alpha); // Increase lower bound
     }
@@ -218,7 +300,7 @@ float alphaBetaMin(const BoardState* node, int depth, float alpha, float beta) {
     for(const BoardState* child: node->GetPossibleMoves(BoardState::Red)) {
         minValue = std::min(minValue, alphaBetaMax(child, depth - 1, alpha, beta));
         if(minValue <= alpha) {
-            return minValue; // Alpha prune
+            break; // Alpha prune
         }
         beta = std::min(minValue, beta); // Decrease upper bound
     }
