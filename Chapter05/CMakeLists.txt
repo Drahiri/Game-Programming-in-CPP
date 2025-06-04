@@ -15,6 +15,7 @@ set(SOURCE_FILES
     "src/ship.cpp"
     "src/asteroid.cpp"
     "src/laser.cpp"
+    "src/vertex_array.cpp"
     
     "src/random.cpp"
     "src/math.cpp"
@@ -33,6 +34,7 @@ set(HEADER_FILES
     "include/ship.h"
     "include/asteroid.h"
     "include/laser.h"
+    "include/vertex_array.h"
     
     "include/random.h"
     "include/math.h"
