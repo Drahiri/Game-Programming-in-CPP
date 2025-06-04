@@ -7,6 +7,7 @@
 #include "sprite_component.h"
 
 #include <algorithm>
+#include <GL/glew.h>
 #include <SDL3_image/SDL_image.h>
 
 const int windowWidth = 1024;
@@ -15,6 +16,7 @@ const int windowHeight = 768;
 Game::Game() :
     isRunning(true),
     window(nullptr),
+    context(nullptr),
     ticksCount(0),
     updatingActors(true),
     ship(nullptr) {}
@@ -26,12 +28,50 @@ bool Game::initialize() {
         return false;
     }
 
+    // Use the core OpenGL profile
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+
+    // Specify version 3.3
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+
+    // Request a color buffer with 8-bits per RGBA channels
+    SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+
+    // Enable double buffering
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+    // Force OpenGL to use hardware acceleration
+    SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+
     // Creating Window
-    window = SDL_CreateWindow("Game Programming - Pong", windowWidth, windowHeight, 0);
+    window =
+          SDL_CreateWindow("Game Programming - Pong", windowWidth, windowHeight, SDL_WINDOW_OPENGL);
     if(!window) {
         SDL_Log("Failed to create window: %s", SDL_GetError());
         return false;
     }
+
+    // Creating context
+    context = SDL_GL_CreateContext(window);
+    if(!context) {
+        SDL_Log("Failed to create context: %s", SDL_GetError());
+        return false;
+    }
+
+    // Initialize GLEW
+    glewExperimental = GL_TRUE;
+
+    if(glewInit() != GLEW_OK) {
+        SDL_Log("Failed to initialize GLEW.");
+        return false;
+    }
+
+    // On some platforms, GLEW will emit a benign error code, so clear it
+    glGetError();
 
     loadData();
 
@@ -50,6 +90,7 @@ void Game::shutdown() {
     // Because ~Actor calls RemoveActor, use a different style loop
     unloadData();
 
+    SDL_GL_DestroyContext(context);
     SDL_DestroyWindow(window);
 
     SDL_Quit();

@@ -46,6 +46,7 @@ private:
 
     bool isRunning;
     SDL_Window* window;
+    SDL_GLContext context;
 
     // Time keeping
     Uint32 ticksCount;
