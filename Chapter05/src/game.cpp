@@ -15,7 +15,6 @@ const int windowHeight = 768;
 Game::Game() :
     isRunning(true),
     window(nullptr),
-    renderer(nullptr),
     ticksCount(0),
     updatingActors(true),
     ship(nullptr) {}
@@ -31,17 +30,6 @@ bool Game::initialize() {
     window = SDL_CreateWindow("Game Programming - Pong", windowWidth, windowHeight, 0);
     if(!window) {
         SDL_Log("Failed to create window: %s", SDL_GetError());
-        return false;
-    }
-
-    // Creating Renderer
-    SDL_PropertiesID props = SDL_CreateProperties();
-    SDL_SetPointerProperty(props, SDL_PROP_RENDERER_CREATE_WINDOW_POINTER, window);
-    SDL_SetNumberProperty(props, SDL_PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER, 1);
-
-    renderer = SDL_CreateRendererWithProperties(props);
-    if(!renderer) {
-        SDL_Log("Failed to create renderer: %s", SDL_GetError());
         return false;
     }
 
@@ -62,7 +50,6 @@ void Game::shutdown() {
     // Because ~Actor calls RemoveActor, use a different style loop
     unloadData();
 
-    SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
 
     SDL_Quit();
@@ -169,17 +156,10 @@ void Game::updateGame() {
 }
 
 void Game::generateOutput() {
-    // Clearing renderer
-    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-    SDL_RenderClear(renderer);
-
     // Drawing objects
     for(auto sprite: sprites) {
-        sprite->draw(renderer);
+        // sprite->draw(renderer);
     }
-
-    // Swapping buffers
-    SDL_RenderPresent(renderer);
 }
 
 SDL_Texture* Game::getTexture(const std::string& filename) {
@@ -197,7 +177,7 @@ SDL_Texture* Game::getTexture(const std::string& filename) {
             return nullptr;
         }
 
-        tex = SDL_CreateTextureFromSurface(renderer, surf);
+        // tex = SDL_CreateTextureFromSurface(renderer, surf);
         SDL_DestroySurface(surf);
         if(!tex) {
             SDL_Log("Failed to convert surface to texture for %s", filename.c_str());
