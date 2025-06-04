@@ -5,6 +5,7 @@
 #include "bg_sprite_component.h"
 #include "ship.h"
 #include "sprite_component.h"
+#include "vertex_array.h"
 
 #include <algorithm>
 #include <GL/glew.h>
@@ -74,6 +75,7 @@ bool Game::initialize() {
     glGetError();
 
     loadData();
+    initSpriteVerts();
 
     return true;
 }
@@ -305,6 +307,24 @@ void Game::unloadData() {
         SDL_DestroyTexture(i.second);
     }
     textures.clear();
+}
+
+void Game::initSpriteVerts() {
+    /* clang-format off */
+    float vertices[] = {
+        -0.5f,  0.5f, 0.0f, // Vertex 0
+         0.5f,  0.5f, 0.0f, // Vertex 1
+         0.5f, -0.5f, 0.0f, // Vertex 2
+        -0.5f, -0.5f, 0.0f, // Vertex 3
+    };
+
+    unsigned int indices[] = {
+        0, 1, 2,
+        2, 3, 0
+    };
+    /* clang-format on */
+
+    spriteVerts = new VertexArray(vertices, 4, indices, 6);
 }
 
 Vector2 Game::getScreenSize() const {

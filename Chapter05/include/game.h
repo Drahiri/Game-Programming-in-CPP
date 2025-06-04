@@ -12,6 +12,7 @@ class Actor;
 class SpriteComponent;
 class Ship;
 class Asteroid;
+class VertexArray;
 
 class Game {
 public:
@@ -44,6 +45,8 @@ private:
     void loadData();
     void unloadData();
 
+    void initSpriteVerts();
+
     bool isRunning;
     SDL_Window* window;
     SDL_GLContext context;
@@ -66,6 +69,9 @@ private:
 
     // Asteroids
     std::vector<Asteroid*> asteroids;
+
+    // Vertices
+    VertexArray* spriteVerts;
 };
 
 #endif
