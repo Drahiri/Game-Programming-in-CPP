@@ -197,10 +197,19 @@ void Game::updateGame() {
 }
 
 void Game::generateOutput() {
+    // Set the clear color to gray
+    glClearColor(0.86f, 0.86f, 0.86f, 1.0f);
+
+    // Clear the color buffer
+    glClear(GL_COLOR_BUFFER_BIT);
+
     // Drawing objects
     for(auto sprite: sprites) {
         // sprite->draw(renderer);
     }
+
+    // Swap the buffers, which also display the scene
+    SDL_GL_SwapWindow(window);
 }
 
 SDL_Texture* Game::getTexture(const std::string& filename) {
