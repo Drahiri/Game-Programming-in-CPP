@@ -16,6 +16,7 @@ set(SOURCE_FILES
     "src/asteroid.cpp"
     "src/laser.cpp"
     "src/vertex_array.cpp"
+    "src/shader.cpp"
     
     "src/random.cpp"
     "src/math.cpp"
@@ -35,6 +36,7 @@ set(HEADER_FILES
     "include/asteroid.h"
     "include/laser.h"
     "include/vertex_array.h"
+    "include/shader.h"
     
     "include/random.h"
     "include/math.h"
