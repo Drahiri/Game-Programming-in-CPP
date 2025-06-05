@@ -6,6 +6,7 @@
 #include <SDL3/SDL.h>
 
 class Actor;
+class Shader;
 
 class SpriteComponent : public Component {
 public:
@@ -13,7 +14,7 @@ public:
     SpriteComponent(Actor* owner, int drawOrder = 100);
     ~SpriteComponent();
 
-    virtual void draw(SDL_Renderer* renderer);
+    virtual void draw(Shader* shader);
     virtual void setTexture(SDL_Texture* newTexture);
 
     int getDrawOrder() const;

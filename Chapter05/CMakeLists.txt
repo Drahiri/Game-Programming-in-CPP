@@ -47,3 +47,4 @@ target_include_directories(Chapter05 PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/includ
 target_link_libraries(Chapter05 PRIVATE SDL3::SDL3 SDL3_image::SDL3_image GLEW::GLEW)
 
 file(CREATE_LINK "${CMAKE_CURRENT_SOURCE_DIR}/assets" "${CMAKE_CURRENT_BINARY_DIR}/assets" SYMBOLIC)
+file(CREATE_LINK "${CMAKE_CURRENT_SOURCE_DIR}/shaders" "${CMAKE_CURRENT_BINARY_DIR}/shaders" SYMBOLIC)

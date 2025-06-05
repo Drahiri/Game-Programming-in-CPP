@@ -212,9 +212,13 @@ void Game::generateOutput() {
     // Clear the color buffer
     glClear(GL_COLOR_BUFFER_BIT);
 
+    // Set sprite shader and vertex array objects active
+    spriteShader->setActive();
+    spriteVerts->setActive();
+
     // Drawing objects
     for(auto sprite: sprites) {
-        // sprite->draw(renderer);
+        sprite->draw(spriteShader);
     }
 
     // Swap the buffers, which also display the scene
@@ -276,22 +280,22 @@ void Game::loadData() {
     ship->setScale(1.0f);
 
     // Create actor for the background (this doesn't need a subclass)
-    Actor* temp = new Actor(this);
-    temp->setPosition(Vector2{ windowWidth / 2.0f, windowHeight / 2.0f });
+    // Actor* temp = new Actor(this);
+    // temp->setPosition(Vector2{ windowWidth / 2.0f, windowHeight / 2.0f });
 
-    // Create new "far back" background
-    BGSpriteComponent* bg = new BGSpriteComponent(temp);
-    bg->setScreenSize(getScreenSize());
-    std::vector<SDL_Texture*> bgtexs = { getTexture("assets/Farback01.png"),
-        getTexture("assets/Farback02.png") };
-    bg->setBGTextures(bgtexs);
-    bg->setScrollSpeed(-100.0f);
-    // Create the closer background
-    bg = new BGSpriteComponent(temp);
-    bg->setScreenSize(getScreenSize());
-    bgtexs = { getTexture("assets/Stars.png"), getTexture("assets/Stars.png") };
-    bg->setBGTextures(bgtexs);
-    bg->setScrollSpeed(-200.0f);
+    // // Create new "far back" background
+    // BGSpriteComponent* bg = new BGSpriteComponent(temp);
+    // bg->setScreenSize(getScreenSize());
+    // std::vector<SDL_Texture*> bgtexs = { getTexture("assets/Farback01.png"),
+    //     getTexture("assets/Farback02.png") };
+    // bg->setBGTextures(bgtexs);
+    // bg->setScrollSpeed(-100.0f);
+    // // Create the closer background
+    // bg = new BGSpriteComponent(temp);
+    // bg->setScreenSize(getScreenSize());
+    // bgtexs = { getTexture("assets/Stars.png"), getTexture("assets/Stars.png") };
+    // bg->setBGTextures(bgtexs);
+    // bg->setScrollSpeed(-200.0f);
 
     // Add Asteroids
     const int numAsteroids = 20;

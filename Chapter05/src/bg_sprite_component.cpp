@@ -22,22 +22,7 @@ void BGSpriteComponent::update(float deltaTime) {
     }
 }
 
-void BGSpriteComponent::draw(SDL_Renderer* renderer) {
-    if(bgTextures.size() > 0) {
-        for(auto bg: bgTextures) {
-            SDL_FRect r;
-            // Draw on whole screen
-            r.w = screenSize.x;
-            r.h = screenSize.y;
-            // Center the rectangle around the position of owner
-            r.x = owner->getPosition().x - r.w / 2.0f + bg.offset.x;
-            r.y = owner->getPosition().x - r.w / 2.0f + bg.offset.y;
-
-            // Draw
-            SDL_RenderTexture(renderer, bg.texture, nullptr, &r);
-        }
-    }
-}
+void BGSpriteComponent::draw(Shader* renderer) {}
 
 void BGSpriteComponent::setBGTextures(const std::vector<SDL_Texture*>& textures) {
     int count = 0;

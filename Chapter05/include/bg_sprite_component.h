@@ -14,7 +14,7 @@ public:
     BGSpriteComponent(Actor* owner, int drawOrder = 10);
     // Update/draw overriden from parent
     void update(float deltaTime) override;
-    void draw(SDL_Renderer* renderer) override;
+    void draw(Shader* renderer) override;
     // Set the textures used for the background
     void setBGTextures(const std::vector<SDL_Texture*>& textures);
     // Get/set screen size and scroll speed
