@@ -13,6 +13,7 @@ class SpriteComponent;
 class Ship;
 class Asteroid;
 class VertexArray;
+class Shader;
 
 class Game {
 public:
@@ -46,6 +47,7 @@ private:
     void unloadData();
 
     void initSpriteVerts();
+    bool loadShaders();
 
     bool isRunning;
     SDL_Window* window;
@@ -72,6 +74,9 @@ private:
 
     // Vertices
     VertexArray* spriteVerts;
+
+    // Shaders
+    Shader* spriteShader;
 };
 
 #endif

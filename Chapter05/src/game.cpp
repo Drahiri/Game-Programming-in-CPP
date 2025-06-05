@@ -3,6 +3,7 @@
 #include "actor.h"
 #include "asteroid.h"
 #include "bg_sprite_component.h"
+#include "shader.h"
 #include "ship.h"
 #include "sprite_component.h"
 #include "vertex_array.h"
@@ -73,6 +74,12 @@ bool Game::initialize() {
 
     // On some platforms, GLEW will emit a benign error code, so clear it
     glGetError();
+
+    // Make sure we can create/compile shaders
+    if(!loadShaders()) {
+        SDL_Log("Failed to load shaders.");
+        return false;
+    }
 
     loadData();
     initSpriteVerts();
@@ -325,6 +332,17 @@ void Game::initSpriteVerts() {
     /* clang-format on */
 
     spriteVerts = new VertexArray(vertices, 4, indices, 6);
+}
+
+bool Game::loadShaders() {
+    spriteShader = new Shader();
+
+    if(!spriteShader->load("shaders/basic.vert", "shaders/basic.frag")) {
+        return false;
+    }
+
+    spriteShader->setActive();
+    return true;
 }
 
 Vector2 Game::getScreenSize() const {
