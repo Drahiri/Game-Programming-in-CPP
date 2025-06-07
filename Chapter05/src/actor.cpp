@@ -10,6 +10,7 @@ Actor::Actor(Game* game) :
     position(Vector2::Zero),
     scale(1.0f),
     rotation(0.0f),
+    recomputeWorldTransform(true),
     game(game) {
     this->game->addActor(this);
 }
@@ -27,8 +28,10 @@ void Actor::update(float deltaTime) {
         return;
     }
 
+    computeWorldTransform();
     updateComponents(deltaTime);
     updateActor(deltaTime);
+    computeWorldTransform();
 }
 
 void Actor::updateComponents(float deltaTime) {
@@ -53,6 +56,7 @@ const Vector2& Actor::getPosition() const {
 
 void Actor::setPosition(const Vector2& newPosition) {
     position = newPosition;
+    recomputeWorldTransform = true;
 }
 
 float Actor::getScale() const {
@@ -61,6 +65,7 @@ float Actor::getScale() const {
 
 void Actor::setScale(float newScale) {
     scale = newScale;
+    recomputeWorldTransform = true;
 }
 
 float Actor::getRotation() const {
@@ -69,6 +74,7 @@ float Actor::getRotation() const {
 
 void Actor::setRotation(float newRotation) {
     rotation = newRotation;
+    recomputeWorldTransform = true;
 }
 
 Game* Actor::getGame() const {
@@ -110,4 +116,19 @@ void Actor::removeComponent(Component* component) {
     if(iter != components.end()) {
         components.erase(iter);
     }
+}
+
+void Actor::computeWorldTransform() {
+    if(recomputeWorldTransform) {
+        recomputeWorldTransform = false;
+
+        // Scale, then rotate, then translate
+        worldTransform = Matrix4::CreateScale(scale);
+        worldTransform *= Matrix4::CreateRotationZ(rotation);
+        worldTransform *= Matrix4::CreateTranslation(Vector3(position.x, position.y, 0.0f));
+    }
+}
+
+const Matrix4& Actor::getWorldTransform() const {
+    return worldTransform;
 }

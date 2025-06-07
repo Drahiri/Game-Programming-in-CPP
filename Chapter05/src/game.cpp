@@ -186,6 +186,7 @@ void Game::updateGame() {
 
     // Move pending actors to actors
     for(auto pending: pendingActors) {
+        pending->computeWorldTransform();
         actors.emplace_back(pending);
     }
 

@@ -55,6 +55,10 @@ public:
     // Any actor-specific input code (overridable)
     virtual void actorInput(const bool* keyState);
 
+    // Matrix transforms
+    void computeWorldTransform();
+    const Matrix4& getWorldTransform() const;
+
 private:
     // Actor's state
     State state;
@@ -63,6 +67,9 @@ private:
     Vector2 position; // Center position of actor
     float scale;      // Uniforms scale of actor (1.0f)
     float rotation;   // Rotation angle (in radians)
+
+    Matrix4 worldTransform;
+    bool recomputeWorldTransform;
 
     // Components held by this actor
     std::vector<Component*> components;
