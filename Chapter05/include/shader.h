@@ -1,6 +1,8 @@
 #ifndef SHADER_H
 #define SHADER_H
 
+#include "math.h"
+
 #include <GL/glew.h>
 #include <string>
 
@@ -15,6 +17,9 @@ public:
 
     // Set this as the active shader program
     void setActive();
+
+    // Set uniforms
+    void setMatrixUniform(const char* name, const Matrix4& matrix);
 
 private:
     // Tries to compile the specified shader

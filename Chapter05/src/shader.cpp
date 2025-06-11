@@ -38,6 +38,18 @@ void Shader::setActive() {
     glUseProgram(shaderProgram);
 }
 
+void Shader::setMatrixUniform(const char* name, const Matrix4& matrix) {
+    // Find the uniform by this name
+    GLuint loc = glGetUniformLocation(shaderProgram, name);
+
+    // Send the matrix data to the uniform
+    glUniformMatrix4fv(loc,      // Uniform ID
+          1,                     // Number of matrices (only 1 in this case)
+          GL_TRUE,               // Set to TRUE if using row vectors
+          matrix.GetAsFloatPtr() // Pointer to matrix data
+    );
+}
+
 bool Shader::compileShader(const std::string& fileName, GLenum shaderType, GLuint& outShader) {
     // Open file
     std::ifstream shaderFile(fileName);
