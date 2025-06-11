@@ -342,11 +342,14 @@ void Game::initSpriteVerts() {
 bool Game::loadShaders() {
     spriteShader = new Shader();
 
-    if(!spriteShader->load("shaders/basic.vert", "shaders/basic.frag")) {
+    if(!spriteShader->load("shaders/transform.vert", "shaders/basic.frag")) {
         return false;
     }
 
     spriteShader->setActive();
+    Matrix4 viewProj = Matrix4::CreateSimpleViewProj(windowWidth, windowHeight);
+    spriteShader->setMatrixUniform("uViewProj", viewProj);
+
     return true;
 }
 
