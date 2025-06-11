@@ -126,6 +126,11 @@ void Actor::computeWorldTransform() {
         worldTransform = Matrix4::CreateScale(scale);
         worldTransform *= Matrix4::CreateRotationZ(rotation);
         worldTransform *= Matrix4::CreateTranslation(Vector3(position.x, position.y, 0.0f));
+
+        // Inform components world transform updated
+        for(auto comp: components) {
+            comp->onUpdateWorldTransform();
+        }
     }
 }
 

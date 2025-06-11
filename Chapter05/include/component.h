@@ -12,6 +12,7 @@ public:
     virtual ~Component();
 
     virtual void processInput(const bool* keyState);
+    virtual void onUpdateWorldTransform();
 
     // Update this component by delta time
     virtual void update(float deltaTime);

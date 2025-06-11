@@ -12,6 +12,8 @@ Component::~Component() {
 
 void Component::processInput(const bool* keyState) {}
 
+void Component::onUpdateWorldTransform() {}
+
 void Component::update(float deltaTime) {}
 
 int Component::getUpdateOrder() const {
