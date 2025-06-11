@@ -8,7 +8,11 @@
 
 Asteroid::Asteroid(Game* game) : Actor(game) {
     // Initialize to random position/orientation
-    Vector2 randPos = Random::GetVector(Vector2::Zero, Vector2(game->getScreenSize()));
+    Vector2 screenSize = game->getScreenSize();
+    Vector2 halfScreen = Vector2(screenSize.x / 2, screenSize.y / 2);
+    Vector2 negativeHalfScreen = Vector2(-screenSize.x / 2, -screenSize.y / 2);
+
+    Vector2 randPos = Random::GetVector(negativeHalfScreen, halfScreen);
     setPosition(randPos);
     setRotation(Random::GetFloatRange(0.0f, Math::TwoPi));
 

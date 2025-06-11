@@ -82,7 +82,7 @@ Game* Actor::getGame() const {
 }
 
 Vector2 Actor::getForward() const {
-    return Vector2(Math::Cos(rotation), -Math::Sin(rotation));
+    return Vector2(Math::Cos(rotation), Math::Sin(rotation));
 }
 
 void Actor::processInput(const bool* keyState) {

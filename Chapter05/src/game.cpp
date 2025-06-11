@@ -277,7 +277,6 @@ void Game::removeSprite(SpriteComponent* sprite) {
 void Game::loadData() {
     // Create player's ship
     ship = new Ship(this);
-    ship->setPosition(Vector2{ 100.0f, 384.0f });
     ship->setScale(1.0f);
 
     // Create actor for the background (this doesn't need a subclass)

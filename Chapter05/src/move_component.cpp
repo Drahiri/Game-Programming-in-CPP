@@ -21,15 +21,15 @@ void MoveComponent::update(float deltaTime) {
         pos += owner->getForward() * forwardSpeed * deltaTime;
 
         // If out of screen move to other end
-        if(pos.x <= 0.0f) {
-            pos.x = screenSize.x;
-        } else if(pos.x >= screenSize.x) {
-            pos.x = 0.0f;
+        if(pos.x <= -screenSize.x / 2) {
+            pos.x = screenSize.x / 2;
+        } else if(pos.x >= screenSize.x / 2) {
+            pos.x = -screenSize.x / 2;
         }
-        if(pos.y <= 0.0f) {
+        if(pos.y <= -screenSize.y) {
             pos.y = screenSize.y;
         } else if(pos.y >= screenSize.y) {
-            pos.y = 0.0f;
+            pos.y = -screenSize.y;
         }
 
         owner->setPosition(pos);
