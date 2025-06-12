@@ -1,18 +1,14 @@
 #include "ship.h"
 
-#include "anim_sprite_component.h"
 #include "game.h"
 #include "input_component.h"
 #include "laser.h"
+#include "sprite_component.h"
 
 Ship::Ship(Game* game) : Actor(game), rightSpeed(0.0f), downSpeed(0.0f), laserCooldown(0.0f) {
-    AnimSpriteComponent* asc = new AnimSpriteComponent(this);
-    std::vector<SDL_Texture*> anims = { game->getTexture("assets/Ship01.png"),
-        game->getTexture("assets/Ship02.png"),
-        game->getTexture("assets/Ship03.png"),
-        game->getTexture("assets/Ship04.png") };
+    SpriteComponent* sc = new SpriteComponent(this);
+    sc->setTexture(game->getTexture("assets/ShipWithThrust.png"));
 
-    asc->setAnimTextures(anims);
     InputComponent* ic = new InputComponent(this);
     ic->setForwardKey(SDL_SCANCODE_W);
     ic->setBackKey(SDL_SCANCODE_S);

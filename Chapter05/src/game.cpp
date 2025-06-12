@@ -2,7 +2,6 @@
 
 #include "actor.h"
 #include "asteroid.h"
-#include "bg_sprite_component.h"
 #include "shader.h"
 #include "ship.h"
 #include "sprite_component.h"
@@ -269,24 +268,6 @@ void Game::loadData() {
     // Create player's ship
     ship = new Ship(this);
     ship->setScale(1.0f);
-
-    // Create actor for the background (this doesn't need a subclass)
-    // Actor* temp = new Actor(this);
-    // temp->setPosition(Vector2{ windowWidth / 2.0f, windowHeight / 2.0f });
-
-    // // Create new "far back" background
-    // BGSpriteComponent* bg = new BGSpriteComponent(temp);
-    // bg->setScreenSize(getScreenSize());
-    // std::vector<SDL_Texture*> bgtexs = { getTexture("assets/Farback01.png"),
-    //     getTexture("assets/Farback02.png") };
-    // bg->setBGTextures(bgtexs);
-    // bg->setScrollSpeed(-100.0f);
-    // // Create the closer background
-    // bg = new BGSpriteComponent(temp);
-    // bg->setScreenSize(getScreenSize());
-    // bgtexs = { getTexture("assets/Stars.png"), getTexture("assets/Stars.png") };
-    // bg->setBGTextures(bgtexs);
-    // bg->setScrollSpeed(-200.0f);
 
     // Add Asteroids
     const int numAsteroids = 20;
