@@ -7,6 +7,7 @@
 
 class Actor;
 class Shader;
+class Texture;
 
 class SpriteComponent : public Component {
 public:
@@ -15,7 +16,7 @@ public:
     ~SpriteComponent();
 
     virtual void draw(Shader* shader);
-    virtual void setTexture(SDL_Texture* newTexture);
+    virtual void setTexture(Texture* newTexture);
 
     int getDrawOrder() const;
     int getTexHeight() const;
@@ -23,7 +24,7 @@ public:
 
 protected:
     // Texture to draw
-    SDL_Texture* texture;
+    Texture* texture;
     // Draw order used for painter's algorithm
     int drawOrder;
     int texHeight;

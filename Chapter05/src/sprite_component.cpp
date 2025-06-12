@@ -3,6 +3,7 @@
 #include "actor.h"
 #include "game.h"
 #include "shader.h"
+#include "texture.h"
 
 #include <GL/glew.h>
 
@@ -22,12 +23,15 @@ SpriteComponent::~SpriteComponent() {
 void SpriteComponent::draw(Shader* shader) {
     // Scale the quad by the width/height of texture
     // TODO: change hardcodded values to texWidth/texHeight
-    Matrix4 scaleMat = Matrix4::CreateScale(static_cast<float>(32), static_cast<float>(32), 1.0f);
+    Matrix4 scaleMat =
+          Matrix4::CreateScale(static_cast<float>(texWidth), static_cast<float>(texHeight), 1.0f);
 
     Matrix4 world = scaleMat * owner->getWorldTransform();
 
     // Set world transform
     shader->setMatrixUniform("uWorldTransform", world);
+
+    texture->setActive();
 
     glDrawElements(GL_TRIANGLES, // Type of polygon/primitive to draw
           6,                     // Number of indices to index
@@ -36,15 +40,12 @@ void SpriteComponent::draw(Shader* shader) {
     );
 }
 
-void SpriteComponent::setTexture(SDL_Texture* newTexture) {
+void SpriteComponent::setTexture(Texture* newTexture) {
     texture = newTexture;
 
     // Get width/height of texture
-    float w = 0.0f;
-    float h = 0.0f;
-    SDL_GetTextureSize(texture, &w, &h);
-    texWidth = static_cast<int>(w);
-    texHeight = static_cast<int>(h);
+    texWidth = newTexture->getWidth();
+    texHeight = newTexture->getHeight();
 }
 
 int SpriteComponent::getDrawOrder() const {
