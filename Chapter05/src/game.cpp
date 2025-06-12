@@ -217,6 +217,12 @@ void Game::generateOutput() {
     spriteShader->setActive();
     spriteVerts->setActive();
 
+    // Enable alpha blending
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA,    // srcFactor is srcAlpha
+          GL_ONE_MINUS_SRC_ALPHA // dstFactor is 1 - srcAlpha
+    );
+
     // Drawing objects
     for(auto sprite: sprites) {
         sprite->draw(spriteShader);
