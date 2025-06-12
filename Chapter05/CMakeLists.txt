@@ -17,6 +17,7 @@ set(SOURCE_FILES
     "src/laser.cpp"
     "src/vertex_array.cpp"
     "src/shader.cpp"
+    "src/texture.cpp"
     
     "src/random.cpp"
     "src/math.cpp"
@@ -37,6 +38,7 @@ set(HEADER_FILES
     "include/laser.h"
     "include/vertex_array.h"
     "include/shader.h"
+    "include/texture.h"
     
     "include/random.h"
     "include/math.h"
@@ -44,7 +46,7 @@ set(HEADER_FILES
 
 add_executable(Chapter05 ${SOURCE_FILES} ${HEADER_FILES})
 target_include_directories(Chapter05 PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
-target_link_libraries(Chapter05 PRIVATE SDL3::SDL3 SDL3_image::SDL3_image GLEW::GLEW)
+target_link_libraries(Chapter05 PRIVATE SDL3::SDL3 SDL3_image::SDL3_image GLEW::GLEW SOIL)
 
 file(CREATE_LINK "${CMAKE_CURRENT_SOURCE_DIR}/assets" "${CMAKE_CURRENT_BINARY_DIR}/assets" SYMBOLIC)
 file(CREATE_LINK "${CMAKE_CURRENT_SOURCE_DIR}/shaders" "${CMAKE_CURRENT_BINARY_DIR}/shaders" SYMBOLIC)

@@ -12,6 +12,10 @@ find_package(SDL3_image REQUIRED CONFIG)
 
 find_package(GLEW REQUIRED)
 
+# SOIL doesn't include cmake files
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/extern/SOIL/include")
+link_directories("${CMAKE_CURRENT_SOURCE_DIR}/extern/SOIL/lib")
+
 add_subdirectory(Chapter01)
 add_subdirectory(Chapter02)
 add_subdirectory(Chapter03)
