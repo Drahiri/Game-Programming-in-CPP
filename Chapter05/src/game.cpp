@@ -313,7 +313,7 @@ void Game::initSpriteVerts() {
 bool Game::loadShaders() {
     spriteShader = new Shader();
 
-    if(!spriteShader->load("shaders/transform.vert", "shaders/basic.frag")) {
+    if(!spriteShader->load("shaders/sprite.vert", "shaders/sprite.frag")) {
         return false;
     }
 
