@@ -14,6 +14,7 @@ class Ship;
 class Asteroid;
 class VertexArray;
 class Shader;
+class Texture;
 
 class Game {
 public:
@@ -26,7 +27,7 @@ public:
     void addActor(Actor* actor);
     void removeActor(Actor* actor);
 
-    SDL_Texture* getTexture(const std::string& filename);
+    Texture* getTexture(const std::string& filename);
     void addSprite(SpriteComponent* sprite);
     void removeSprite(SpriteComponent* sprite);
 
@@ -64,7 +65,7 @@ private:
     Ship* ship;
 
     // Textures
-    std::map<std::string, SDL_Texture*> textures;
+    std::map<std::string, Texture*> textures;
 
     // Sprites
     std::vector<SpriteComponent*> sprites;

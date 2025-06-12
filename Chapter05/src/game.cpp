@@ -6,6 +6,7 @@
 #include "shader.h"
 #include "ship.h"
 #include "sprite_component.h"
+#include "texture.h"
 #include "vertex_array.h"
 
 #include <algorithm>
@@ -226,8 +227,8 @@ void Game::generateOutput() {
     SDL_GL_SwapWindow(window);
 }
 
-SDL_Texture* Game::getTexture(const std::string& filename) {
-    SDL_Texture* tex = nullptr;
+Texture* Game::getTexture(const std::string& filename) {
+    Texture* tex = nullptr;
 
     // Is the texture already in the map?
     auto iter = textures.find(filename);
@@ -235,18 +236,8 @@ SDL_Texture* Game::getTexture(const std::string& filename) {
         tex = iter->second;
     } else {
         // Load from file
-        SDL_Surface* surf = IMG_Load(filename.c_str());
-        if(!surf) {
-            SDL_Log("Failed to create surface for %s: %s", filename.c_str(), SDL_GetError());
-            return nullptr;
-        }
-
-        // tex = SDL_CreateTextureFromSurface(renderer, surf);
-        SDL_DestroySurface(surf);
-        if(!tex) {
-            SDL_Log("Failed to convert surface to texture for %s", filename.c_str());
-            return nullptr;
-        }
+        tex = new Texture();
+        tex->load(filename);
 
         textures.emplace(filename.c_str(), tex);
     }
@@ -315,7 +306,7 @@ void Game::unloadData() {
 
     // Destroy textures
     for(auto i: textures) {
-        SDL_DestroyTexture(i.second);
+        delete i.second;
     }
     textures.clear();
 }
