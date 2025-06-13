@@ -208,7 +208,8 @@ void Game::updateGame() {
 
 void Game::generateOutput() {
     // Set the clear color to gray
-    glClearColor(0.86f, 0.86f, 0.86f, 1.0f);
+    glClearColor(
+          0.0f, Math::Sin(ticksCount / 1000.0f), Math::Sin(ticksCount / 1000.0f + Math::Pi), 1.0f);
 
     // Clear the color buffer
     glClear(GL_COLOR_BUFFER_BIT);
