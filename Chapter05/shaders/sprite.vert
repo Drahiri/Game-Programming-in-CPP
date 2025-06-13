@@ -4,9 +4,11 @@
 // Attribute 0 is position, 1 is tex coords
 layout(location = 0) in vec3 inPosition;
 layout(location = 1) in vec2 inTexCoord;
+layout(location = 2) in vec3 inColor;
 
 // Add texture coordinate as output
 out vec2 fragTexCoord;
+out vec3 fragColor;
 
 // World and view-projection matrices
 uniform mat4 uWorldTransform;
@@ -21,4 +23,6 @@ void main() {
 
     // Pass along the texture coordinate to frag shader
     fragTexCoord = inTexCoord;
+
+    fragColor = inColor;
 }

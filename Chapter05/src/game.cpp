@@ -302,10 +302,11 @@ void Game::unloadData() {
 void Game::initSpriteVerts() {
     /* clang-format off */
     float vertices[] = {
-        -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, // Top-left
-         0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // Top-right
-         0.5f, -0.5f, 0.0f, 1.0f, 1.0f, // Bottom-right
-        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f  // Bottom-left
+        // Position         UV          Color
+        -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Top-left
+         0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, // Top-right
+         0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, // Bottom-right
+        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f  // Bottom-left
     };
 
     unsigned int indices[] = {
