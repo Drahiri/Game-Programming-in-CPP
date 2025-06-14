@@ -1,6 +1,7 @@
 #include "game.h"
 
 #include "actor.h"
+#include "mesh.h"
 #include "shader.h"
 #include "sprite_component.h"
 #include "texture.h"
@@ -316,4 +317,22 @@ bool Game::loadShaders() {
 
 Vector2 Game::getScreenSize() const {
     return Vector2{ windowWidth, windowHeight };
+}
+
+Mesh* Game::getMesh(const std::string& fileName) {
+    Mesh* m = nullptr;
+
+    auto iter = meshes.find(fileName);
+    if(iter != meshes.end()) {
+        m = iter->second;
+    } else {
+        m = new Mesh();
+        if(m->load(fileName, this)) {
+            meshes.emplace(fileName, m);
+        } else {
+            delete m;
+            m = nullptr;
+        }
+    }
+    return m;
 }
