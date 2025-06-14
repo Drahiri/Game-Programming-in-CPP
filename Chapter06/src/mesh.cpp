@@ -2,6 +2,7 @@
 
 #include "game.h"
 #include "math.h"
+#include "renderer.h"
 #include "texture.h"
 #include "vertex_array.h"
 
@@ -14,7 +15,7 @@ Mesh::Mesh() : vertexArray(nullptr), radius(0.0f) {}
 
 Mesh::~Mesh() {}
 
-bool Mesh::load(const std::string& fileName, Game* game) {
+bool Mesh::load(const std::string& fileName, Renderer* game) {
     std::ifstream file(fileName);
     if(!file.is_open()) {
         SDL_Log("File not found: Mesh %s", fileName.c_str());

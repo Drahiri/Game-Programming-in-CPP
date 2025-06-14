@@ -2,6 +2,7 @@
 
 #include "actor.h"
 #include "game.h"
+#include "renderer.h"
 #include "shader.h"
 #include "texture.h"
 
@@ -13,11 +14,11 @@ SpriteComponent::SpriteComponent(Actor* owner, int drawOrder) :
     texture(nullptr),
     texHeight(0),
     texWidth(0) {
-    this->owner->getGame()->addSprite(this);
+    this->owner->getGame()->getRenderer()->addSprite(this);
 }
 
 SpriteComponent::~SpriteComponent() {
-    owner->getGame()->removeSprite(this);
+    owner->getGame()->getRenderer()->removeSprite(this);
 }
 
 void SpriteComponent::draw(Shader* shader) {

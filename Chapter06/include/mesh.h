@@ -7,6 +7,7 @@
 class Game;
 class Texture;
 class VertexArray;
+class Renderer;
 
 class Mesh {
 public:
@@ -14,7 +15,7 @@ public:
     ~Mesh();
 
     // Load/unload mesh
-    bool load(const std::string& fileName, Game* game);
+    bool load(const std::string& fileName, Renderer* renderer);
     void unload();
 
     // Get the vertex array associated with this mesh
