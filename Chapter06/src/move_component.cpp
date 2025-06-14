@@ -11,13 +11,20 @@ MoveComponent::MoveComponent(Actor* owner, int updateOrder) :
 
 void MoveComponent::update(float deltaTime) {
     if(!Math::NearZero(angularSpeed)) {
-        float rot = owner->getRotation();
-        rot += angularSpeed * deltaTime;
+        Quaternion rot = owner->getRotation();
+        float angle = angularSpeed * deltaTime;
+
+        // Create quaternion for incremental rotation
+        // (Rotate about up axis)
+        Quaternion inc(Vector3::UnitZ, angle);
+
+        // Concatenate old and new quaternion
+        rot = Quaternion::Concatenate(rot, inc);
         owner->setRotation(rot);
     }
 
     if(!Math::NearZero(forwardSpeed)) {
-        Vector2 pos = owner->getPosition();
+        Vector3 pos = owner->getPosition();
         pos += owner->getForward() * forwardSpeed * deltaTime;
 
         // If out of screen move to other end

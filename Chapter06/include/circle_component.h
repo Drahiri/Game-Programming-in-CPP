@@ -13,7 +13,7 @@ public:
     void setRadius(float newRadius);
     float getRadius() const;
 
-    const Vector2& getCenter() const;
+    const Vector3& getCenter() const;
 
 private:
     float radius;

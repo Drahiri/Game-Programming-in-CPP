@@ -7,9 +7,9 @@
 
 Actor::Actor(Game* game) :
     state(State::Active),
-    position(Vector2::Zero),
+    position(Vector3::Zero),
     scale(1.0f),
-    rotation(0.0f),
+    rotation(Quaternion::Identity),
     recomputeWorldTransform(true),
     game(game) {
     this->game->addActor(this);
@@ -50,11 +50,11 @@ void Actor::setState(State newState) {
     state = newState;
 }
 
-const Vector2& Actor::getPosition() const {
+const Vector3& Actor::getPosition() const {
     return position;
 }
 
-void Actor::setPosition(const Vector2& newPosition) {
+void Actor::setPosition(const Vector3& newPosition) {
     position = newPosition;
     recomputeWorldTransform = true;
 }
@@ -68,11 +68,11 @@ void Actor::setScale(float newScale) {
     recomputeWorldTransform = true;
 }
 
-float Actor::getRotation() const {
+const Quaternion& Actor::getRotation() const {
     return rotation;
 }
 
-void Actor::setRotation(float newRotation) {
+void Actor::setRotation(const Quaternion& newRotation) {
     rotation = newRotation;
     recomputeWorldTransform = true;
 }
@@ -81,8 +81,8 @@ Game* Actor::getGame() const {
     return game;
 }
 
-Vector2 Actor::getForward() const {
-    return Vector2(Math::Cos(rotation), Math::Sin(rotation));
+Vector3 Actor::getForward() const {
+    return Vector3::Transform(Vector3::UnitX, rotation);
 }
 
 void Actor::processInput(const bool* keyState) {
@@ -124,8 +124,8 @@ void Actor::computeWorldTransform() {
 
         // Scale, then rotate, then translate
         worldTransform = Matrix4::CreateScale(scale);
-        worldTransform *= Matrix4::CreateRotationZ(rotation);
-        worldTransform *= Matrix4::CreateTranslation(Vector3(position.x, position.y, 0.0f));
+        worldTransform *= Matrix4::CreateFromQuaternion(rotation);
+        worldTransform *= Matrix4::CreateTranslation(position);
 
         // Inform components world transform updated
         for(auto comp: components) {

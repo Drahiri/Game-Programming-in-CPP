@@ -32,16 +32,16 @@ public:
     State getState() const;
     void setState(State newState);
 
-    const Vector2& getPosition() const;
-    void setPosition(const Vector2& newPosition);
+    const Vector3& getPosition() const;
+    void setPosition(const Vector3& newPosition);
 
     float getScale() const;
     void setScale(float newScale);
 
-    float getRotation() const;
-    void setRotation(float newRotation);
+    const Quaternion& getRotation() const;
+    void setRotation(const Quaternion& newRotation);
 
-    Vector2 getForward() const;
+    Vector3 getForward() const;
 
     Game* getGame() const;
 
@@ -64,9 +64,9 @@ private:
     State state;
 
     // Transform
-    Vector2 position; // Center position of actor
-    float scale;      // Uniforms scale of actor (1.0f)
-    float rotation;   // Rotation angle (in radians)
+    Vector3 position;    // Center position of actor
+    float scale;         // Uniforms scale of actor (1.0f)
+    Quaternion rotation; // Rotation quaternion
 
     Matrix4 worldTransform;
     bool recomputeWorldTransform;
