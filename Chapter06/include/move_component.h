@@ -22,9 +22,6 @@ private:
     float angularSpeed;
     // Controls forward movement (units/second)
     float forwardSpeed;
-
-    // Screen size
-    Vector2 screenSize;
 };
 
 #endif

@@ -6,8 +6,7 @@
 MoveComponent::MoveComponent(Actor* owner, int updateOrder) :
     Component(owner, updateOrder),
     angularSpeed(0.0f),
-    forwardSpeed(0.0f),
-    screenSize(owner->getGame()->getScreenSize()) {}
+    forwardSpeed(0.0f) {}
 
 void MoveComponent::update(float deltaTime) {
     if(!Math::NearZero(angularSpeed)) {
@@ -26,19 +25,6 @@ void MoveComponent::update(float deltaTime) {
     if(!Math::NearZero(forwardSpeed)) {
         Vector3 pos = owner->getPosition();
         pos += owner->getForward() * forwardSpeed * deltaTime;
-
-        // If out of screen move to other end
-        if(pos.x <= -screenSize.x / 2) {
-            pos.x = screenSize.x / 2;
-        } else if(pos.x >= screenSize.x / 2) {
-            pos.x = -screenSize.x / 2;
-        }
-        if(pos.y <= -screenSize.y) {
-            pos.y = screenSize.y;
-        } else if(pos.y >= screenSize.y) {
-            pos.y = -screenSize.y;
-        }
-
         owner->setPosition(pos);
     }
 }
