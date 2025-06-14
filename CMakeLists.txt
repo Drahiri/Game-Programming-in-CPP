@@ -20,6 +20,8 @@ if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/SOIL/")
     link_directories("${CMAKE_CURRENT_SOURCE_DIR}/extern/SOIL/lib")
 endif()
 
+find_package(RapidJSON REQUIRED)
+
 add_subdirectory(Chapter01)
 add_subdirectory(Chapter02)
 add_subdirectory(Chapter03)

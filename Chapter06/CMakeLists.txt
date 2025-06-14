@@ -7,6 +7,7 @@ set(SOURCE_FILES
     "src/component.cpp"
     "src/game.cpp"
     "src/input_component.cpp"
+    "src/mesh.cpp"
     "src/move_component.cpp"
     "src/shader.cpp"
     "src/sprite_component.cpp"
@@ -23,6 +24,7 @@ set(HEADER_FILES
     "include/component.h"
     "include/game.h"
     "include/input_component.h"
+    "include/mesh.h"
     "include/move_component.h"
     "include/shader.h"
     "include/sprite_component.h"
@@ -33,7 +35,7 @@ set(HEADER_FILES
 )
 
 add_executable(Chapter06 ${SOURCE_FILES} ${HEADER_FILES})
-target_include_directories(Chapter06 PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
+target_include_directories(Chapter06 PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include" "${RAPIDJSON_INCLUDE_DIRS}")
 target_link_libraries(Chapter06 PRIVATE SDL3::SDL3 SDL3_image::SDL3_image GLEW::GLEW SOIL)
 
 file(CREATE_LINK "${CMAKE_CURRENT_SOURCE_DIR}/assets" "${CMAKE_CURRENT_BINARY_DIR}/assets" SYMBOLIC)
