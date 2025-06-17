@@ -102,7 +102,7 @@ void Renderer::unloadData() {
 
 void Renderer::draw() {
     // Set the clear color to gray
-    glClearColor(0.86f, 0.86f, 0.86f, 1.0f);
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
     // Clear the color buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

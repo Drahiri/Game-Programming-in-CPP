@@ -1,6 +1,7 @@
 #include "game.h"
 
 #include "actor.h"
+#include "mesh_component.h"
 #include "renderer.h"
 
 #include <algorithm>
@@ -158,7 +159,25 @@ void Game::generateOutput() {
     renderer->draw();
 }
 
-void Game::loadData() {}
+void Game::loadData() {
+    // Create actors
+    // Cube
+    Actor* a = new Actor(this);
+    a->setPosition(Vector3(200.0f, 75.0f, 0.0f));
+    a->setScale(100.0f);
+    Quaternion q(Vector3::UnitY, -Math::PiOver2);
+    q = Quaternion::Concatenate(q, Quaternion(Vector3::UnitZ, Math::Pi + Math::Pi / 4.0f));
+    a->setRotation(q);
+    MeshComponent* mc = new MeshComponent(a);
+    mc->setMesh(renderer->getMesh("assets/Cube.gpmesh"));
+
+    // Sphere
+    a = new Actor(this);
+    a->setPosition(Vector3(200.0f, -75.0f, 0.0f));
+    a->setScale(3.0f);
+    mc = new MeshComponent(a);
+    mc->setMesh(renderer->getMesh("assets/Sphere.gpmesh"));
+}
 
 void Game::unloadData() {
     // Delete actors
