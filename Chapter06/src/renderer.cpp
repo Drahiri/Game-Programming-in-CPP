@@ -2,6 +2,7 @@
 
 #include "game.h"
 #include "mesh.h"
+#include "mesh_component.h"
 #include "shader.h"
 #include "sprite_component.h"
 #include "texture.h"
@@ -106,9 +107,19 @@ void Renderer::draw() {
     // Clear the color buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    // Draw meshes
     // Enable depth buffering/disable alpha blend
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);
+
+    // Set the basic mesh shader active
+    meshShader->setActive();
+
+    // Update view-projection matrix
+    meshShader->setMatrixUniform("uViewProj", viewMatrix * projectionMatrix);
+    for(auto mc: meshComps) {
+        mc->draw(meshShader);
+    }
 
     // Draw all sprite components
     // Disable depth buffering
