@@ -36,6 +36,10 @@ void MeshComponent::draw(Shader* shader) {
     }
 }
 
-void MeshComponent::setMesh(Mesh* mesh) {}
+void MeshComponent::setMesh(Mesh* mesh) {
+    this->mesh = mesh;
+}
 
-void MeshComponent::setTextureIndex(size_t index) {}
+void MeshComponent::setTextureIndex(size_t index) {
+    textureIndex = index;
+}
