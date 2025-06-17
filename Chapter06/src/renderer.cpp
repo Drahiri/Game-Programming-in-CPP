@@ -185,6 +185,14 @@ Mesh* Renderer::getMesh(const std::string& fileName) {
     return m;
 }
 
+float Renderer::getScreenWidth() const {
+    return screenWidth;
+}
+
+float Renderer::getScreenHeight() const {
+    return screenHeight;
+}
+
 bool Renderer::loadShaders() {
     // Load sprite shader
     spriteShader = new Shader();
