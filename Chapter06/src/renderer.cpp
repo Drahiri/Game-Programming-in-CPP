@@ -149,6 +149,17 @@ void Renderer::removeSprite(SpriteComponent* sprite) {
     sprites.erase(iter);
 }
 
+void Renderer::addMeshComp(MeshComponent* meshComp) {
+    meshComps.emplace_back(meshComp);
+}
+
+void Renderer::removeMeshComp(MeshComponent* meshComp) {
+    auto iter = std::find(meshComps.begin(), meshComps.end(), meshComp);
+    if(iter != meshComps.end()) {
+        meshComps.erase(iter);
+    }
+}
+
 Texture* Renderer::getTexture(const std::string& filename) {
     Texture* tex = nullptr;
 

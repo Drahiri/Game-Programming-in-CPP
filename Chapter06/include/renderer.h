@@ -10,6 +10,7 @@
 
 class Game;
 class Mesh;
+class MeshComponent;
 class Shader;
 class SpriteComponent;
 class Texture;
@@ -32,6 +33,9 @@ public:
 
     void addSprite(SpriteComponent* sprite);
     void removeSprite(SpriteComponent* sprite);
+
+    void addMeshComp(MeshComponent* meshComp);
+    void removeMeshComp(MeshComponent* meshComp);
 
     Texture* getTexture(const std::string& fileName);
     Mesh* getMesh(const std::string& fileName);
@@ -60,6 +64,7 @@ private:
     // Mesh stuff
     std::unordered_map<std::string, Mesh*> meshes;
     Shader* meshShader;
+    std::vector<MeshComponent*> meshComps;
 
     Game* game;
     SDL_Window* window;
