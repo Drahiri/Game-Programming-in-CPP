@@ -10,7 +10,12 @@
 #include <algorithm>
 #include <GL/glew.h>
 
-Renderer::Renderer(Game* game) : game(game), spriteShader(nullptr) {}
+Renderer::Renderer(Game* game) :
+    game(game),
+    viewMatrix(Matrix4::Identity),
+    projectionMatrix(Matrix4::Identity),
+    spriteShader(nullptr),
+    meshShader(nullptr) {}
 
 Renderer::~Renderer() {}
 
@@ -181,8 +186,8 @@ Mesh* Renderer::getMesh(const std::string& fileName) {
 }
 
 bool Renderer::loadShaders() {
+    // Load sprite shader
     spriteShader = new Shader();
-
     if(!spriteShader->load("shaders/sprite.vert", "shaders/sprite.frag")) {
         return false;
     }
@@ -190,6 +195,27 @@ bool Renderer::loadShaders() {
     spriteShader->setActive();
     Matrix4 viewProj = Matrix4::CreateSimpleViewProj(screenWidth, screenHeight);
     spriteShader->setMatrixUniform("uViewProj", viewProj);
+
+    // Load mesh shader
+    meshShader = new Shader();
+    if(!meshShader->load("shaders/basic_mesh.vert", "shaders/basic_mesh.frag")) {
+        return false;
+    }
+
+    meshShader->setActive();
+    // Set the view-projection matrix
+    viewMatrix = Matrix4::CreateLookAt(Vector3::Zero, // Camera position
+          Vector3::UnitX,                             // Target position
+          Vector3::UnitZ                              // Up
+    );
+
+    projectionMatrix = Matrix4::CreatePerspectiveFOV(Math::ToRadians(70.0f), // Horizontal FOV
+          screenWidth,                                                       // Width of view
+          screenHeight,                                                      // Height of view
+          25.0f,                                                             // Near plane distance
+          10000.0f                                                           // Far plane distance
+    );
+    meshShader->setMatrixUniform("uViewProj", viewMatrix * projectionMatrix);
 
     return true;
 }

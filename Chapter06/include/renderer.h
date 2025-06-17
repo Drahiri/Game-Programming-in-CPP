@@ -1,6 +1,8 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
+#include "math.h"
+
 #include <SDL3/SDL.h>
 #include <string>
 #include <unordered_map>
@@ -44,12 +46,20 @@ private:
     float screenWidth;
     float screenHeight;
 
-    std::vector<SpriteComponent*> sprites;
     std::unordered_map<std::string, Texture*> textures;
-    std::unordered_map<std::string, Mesh*> meshes;
 
+    // View/Projection matrices
+    Matrix4 viewMatrix;
+    Matrix4 projectionMatrix;
+
+    // Sprite stuff
+    std::vector<SpriteComponent*> sprites;
     Shader* spriteShader;
     VertexArray* spriteVerts;
+
+    // Mesh stuff
+    std::unordered_map<std::string, Mesh*> meshes;
+    Shader* meshShader;
 
     Game* game;
     SDL_Window* window;
