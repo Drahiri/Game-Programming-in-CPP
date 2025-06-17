@@ -62,7 +62,7 @@ bool Mesh::load(const std::string& fileName, Renderer* game) {
             t = game->getTexture(texName);
             if(t == nullptr) {
                 // If it's still null, just use the default texture
-                t = game->getTexture("assts/Default.png");
+                t = game->getTexture("assets/Default.png");
             }
         }
         textures.emplace_back(t);
@@ -81,7 +81,7 @@ bool Mesh::load(const std::string& fileName, Renderer* game) {
     for(rapidjson::SizeType i = 0; i < vertsJson.Size(); i++) {
         // For now, just assume we have 8 elements
         const rapidjson::Value& vert = vertsJson[i];
-        if(!vert.IsArray() || vertsJson.Size() != 8) {
+        if(!vert.IsArray() || vert.Size() != 8) {
             SDL_Log("Unexpected vertex format for %s", fileName.c_str());
             return false;
         }
