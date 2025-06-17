@@ -34,6 +34,9 @@ bool Renderer::initialize(float windowWidth, float windowHeight) {
     // Enable double buffering
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
+    // Enable z-buffering
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+
     // Force OpenGL to use hardware acceleration
     SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
@@ -96,11 +99,15 @@ void Renderer::draw() {
     glClearColor(0.86f, 0.86f, 0.86f, 1.0f);
 
     // Clear the color buffer
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // Enable depth buffering/disable alpha blend
+    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_BLEND);
 
     // Draw all sprite components
     // Disable depth buffering
-    glDisable(GL_BLEND);
+    glDisable(GL_DEPTH_TEST);
     // Enable alpha blending on the color buffer
     glEnable(GL_BLEND);
     glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
