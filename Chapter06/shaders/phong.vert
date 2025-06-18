@@ -9,6 +9,11 @@ layout(location = 2) in vec2 inTexCoord;
 // Add texture coordinate as output
 out vec2 fragTexCoord;
 
+// Normal (in world space)
+out vec3 fragNormal;
+// Position (in world space)
+out vec3 fragWorldPos;
+
 // World and view-projection matrices
 uniform mat4 uWorldTransform;
 uniform mat4 uViewProj;
@@ -16,9 +21,15 @@ uniform mat4 uViewProj;
 void main() {
     // Convert position to homogeneous coordinates
     vec4 pos = vec4(inPosition, 1.0);
+    // Transform position to world space
+    pos *= uWorldTransform;
+    // Save world position
+    fragWorldPos = pos;
+    // Transform position to clip space
+    gl_Position = pos * uViewProj;
 
-    // Transform position to world space, then clip space
-    gl_Position = pos * uWorldTransform * uViewProj;
+    // Transform normal into world space (w = 0)
+    fragNormal = (vec4(inNormal, 0.0f) * uWorldTransform).xyz;
 
     // Pass along the texture coordinate to frag shader
     fragTexCoord = inTexCoord;
