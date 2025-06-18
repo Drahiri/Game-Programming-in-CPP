@@ -30,6 +30,9 @@ public:
     // Get object space bounding sphere radius
     float getRadius() const;
 
+    // Get object spec powere
+    float getSpecPower() const;
+
 private:
     // Textures associated with this mesh
     std::vector<Texture*> textures;
@@ -42,6 +45,9 @@ private:
 
     // Stores object space bounding sphere radius
     float radius;
+
+    // Spec power
+    float specPower;
 };
 
 #endif

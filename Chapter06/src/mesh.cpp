@@ -124,6 +124,10 @@ bool Mesh::load(const std::string& fileName, Renderer* game) {
           indices.data(),
           static_cast<unsigned>(indices.size()));
 
+    // Reading spec power
+    const rapidjson::Value& specJSON = doc["specularPower"];
+    specPower = static_cast<float>(specJSON.GetDouble());
+
     return true;
 }
 
@@ -150,4 +154,8 @@ const std::string& Mesh::getShaderName() const {
 
 float Mesh::getRadius() const {
     return radius;
+}
+
+float Mesh::getSpecPower() const {
+    return specPower;
 }

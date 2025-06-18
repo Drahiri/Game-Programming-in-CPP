@@ -31,6 +31,9 @@ void MeshComponent::draw(Shader* shader) {
         VertexArray* va = mesh->getVertexArray();
         va->setActive();
 
+        // Set specular power
+        shader->setFloatUniform("uSpecPower", mesh->getSpecPower());
+
         // Draw
         glDrawElements(GL_TRIANGLES, va->getNumIndices(), GL_UNSIGNED_INT, nullptr);
     }
