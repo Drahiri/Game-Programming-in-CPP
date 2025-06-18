@@ -215,6 +215,19 @@ float Renderer::getScreenHeight() const {
     return screenHeight;
 }
 
+void Renderer::setLightUniforms(Shader* shader) {
+    // Camera position is from inverted view
+    Matrix4 invView = viewMatrix;
+    invView.Invert();
+    shader->setVec3Uniform("uCameraPos", invView.GetTranslation());
+    // Ambient light
+    shader->setVec3Uniform("uAmbientLight", ambientLight);
+    // Directional Light
+    shader->setVec3Uniform("uDirLight.direction", dirLight.direction);
+    shader->setVec3Uniform("uDirLight.diffuseColor", dirLight.diffuseColor);
+    shader->setVec3Uniform("uDirLight.specColor", dirLight.specColor);
+}
+
 bool Renderer::loadShaders() {
     // Load sprite shader
     spriteShader = new Shader();

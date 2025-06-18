@@ -52,6 +52,9 @@ public:
     float getScreenWidth() const;
     float getScreenHeight() const;
 
+    // Setting light uniforms
+    void setLightUniforms(Shader* shader);
+
 private:
     bool loadShaders();
     void createSpriteVerts();
