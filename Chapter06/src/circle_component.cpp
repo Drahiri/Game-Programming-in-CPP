@@ -2,7 +2,7 @@
 
 #include "actor.h"
 
-CircleComponent::CircleComponent(Actor* owner) : Component(owner) {}
+CircleComponent::CircleComponent(Actor* owner) : Component(owner), radius(0.0f) {}
 
 void CircleComponent::setRadius(float newRadius) {
     radius = newRadius;

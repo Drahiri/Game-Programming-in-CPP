@@ -5,7 +5,7 @@
 #include <SDL3/SDL_log.h>
 #include <SOIL/SOIL.h>
 
-Texture::Texture() {}
+Texture::Texture() : textureID(0), width(0), height(0) {}
 
 Texture::~Texture() {
     unload();

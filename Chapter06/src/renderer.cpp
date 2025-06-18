@@ -13,9 +13,11 @@
 
 Renderer::Renderer(Game* game) :
     game(game),
+    window(nullptr),
     viewMatrix(Matrix4::Identity),
     projectionMatrix(Matrix4::Identity),
     spriteShader(nullptr),
+    spriteVerts(nullptr),
     meshShader(nullptr) {}
 
 Renderer::~Renderer() {}

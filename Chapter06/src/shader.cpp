@@ -4,7 +4,7 @@
 #include <SDL3/SDL_log.h>
 #include <sstream>
 
-Shader::Shader() {}
+Shader::Shader() : vertexShader(0), fragShader(0), shaderProgram(0) {}
 
 Shader::~Shader() {}
 

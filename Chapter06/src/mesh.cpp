@@ -11,7 +11,7 @@
 #include <SDL3/SDL_log.h>
 #include <sstream>
 
-Mesh::Mesh() : vertexArray(nullptr), radius(0.0f) {}
+Mesh::Mesh() : vertexArray(nullptr), radius(0.0f), specPower(100.0f) {}
 
 Mesh::~Mesh() {}
 

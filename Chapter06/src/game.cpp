@@ -10,7 +10,7 @@
 const int windowWidth = 1024;
 const int windowHeight = 768;
 
-Game::Game() : isRunning(true), ticksCount(0), updatingActors(true) {}
+Game::Game() : isRunning(true), ticksCount(0), updatingActors(true), renderer(nullptr) {}
 
 bool Game::initialize() {
     // Initialize SDL
