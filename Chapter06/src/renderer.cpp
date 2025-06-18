@@ -94,10 +94,19 @@ void Renderer::shutdown() {
 }
 
 void Renderer::unloadData() {
+    // Destroy textures
     for(auto i: textures) {
+        i.second->unload();
         delete i.second;
     }
     textures.clear();
+
+    // Destroy meshes
+    for(auto i: meshes) {
+        i.second->unload();
+        delete i.second;
+    }
+    meshes.clear();
 }
 
 void Renderer::draw() {
