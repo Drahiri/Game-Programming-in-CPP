@@ -177,6 +177,13 @@ void Game::loadData() {
     a->setScale(3.0f);
     mc = new MeshComponent(a);
     mc->setMesh(renderer->getMesh("assets/Sphere.gpmesh"));
+
+    // Setup lights
+    renderer->setAmbientLight(Vector3(0.2, 0.2, 0.2));
+    DirectionalLight& dir = renderer->getDirectionalLight();
+    dir.direction = Vector3(0, -0.7, -0.7);
+    dir.diffuseColor = Vector3(0, 1, 0);
+    dir.specColor = Vector3(0.5, 1, 0.5);
 }
 
 void Game::unloadData() {

@@ -52,6 +52,10 @@ public:
     float getScreenWidth() const;
     float getScreenHeight() const;
 
+    void setAmbientLight(const Vector3& light);
+
+    DirectionalLight& getDirectionalLight();
+
     // Setting light uniforms
     void setLightUniforms(Shader* shader);
 

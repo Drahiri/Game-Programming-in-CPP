@@ -126,6 +126,9 @@ void Renderer::draw() {
 
     // Update view-projection matrix
     meshShader->setMatrixUniform("uViewProj", viewMatrix * projectionMatrix);
+    // Update lighting uniform
+    setLightUniforms(meshShader);
+
     for(auto mc: meshComps) {
         mc->draw(meshShader);
     }
@@ -224,6 +227,14 @@ float Renderer::getScreenHeight() const {
     return screenHeight;
 }
 
+void Renderer::setAmbientLight(const Vector3& light) {
+    ambientLight = light;
+}
+
+DirectionalLight& Renderer::getDirectionalLight() {
+    return dirLight;
+}
+
 void Renderer::setLightUniforms(Shader* shader) {
     // Camera position is from inverted view
     Matrix4 invView = viewMatrix;
@@ -250,7 +261,7 @@ bool Renderer::loadShaders() {
 
     // Load mesh shader
     meshShader = new Shader();
-    if(!meshShader->load("shaders/basic_mesh.vert", "shaders/basic_mesh.frag")) {
+    if(!meshShader->load("shaders/phong.vert", "shaders/phong.frag")) {
         return false;
     }
 
