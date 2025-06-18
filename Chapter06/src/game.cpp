@@ -3,6 +3,7 @@
 #include "actor.h"
 #include "mesh_component.h"
 #include "renderer.h"
+#include "sprite_component.h"
 
 #include <algorithm>
 
@@ -184,6 +185,18 @@ void Game::loadData() {
     dir.direction = Vector3(0, -0.7, -0.7);
     dir.diffuseColor = Vector3(0, 1, 0);
     dir.specColor = Vector3(0.5, 1, 0.5);
+
+    // // UI elements
+    a = new Actor(this);
+    a->setPosition(Vector3(-350.0f, -350.0f, 0.0f));
+    SpriteComponent* sc = new SpriteComponent(a);
+    sc->setTexture(renderer->getTexture("assets/HealthBar.png"));
+
+    a = new Actor(this);
+    a->setPosition(Vector3(375.0f, -275.0f, 0.0f));
+    a->setScale(0.75f);
+    sc = new SpriteComponent(a);
+    sc->setTexture(renderer->getTexture("assets/Radar.png"));
 }
 
 void Game::unloadData() {
