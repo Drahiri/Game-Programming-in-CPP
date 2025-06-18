@@ -16,6 +16,15 @@ class SpriteComponent;
 class Texture;
 class VertexArray;
 
+struct DirectionalLight {
+    // Direction of light
+    Vector3 direction;
+    // Diffuse Color
+    Vector3 diffuseColor;
+    // Specular color;
+    Vector3 specColor;
+};
+
 class Renderer {
 public:
     Renderer(Game* game);
@@ -69,6 +78,10 @@ private:
     Game* game;
     SDL_Window* window;
     SDL_GLContext context;
+
+    // Lights
+    Vector3 ambientLight;
+    DirectionalLight dirLight;
 };
 
 #endif
