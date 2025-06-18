@@ -8,7 +8,7 @@
 #include "texture.h"
 #include "vertex_array.h"
 
-MeshComponent::MeshComponent(Actor* owner) : Component(owner) {
+MeshComponent::MeshComponent(Actor* owner) : Component(owner), mesh(nullptr), textureIndex(0) {
     owner->getGame()->getRenderer()->addMeshComp(this);
 }
 
