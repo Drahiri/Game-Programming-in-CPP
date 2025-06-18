@@ -24,7 +24,7 @@ void main() {
     // Transform position to world space
     pos *= uWorldTransform;
     // Save world position
-    fragWorldPos = pos;
+    fragWorldPos = pos.xyz;
     // Transform position to clip space
     gl_Position = pos * uViewProj;
 
