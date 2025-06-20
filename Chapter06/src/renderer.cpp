@@ -91,6 +91,9 @@ void Renderer::shutdown() {
     spriteShader->unload();
     delete spriteShader;
 
+    meshShader->unload();
+    delete meshShader;
+
     SDL_GL_DestroyContext(context);
     SDL_DestroyWindow(window);
 }
