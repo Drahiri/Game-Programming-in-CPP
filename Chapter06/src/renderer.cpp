@@ -17,8 +17,7 @@ Renderer::Renderer(Game* game) :
     viewMatrix(Matrix4::Identity),
     projectionMatrix(Matrix4::Identity),
     spriteShader(nullptr),
-    spriteVerts(nullptr),
-    meshShader(nullptr) {}
+    spriteVerts(nullptr) {}
 
 Renderer::~Renderer() {}
 
@@ -91,8 +90,11 @@ void Renderer::shutdown() {
     spriteShader->unload();
     delete spriteShader;
 
-    meshShader->unload();
-    delete meshShader;
+    for(auto meshShader: meshShaders) {
+        meshShader.second->unload();
+        delete meshShader.second;
+    }
+    meshShaders.clear();
 
     SDL_GL_DestroyContext(context);
     SDL_DestroyWindow(window);
@@ -127,15 +129,15 @@ void Renderer::draw() {
     glDisable(GL_BLEND);
 
     // Set the basic mesh shader active
-    meshShader->setActive();
+    meshShaders["phong"]->setActive();
 
     // Update view-projection matrix
-    meshShader->setMatrixUniform("uViewProj", viewMatrix * projectionMatrix);
+    meshShaders["phong"]->setMatrixUniform("uViewProj", viewMatrix * projectionMatrix);
     // Update lighting uniform
-    setLightUniforms(meshShader);
+    setLightUniforms(meshShaders["phong"]);
 
     for(auto mc: meshComps) {
-        mc->draw(meshShader);
+        mc->draw(meshShaders["phong"]);
     }
 
     // Draw all sprite components
@@ -265,12 +267,10 @@ bool Renderer::loadShaders() {
     spriteShader->setMatrixUniform("uViewProj", viewProj);
 
     // Load mesh shader
-    meshShader = new Shader();
+    Shader* meshShader = new Shader();
     if(!meshShader->load("shaders/phong.vert", "shaders/phong.frag")) {
         return false;
     }
-
-    meshShader->setActive();
     // Set the view-projection matrix
     viewMatrix = Matrix4::CreateLookAt(Vector3::Zero, // Camera position
           Vector3::UnitX,                             // Target position
@@ -283,7 +283,19 @@ bool Renderer::loadShaders() {
           25.0f,                                                             // Near plane distance
           10000.0f                                                           // Far plane distance
     );
+
+    meshShader->setActive();
     meshShader->setMatrixUniform("uViewProj", viewMatrix * projectionMatrix);
+    meshShaders["phong"] = meshShader;
+
+    meshShader = new Shader();
+    if(!meshShader->load("shaders/basic_mesh.vert", "shaders/basic_mesh.frag")) {
+        return false;
+    }
+
+    meshShader->setActive();
+    meshShader->setMatrixUniform("uViewProj", viewMatrix * projectionMatrix);
+    meshShaders["basic_mesh"] = meshShader;
 
     return true;
 }

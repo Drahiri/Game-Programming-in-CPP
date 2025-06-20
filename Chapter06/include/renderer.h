@@ -79,7 +79,7 @@ private:
 
     // Mesh stuff
     std::unordered_map<std::string, Mesh*> meshes;
-    Shader* meshShader;
+    std::unordered_map<std::string, Shader*> meshShaders;
     std::vector<MeshComponent*> meshComps;
 
     Game* game;
