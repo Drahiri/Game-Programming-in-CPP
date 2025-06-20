@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-class Game;
 class Texture;
 class VertexArray;
 class Renderer;

@@ -15,7 +15,7 @@ Mesh::Mesh() : vertexArray(nullptr), radius(0.0f), specPower(100.0f) {}
 
 Mesh::~Mesh() {}
 
-bool Mesh::load(const std::string& fileName, Renderer* game) {
+bool Mesh::load(const std::string& fileName, Renderer* renderer) {
     std::ifstream file(fileName);
     if(!file.is_open()) {
         SDL_Log("File not found: Mesh %s", fileName.c_str());
@@ -56,13 +56,13 @@ bool Mesh::load(const std::string& fileName, Renderer* game) {
     for(rapidjson::SizeType i = 0; i < texJson.Size(); i++) {
         // Is this texture already loaded?
         std::string texName = texJson[i].GetString();
-        Texture* t = game->getTexture(texName);
+        Texture* t = renderer->getTexture(texName);
         if(t == nullptr) {
             // Try loading the texture
-            t = game->getTexture(texName);
+            t = renderer->getTexture(texName);
             if(t == nullptr) {
                 // If it's still null, just use the default texture
-                t = game->getTexture("assets/Default.png");
+                t = renderer->getTexture("assets/Default.png");
             }
         }
         textures.emplace_back(t);
