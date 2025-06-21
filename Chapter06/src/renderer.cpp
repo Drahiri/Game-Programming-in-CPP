@@ -249,6 +249,15 @@ Mesh* Renderer::getMesh(const std::string& fileName) {
     return m;
 }
 
+Shader* Renderer::getMeshShader(const std::string& shaderName) {
+    auto iter = meshShaders.find(shaderName);
+    if(iter == meshShaders.end()) {
+        return nullptr;
+    }
+
+    return meshShaders[shaderName];
+}
+
 float Renderer::getScreenWidth() const {
     return screenWidth;
 }
@@ -279,14 +288,23 @@ void Renderer::setLightUniforms(Shader* shader) {
 }
 
 void Renderer::addShaderMeshComp(MeshComponent* meshComp) {
-    const std::string& shaderName = meshComp->getMesh()->getShaderName();
+    Mesh* mesh = meshComp->getMesh();
+    if(mesh == nullptr) {
+        return;
+    }
+
+    const std::string& shaderName = mesh->getShaderName();
 
     std::vector<MeshComponent*>& meshCompVector = shaderMeshComps[shaderName];
     meshCompVector.emplace_back(meshComp);
 }
 
 void Renderer::removeShaderMeshComp(MeshComponent* meshComp) {
-    const std::string& shaderName = meshComp->getMesh()->getShaderName();
+    Mesh* mesh = meshComp->getMesh();
+    if(mesh == nullptr) {
+        return;
+    }
+    const std::string& shaderName = mesh->getShaderName();
 
     std::vector<MeshComponent*>& meshCompVector = shaderMeshComps[shaderName];
 

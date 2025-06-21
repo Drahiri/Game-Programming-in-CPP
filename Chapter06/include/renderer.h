@@ -49,6 +49,8 @@ public:
     Texture* getTexture(const std::string& fileName);
     Mesh* getMesh(const std::string& fileName);
 
+    Shader* getMeshShader(const std::string& shaderName);
+
     float getScreenWidth() const;
     float getScreenHeight() const;
 

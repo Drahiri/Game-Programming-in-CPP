@@ -41,6 +41,10 @@ bool Mesh::load(const std::string& fileName, Renderer* renderer) {
     }
 
     shaderName = doc["shader"].GetString();
+    if(!renderer->getMeshShader(shaderName)) {
+        SDL_Log("Shader '%s' for model '%s' not loaded", shaderName.c_str(), fileName.c_str());
+        return false;
+    }
 
     // Skip the vertex format/shader for now
 
