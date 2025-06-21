@@ -1,5 +1,5 @@
-// Request GLSL 3.3
-#version 330
+// Request GLSL 4.0 because 3.3 does not support length() funciton
+#version 400
 
 // Create a struct for directional light
 struct DirectionalLight {
@@ -11,8 +11,20 @@ struct DirectionalLight {
     vec3 specColor;
 };
 
+struct PointLight {
+    // Position
+    vec3 position;
+    // Diffuse color
+    vec3 diffuseColor;
+    // Specular color
+    vec3 specColor;
+    // Affect radius
+    float radius;
+};
+
 // Tex coord input from vertex shader
 in vec2 fragTexCoord;
+
 // Normal (in world space)
 in vec3 fragNormal;
 // Position (in world space)
@@ -30,6 +42,8 @@ uniform vec3 uAmbientLight;
 uniform float uSpecPower;
 // Directional Light (only one for now)
 uniform DirectionalLight uDirLight;
+
+uniform PointLight uPointLights[4];
 
 // Output color
 out vec4 outColor;
@@ -51,6 +65,24 @@ void main() {
         vec3 Diffuse = uDirLight.diffuseColor * NdotL;
         vec3 Specular = uDirLight.specColor * pow(max(0.0, dot(R, V)), uSpecPower);
         Phong += Diffuse + Specular;
+    }
+
+    for(int i = 0; i < 4; i++) {
+        vec3 fragPosToPointLight = uPointLights[i].position - fragWorldPos;
+        // Could add attenuation so there won't harsh transition
+        if(length(fragPosToPointLight) > uPointLights[i].radius) {
+            continue;
+        }
+        // Vector from fragment position to point light
+        L = normalize(fragPosToPointLight);
+        R = normalize(reflect(-L, N));
+        NdotL = dot(N, L);
+
+        if(NdotL > 0) {
+            vec3 Diffuse = uPointLights[i].diffuseColor * NdotL;
+            vec3 Specular = uPointLights[i].specColor * pow(max(0.0, dot(R, V)), uSpecPower);
+            Phong += Diffuse + Specular;
+        }
     }
 
     // Sample color from texture
