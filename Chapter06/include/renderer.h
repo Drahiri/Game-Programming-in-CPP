@@ -59,6 +59,9 @@ public:
     // Setting light uniforms
     void setLightUniforms(Shader* shader);
 
+    void addShaderMeshComp(MeshComponent* meshComp);
+    void removeShaderMeshComp(MeshComponent* meshComp);
+
 private:
     bool loadShaders();
     void createSpriteVerts();
@@ -81,6 +84,7 @@ private:
     std::unordered_map<std::string, Mesh*> meshes;
     std::unordered_map<std::string, Shader*> meshShaders;
     std::vector<MeshComponent*> meshComps;
+    std::unordered_map<std::string, std::vector<MeshComponent*>> shaderMeshComps;
 
     Game* game;
     SDL_Window* window;

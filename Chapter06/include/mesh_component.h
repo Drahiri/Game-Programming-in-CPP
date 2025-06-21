@@ -19,6 +19,7 @@ public:
 
     // Set the mesh/texture index used by mesh component
     virtual void setMesh(Mesh* mesh);
+    Mesh* getMesh() const;
 
     void setTextureIndex(size_t index);
 

@@ -40,7 +40,15 @@ void MeshComponent::draw(Shader* shader) {
 }
 
 void MeshComponent::setMesh(Mesh* mesh) {
+    if(this->mesh != nullptr) {
+        owner->getGame()->getRenderer()->removeShaderMeshComp(this);
+    }
     this->mesh = mesh;
+    owner->getGame()->getRenderer()->addShaderMeshComp(this);
+}
+
+Mesh* MeshComponent::getMesh() const {
+    return mesh;
 }
 
 void MeshComponent::setTextureIndex(size_t index) {

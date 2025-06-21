@@ -114,6 +114,11 @@ void Renderer::unloadData() {
         delete i.second;
     }
     meshes.clear();
+
+    for(auto i: shaderMeshComps) {
+        i.second.clear();
+    }
+    shaderMeshComps.clear();
 }
 
 void Renderer::draw() {
@@ -128,17 +133,33 @@ void Renderer::draw() {
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);
 
-    // Set the basic mesh shader active
-    meshShaders["phong"]->setActive();
+    for(auto shaderMeshComp: shaderMeshComps) {
+        // Set mesh shader from key
+        meshShaders[shaderMeshComp.first]->setActive();
 
-    // Update view-projection matrix
-    meshShaders["phong"]->setMatrixUniform("uViewProj", viewMatrix * projectionMatrix);
-    // Update lighting uniform
-    setLightUniforms(meshShaders["phong"]);
-
-    for(auto mc: meshComps) {
-        mc->draw(meshShaders["phong"]);
+        // Update view-projection matrix
+        meshShaders[shaderMeshComp.first]->setMatrixUniform(
+              "uViewProj", viewMatrix * projectionMatrix);
+        // Update lighting uniform
+        setLightUniforms(meshShaders[shaderMeshComp.first]);
+        for(auto mc: shaderMeshComp.second) {
+            mc->draw(meshShaders[shaderMeshComp.first]);
+        }
     }
+
+    /*
+        // Set the basic mesh shader active
+        meshShaders["phong"]->setActive();
+
+        // Update view-projection matrix
+        meshShaders["phong"]->setMatrixUniform("uViewProj", viewMatrix * projectionMatrix);
+        // Update lighting uniform
+        setLightUniforms(meshShaders["phong"]);
+
+        for(auto mc: meshComps) {
+            mc->draw(meshShaders["phong"]);
+        }
+    */
 
     // Draw all sprite components
     // Disable depth buffering
@@ -184,6 +205,8 @@ void Renderer::addMeshComp(MeshComponent* meshComp) {
 }
 
 void Renderer::removeMeshComp(MeshComponent* meshComp) {
+    removeShaderMeshComp(meshComp);
+
     auto iter = std::find(meshComps.begin(), meshComps.end(), meshComp);
     if(iter != meshComps.end()) {
         meshComps.erase(iter);
@@ -253,6 +276,24 @@ void Renderer::setLightUniforms(Shader* shader) {
     shader->setVec3Uniform("uDirLight.direction", dirLight.direction);
     shader->setVec3Uniform("uDirLight.diffuseColor", dirLight.diffuseColor);
     shader->setVec3Uniform("uDirLight.specColor", dirLight.specColor);
+}
+
+void Renderer::addShaderMeshComp(MeshComponent* meshComp) {
+    const std::string& shaderName = meshComp->getMesh()->getShaderName();
+
+    std::vector<MeshComponent*>& meshCompVector = shaderMeshComps[shaderName];
+    meshCompVector.emplace_back(meshComp);
+}
+
+void Renderer::removeShaderMeshComp(MeshComponent* meshComp) {
+    const std::string& shaderName = meshComp->getMesh()->getShaderName();
+
+    std::vector<MeshComponent*>& meshCompVector = shaderMeshComps[shaderName];
+
+    auto iter = std::find(meshCompVector.begin(), meshCompVector.end(), meshComp);
+    if(iter != meshCompVector.end()) {
+        meshCompVector.erase(iter);
+    }
 }
 
 bool Renderer::loadShaders() {
