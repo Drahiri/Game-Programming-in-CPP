@@ -1,7 +1,7 @@
 {
 	"version":1,
 	"vertexformat":"PosNormTex",
-	"shader":"basic_mesh",
+	"shader":"phong",
 	"textures":[
 		"assets/Cube.png"
 	],

@@ -186,6 +186,27 @@ void Game::loadData() {
     dir.diffuseColor = Vector3(0, 1, 0);
     dir.specColor = Vector3(0.5, 1, 0.5);
 
+    std::array<PointLight, 4>& points = renderer->getPointLights();
+    points[0].position = Vector3(150, 0, 0);
+    points[0].diffuseColor = Vector3(1, 0, 0);
+    points[0].specColor = Vector3(1, 0.5, 0.5);
+    points[0].radius = 75;
+
+    points[1].position = Vector3(100, -100, 0);
+    points[1].diffuseColor = Vector3(0, 0, 1);
+    points[1].specColor = Vector3(0.5, 0.5, 1);
+    points[1].radius = 100;
+
+    points[2].position = Vector3(100, 100, 0);
+    points[2].diffuseColor = Vector3(0, 1, 1);
+    points[2].specColor = Vector3(0.5, 1, 1);
+    points[2].radius = 80;
+
+    points[3].position = Vector3(200, 0, 100);
+    points[3].diffuseColor = Vector3(1, 1, 0);
+    points[3].specColor = Vector3(1, 1, 0.5);
+    points[3].radius = 200;
+
     // // UI elements
     a = new Actor(this);
     a->setPosition(Vector3(-350.0f, -350.0f, 0.0f));

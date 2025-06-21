@@ -3,6 +3,7 @@
 
 #include "math.h"
 
+#include <array>
 #include <SDL3/SDL.h>
 #include <string>
 #include <unordered_map>
@@ -19,10 +20,21 @@ class VertexArray;
 struct DirectionalLight {
     // Direction of light
     Vector3 direction;
-    // Diffuse Color
+    // Diffuse color
     Vector3 diffuseColor;
     // Specular color;
     Vector3 specColor;
+};
+
+struct PointLight {
+    // Position
+    Vector3 position;
+    // Diffuse color
+    Vector3 diffuseColor;
+    // Specular color
+    Vector3 specColor;
+    // Affect radius
+    float radius;
 };
 
 class Renderer {
@@ -57,6 +69,7 @@ public:
     void setAmbientLight(const Vector3& light);
 
     DirectionalLight& getDirectionalLight();
+    std::array<PointLight, 4>& getPointLights();
 
     // Setting light uniforms
     void setLightUniforms(Shader* shader);
@@ -95,6 +108,7 @@ private:
     // Lights
     Vector3 ambientLight;
     DirectionalLight dirLight;
+    std::array<PointLight, 4> pointLights;
 };
 
 #endif

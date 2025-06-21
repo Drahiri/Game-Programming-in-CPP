@@ -274,6 +274,10 @@ DirectionalLight& Renderer::getDirectionalLight() {
     return dirLight;
 }
 
+std::array<PointLight, 4>& Renderer::getPointLights() {
+    return pointLights;
+}
+
 void Renderer::setLightUniforms(Shader* shader) {
     // Camera position is from inverted view
     Matrix4 invView = viewMatrix;
@@ -285,6 +289,16 @@ void Renderer::setLightUniforms(Shader* shader) {
     shader->setVec3Uniform("uDirLight.direction", dirLight.direction);
     shader->setVec3Uniform("uDirLight.diffuseColor", dirLight.diffuseColor);
     shader->setVec3Uniform("uDirLight.specColor", dirLight.specColor);
+
+    for(int i = 0; i < pointLights.size(); i++) {
+        std::string currentPointLight = { "uPointLights[" + std::to_string(i) + "]" };
+        shader->setVec3Uniform((currentPointLight + ".position").c_str(), pointLights[i].position);
+        shader->setVec3Uniform(
+              (currentPointLight + ".diffuseColor").c_str(), pointLights[i].diffuseColor);
+        shader->setVec3Uniform(
+              (currentPointLight + ".specColor").c_str(), pointLights[i].specColor);
+        shader->setFloatUniform((currentPointLight + ".radius").c_str(), pointLights[i].radius);
+    }
 }
 
 void Renderer::addShaderMeshComp(MeshComponent* meshComp) {
