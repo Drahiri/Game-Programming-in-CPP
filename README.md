@@ -21,6 +21,7 @@ cmake .. -GNinja
 ## Required libraries
 All libraries should be inside **extern** directory in root directory or in default PATH:
 * [SDL3](https://www.libsdl.org/index.php)
-* [SDL_image](https://github.com/libsdl-org/SDL_image)
+* [SDL3_image](https://github.com/libsdl-org/SDL_image)
 * [GLEW](https://glew.sourceforge.net/)
-* [SOIL](https://github.com/kbranigan/Simple-OpenGL-Image-Library) - official site doesn't work
+* [Simple OpenGL Image Library](https://github.com/kbranigan/Simple-OpenGL-Image-Library) - official site doesn't work
+* [RapidJSON](https://rapidjson.org/)
