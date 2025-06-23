@@ -232,6 +232,10 @@ float Renderer::getScreenHeight() const {
     return screenHeight;
 }
 
+void Renderer::setViewMatrix(const Matrix4& view) {
+    viewMatrix = view;
+}
+
 void Renderer::setAmbientLight(const Vector3& light) {
     ambientLight = light;
 }

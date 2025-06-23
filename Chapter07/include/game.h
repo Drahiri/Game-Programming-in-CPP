@@ -9,6 +9,7 @@
 
 class Actor;
 class Renderer;
+class CameraActor;
 
 class Game {
 public:
@@ -26,6 +27,7 @@ public:
 private:
     // Helper functions for the game loop
     void processInput();
+    void handleKeyPress(int key);
     void updateGame();
     void generateOutput();
 
@@ -35,6 +37,10 @@ private:
     bool isRunning;
 
     Renderer* renderer;
+    // TODO: Uncomment after implementing sound
+    /*
+    AudioSystem* audioSystem;
+    */
 
     // Time keeping
     Uint32 ticksCount;
@@ -43,6 +49,14 @@ private:
     bool updatingActors;
     std::vector<Actor*> actors;
     std::vector<Actor*> pendingActors;
+
+    // Game-specific code
+    CameraActor* cameraActor;
+    // TODO: Uncomment after implementing sound
+    /*
+    SoundEvent musicEvent;
+    SoundEvent reverbSnap;
+    */
 };
 
 #endif

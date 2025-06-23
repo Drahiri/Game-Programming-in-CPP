@@ -1,7 +1,9 @@
 #include "game.h"
 
 #include "actor.h"
+#include "camera_actor.h"
 #include "mesh_component.h"
+#include "plane_actor.h"
 #include "renderer.h"
 #include "sprite_component.h"
 
@@ -92,6 +94,12 @@ void Game::processInput() {
             isRunning = false;
             break;
 
+        // This fires when a key's initially pressed
+        case SDL_EVENT_KEY_DOWN:
+            if(!event.key.repeat) {
+                handleKeyPress(event.key.key);
+            }
+
         default:
             break;
         }
@@ -108,6 +116,10 @@ void Game::processInput() {
         actor->processInput(state);
     }
     updatingActors = false;
+}
+
+void Game::handleKeyPress(int key) {
+    // TODO: Implement after implementing sound
 }
 
 void Game::updateGame() {
@@ -179,12 +191,49 @@ void Game::loadData() {
     mc = new MeshComponent(a);
     mc->setMesh(renderer->getMesh("assets/Sphere.gpmesh"));
 
+    // Setup floor
+    const float start = -1250.0f;
+    const float size = 250.0f;
+    for(int i = 0; i < 10; i++) {
+        for(int j = 0; j < 10; j++) {
+            a = new PlaneActor(this);
+            a->setPosition(Vector3(start + i * size, start + j * size, -100.0f));
+        }
+    }
+
+    // Left/right walls
+    q = Quaternion(Vector3::UnitX, Math::PiOver2);
+    for(int i = 0; i < 10; i++) {
+        a = new PlaneActor(this);
+        a->setPosition(Vector3(start + i * size, start - size, 0.0f));
+        a->setRotation(q);
+
+        a = new PlaneActor(this);
+        a->setPosition(Vector3(start + i * size, -start + size, 0.0f));
+        a->setRotation(q);
+    }
+
+    // Forward/back walls
+    q = Quaternion::Concatenate(q, Quaternion(Vector3::UnitZ, Math::PiOver2));
+    for(int i = 0; i < 10; i++) {
+        a = new PlaneActor(this);
+        a->setPosition(Vector3(start - size, start + i * size, 0.0f));
+        a->setRotation(q);
+
+        a = new PlaneActor(this);
+        a->setPosition(Vector3(-start + size, start + i * size, 0.0f));
+        a->setRotation(q);
+    }
+
     // Setup lights
     renderer->setAmbientLight(Vector3(0.2, 0.2, 0.2));
     DirectionalLight& dir = renderer->getDirectionalLight();
-    dir.direction = Vector3(0, -0.7, -0.7);
-    dir.diffuseColor = Vector3(0, 1, 0);
-    dir.specColor = Vector3(0.5, 1, 0.5);
+    dir.direction = Vector3(0, -0.707, -0.707);
+    dir.diffuseColor = Vector3(0.78f, 0.88f, 1.0f);
+    dir.specColor = Vector3(0.8f, 0.8f, 0.8f);
+
+    // Camera actor
+    cameraActor = new CameraActor(this);
 
     // // UI elements
     a = new Actor(this);
@@ -197,6 +246,8 @@ void Game::loadData() {
     a->setScale(0.75f);
     sc = new SpriteComponent(a);
     sc->setTexture(renderer->getTexture("assets/Radar.png"));
+
+    // TODO: Add actor with audio components
 }
 
 void Game::unloadData() {

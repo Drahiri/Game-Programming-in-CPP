@@ -3,11 +3,14 @@ project(Chapter07 VERSION 1.0 LANGUAGES CXX)
 
 set(SOURCE_FILES
     "src/actor.cpp"
+    "src/camera_actor.cpp"
     "src/circle_component.cpp"
     "src/component.cpp"
     "src/game.cpp"
     "src/mesh_component.cpp"
     "src/mesh.cpp"
+    "src/move_component.cpp"
+    "src/plane_actor.cpp"
     "src/renderer.cpp"
     "src/shader.cpp"
     "src/sprite_component.cpp"
@@ -20,11 +23,14 @@ set(SOURCE_FILES
 
 set(HEADER_FILES
     "include/actor.h"
+    "include/camera_actor.h"
     "include/circle_component.h"
     "include/component.h"
     "include/game.h"
     "include/mesh_component.h"
     "include/mesh.h"
+    "include/move_component.h"
+    "include/plane_actor.h"
     "include/renderer.h"
     "include/shader.h"
     "include/sprite_component.h"

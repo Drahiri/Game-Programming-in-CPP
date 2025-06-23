@@ -52,6 +52,8 @@ public:
     float getScreenWidth() const;
     float getScreenHeight() const;
 
+    void setViewMatrix(const Matrix4& view);
+
     void setAmbientLight(const Vector3& light);
 
     DirectionalLight& getDirectionalLight();
