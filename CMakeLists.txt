@@ -22,6 +22,12 @@ endif()
 
 find_package(RapidJSON REQUIRED)
 
+if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/FMOD")
+    set(FMOD_API_DIR "${CMAKE_CURRENT_SOURCE_DIR}/extern/FMOD/api")
+    include_directories("${FMOD_API_DIR}/core/inc" "${FMOD_API_DIR}/fsbank/inc" "${FMOD_API_DIR}/studio/inc")
+    link_directories("${FMOD_API_DIR}/core/lib/x86_64" "${FMOD_API_DIR}/fsbank/lib/x86_64" "${FMOD_API_DIR}/studio/lib/x86_64")
+endif()
+
 add_subdirectory(Chapter01)
 add_subdirectory(Chapter02)
 add_subdirectory(Chapter03)

@@ -42,7 +42,7 @@ set(HEADER_FILES
 
 add_executable(Chapter07 ${SOURCE_FILES} ${HEADER_FILES})
 target_include_directories(Chapter07 PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include" "${RAPIDJSON_INCLUDE_DIRS}")
-target_link_libraries(Chapter07 PRIVATE SDL3::SDL3 SDL3_image::SDL3_image GLEW::GLEW SOIL)
+target_link_libraries(Chapter07 PRIVATE SDL3::SDL3 SDL3_image::SDL3_image GLEW::GLEW SOIL fmod)
 
 file(CREATE_LINK "${CMAKE_CURRENT_SOURCE_DIR}/assets" "${CMAKE_CURRENT_BINARY_DIR}/assets" SYMBOLIC)
 file(CREATE_LINK "${CMAKE_CURRENT_SOURCE_DIR}/shaders" "${CMAKE_CURRENT_BINARY_DIR}/shaders" SYMBOLIC)
