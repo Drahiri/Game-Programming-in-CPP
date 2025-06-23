@@ -36,7 +36,9 @@ bool AudioSystem::initialize() {
 }
 
 void AudioSystem::shutdown() {
-    system->release();
+    if(system) {
+        system->release();
+    }
 }
 
 void AudioSystem::update(float deltaTime) {
