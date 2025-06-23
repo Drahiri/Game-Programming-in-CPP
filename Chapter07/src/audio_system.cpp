@@ -140,3 +140,21 @@ void AudioSystem::unloadAllBanks() {
     // No banks means no events
     events.clear();
 }
+
+void AudioSystem::playEvent(const std::string& name) {
+    // Make sure event exists
+    auto iter = events.find(name);
+    if(iter != events.end()) {
+        // Create instance of event
+        FMOD::Studio::EventInstance* event = nullptr;
+        iter->second->createInstance(&event);
+        if(event) {
+            // Start the event isntance
+            event->start();
+            // Release schedules destruction of the event
+            // instance when it stops.
+            // (Non-looping evnets automatically stop.)
+            event->release();
+        }
+    }
+}

@@ -30,6 +30,8 @@ public:
     void unloadBank(const std::string& name);
     void unloadAllBanks();
 
+    void playEvent(const std::string& name);
+
 private:
     Game* game;
     // FMOD studio system
