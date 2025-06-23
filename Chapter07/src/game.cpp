@@ -1,6 +1,7 @@
 #include "game.h"
 
 #include "actor.h"
+#include "audio_system.h"
 #include "camera_actor.h"
 #include "mesh_component.h"
 #include "plane_actor.h"
@@ -30,6 +31,15 @@ bool Game::initialize() {
         return false;
     }
 
+    // Create audio system
+    audioSystem = new AudioSystem(this);
+    if(!audioSystem->initialize()) {
+        SDL_Log("Failed to initialize audio system.");
+        delete audioSystem;
+        audioSystem = nullptr;
+        return false;
+    }
+
     loadData();
 
     return true;
@@ -49,6 +59,9 @@ void Game::shutdown() {
 
     if(renderer) {
         renderer->shutdown();
+    }
+    if(audioSystem) {
+        audioSystem->shutdown();
     }
 
     SDL_Quit();
@@ -166,6 +179,9 @@ void Game::updateGame() {
     for(auto actor: deadActors) {
         delete actor;
     }
+
+    // Update audio system
+    audioSystem->update(deltaTime);
 }
 
 void Game::generateOutput() {

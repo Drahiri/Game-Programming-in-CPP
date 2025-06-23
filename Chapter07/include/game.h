@@ -10,6 +10,7 @@
 class Actor;
 class Renderer;
 class CameraActor;
+class AudioSystem;
 
 class Game {
 public:
@@ -37,10 +38,7 @@ private:
     bool isRunning;
 
     Renderer* renderer;
-    // TODO: Uncomment after implementing sound
-    /*
     AudioSystem* audioSystem;
-    */
 
     // Time keeping
     Uint32 ticksCount;
