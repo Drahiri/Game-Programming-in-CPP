@@ -11,11 +11,13 @@ class System;
 namespace Studio {
 class Bank;
 class EventDescription;
+class EventInstance;
 class System;
 } // namespace Studio
 } // namespace FMOD
 
 class Game;
+class SoundEvent;
 
 class AudioSystem {
 public:
@@ -30,10 +32,15 @@ public:
     void unloadBank(const std::string& name);
     void unloadAllBanks();
 
-    void playEvent(const std::string& name);
+    SoundEvent playEvent(const std::string& name);
+
+protected:
+    friend SoundEvent;
+    FMOD::Studio::EventInstance* getEventInstance(unsigned int id) const;
 
 private:
     Game* game;
+
     // FMOD studio system
     FMOD::Studio::System* system;
 
@@ -45,6 +52,10 @@ private:
 
     // Map of event name to EventDescription
     std::unordered_map<std::string, FMOD::Studio::EventDescription*> events;
+
+    // Map of event instances
+    std::unordered_map<unsigned int, FMOD::Studio::EventInstance*> eventInstances;
+    static unsigned int nextID;
 };
 
 #endif

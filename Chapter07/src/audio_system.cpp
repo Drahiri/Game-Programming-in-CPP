@@ -1,9 +1,14 @@
 #include "audio_system.h"
 
+#include "game.h"
+#include "sound_event.h"
+
 #include <fmod_errors.h>
 #include <fmod_studio.hpp>
 #include <SDL3/SDL_log.h>
 #include <vector>
+
+unsigned int AudioSystem::nextID = 0;
 
 AudioSystem::AudioSystem(Game* game) : game(game), system(nullptr), lowLevelSystem(nullptr) {}
 
@@ -47,6 +52,28 @@ void AudioSystem::shutdown() {
 }
 
 void AudioSystem::update(float deltaTime) {
+    // Find any stopped event instances
+    std::vector<unsigned int> done;
+    for(auto& iter: eventInstances) {
+        FMOD::Studio::EventInstance* e = iter.second;
+
+        // Get the state of this event
+        FMOD_STUDIO_PLAYBACK_STATE state;
+        e->getPlaybackState(&state);
+
+        if(state == FMOD_STUDIO_PLAYBACK_STOPPED) {
+            // Release the event and add id to done
+            e->release();
+            done.emplace_back(iter.first);
+        }
+    }
+
+    // Remove done event instances from map
+    for(auto id: done) {
+        eventInstances.erase(id);
+    }
+
+    // Update FMOD
     system->update();
 }
 
@@ -100,7 +127,7 @@ void AudioSystem::unloadBank(const std::string& name) {
         return;
     }
 
-    // First we nne to remove all events from this bank
+    // First we need to remove all events from this bank
     FMOD::Studio::Bank* bank = iter->second;
     int numEvents = 0;
     bank->getEventCount(&numEvents);
@@ -141,7 +168,8 @@ void AudioSystem::unloadAllBanks() {
     events.clear();
 }
 
-void AudioSystem::playEvent(const std::string& name) {
+SoundEvent AudioSystem::playEvent(const std::string& name) {
+    unsigned int retID = 0;
     // Make sure event exists
     auto iter = events.find(name);
     if(iter != events.end()) {
@@ -151,10 +179,22 @@ void AudioSystem::playEvent(const std::string& name) {
         if(event) {
             // Start the event isntance
             event->start();
-            // Release schedules destruction of the event
-            // instance when it stops.
-            // (Non-looping evnets automatically stop.)
-            event->release();
+            // Get the next id, and add to map
+            nextID++;
+            retID = nextID;
+
+            eventInstances.emplace(nextID, event);
         }
     }
+
+    return SoundEvent(this, retID);
+}
+
+FMOD::Studio::EventInstance* AudioSystem::getEventInstance(unsigned int id) const {
+    auto iter = eventInstances.find(id);
+    if(iter == eventInstances.end()) {
+        return nullptr;
+    }
+
+    return iter->second;
 }
