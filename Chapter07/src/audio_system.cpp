@@ -118,6 +118,23 @@ void AudioSystem::loadBank(const std::string& name) {
             events.emplace(eventName, e);
         }
     }
+
+    // Load buses
+    int numBuses = 0;
+    bank->getBusCount(&numBuses);
+    if(numBuses > 0) {
+        // Get list of buses in this bank
+        std::vector<FMOD::Studio::Bus*> bankBuses(numBuses);
+        bank->getBusList(bankBuses.data(), numBuses, &numBuses);
+        char busName[maxPathLength];
+        for(int i = 0; i < numBuses; i++) {
+            FMOD::Studio::Bus* b = bankBuses[i];
+            // Get the path of this bus (like bus:/Master)
+            b->getPath(busName, maxPathLength, nullptr);
+            // Add to bus map
+            buses.emplace(busName, b);
+        }
+    }
 }
 
 void AudioSystem::unloadBank(const std::string& name) {
@@ -227,4 +244,38 @@ void AudioSystem::setListerner(const Matrix4& viewMatrix) {
     listener.velocity = { 0.0f, 0.0f, 0.0f };
     // Send to FMOD (0 = only one listener)
     system->setListenerAttributes(0, &listener);
+}
+
+float AudioSystem::getBusVolume(const std::string& name) const {
+    float retVal = 0;
+    auto iter = buses.find(name);
+    if(iter != buses.end()) {
+        iter->second->getVolume(&retVal);
+    }
+
+    return retVal;
+}
+
+void AudioSystem::setBusVolume(const std::string& name, float value) {
+    auto iter = buses.find(name);
+    if(iter != buses.end()) {
+        iter->second->setVolume(value);
+    }
+}
+
+bool AudioSystem::getBusPaused(const std::string& name) const {
+    bool retVal = 0;
+    auto iter = buses.find(name);
+    if(iter != buses.end()) {
+        iter->second->getPaused(&retVal);
+    }
+
+    return retVal;
+}
+
+void AudioSystem::setBusPaused(const std::string& name, bool paused) {
+    auto iter = buses.find(name);
+    if(iter != buses.end()) {
+        iter->second->setPaused(paused);
+    }
 }

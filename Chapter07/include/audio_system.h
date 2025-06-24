@@ -12,6 +12,7 @@ class System;
 
 namespace Studio {
 class Bank;
+class Bus;
 class EventDescription;
 class EventInstance;
 class System;
@@ -37,6 +38,12 @@ public:
     SoundEvent playEvent(const std::string& name);
     void setListerner(const Matrix4& viewMatrix);
 
+    float getBusVolume(const std::string& name) const;
+    void setBusVolume(const std::string& name, float value);
+
+    bool getBusPaused(const std::string& name) const;
+    void setBusPaused(const std::string& name, bool paused);
+
 protected:
     friend SoundEvent;
     FMOD::Studio::EventInstance* getEventInstance(unsigned int id) const;
@@ -59,6 +66,9 @@ private:
     // Map of event instances
     std::unordered_map<unsigned int, FMOD::Studio::EventInstance*> eventInstances;
     static unsigned int nextID;
+
+    // Map of buses
+    std::unordered_map<std::string, FMOD::Studio::Bus*> buses;
 };
 
 #endif
