@@ -9,6 +9,7 @@ public:
     SoundEvent();
     // Returns true if associated FMOD event instance exists
     bool isValid();
+
     // Restart event from beginning
     void restart();
     // Stop this event
@@ -23,6 +24,9 @@ public:
     float getVolume() const;
     float getPitch() const;
     float getParameter(const std::string& name);
+    // Positionals
+    bool is3D() const;
+    void set3DAttributes(const Matrix4& worldTrans);
 
 protected:
     // Make this constructor protected and AudioSystem a friend

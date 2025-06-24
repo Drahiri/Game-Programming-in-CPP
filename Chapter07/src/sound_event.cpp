@@ -2,6 +2,7 @@
 
 #include "audio_system.h"
 #include "fmod_studio.hpp"
+#include "math.h"
 
 SoundEvent::SoundEvent() : system(nullptr), ID(0) {}
 
@@ -90,4 +91,45 @@ float SoundEvent::getParameter(const std::string& name) {
         retVal = event->getParameterByName(name.c_str(), &retVal);
     }
     return retVal;
+}
+
+bool SoundEvent::is3D() const {
+    bool retVal = false;
+    auto event = system ? system->getEventInstance(ID) : nullptr;
+    if(event) {
+        // Get the event description
+        FMOD::Studio::EventDescription* ed = nullptr;
+        event->getDescription(&ed);
+        if(ed) {
+            ed->is3D(&retVal); // Is this 3D?
+        }
+    }
+    return retVal;
+}
+
+FMOD_VECTOR VecToFMOD(const Vector3& in) {
+    // Convert from our coordinates (+x forward, +y right, +z up)
+    // to FMOD (+z forward, +x right, +y up)
+    FMOD_VECTOR v;
+    v.x = in.y;
+    v.y = in.z;
+    v.z = in.x;
+
+    return v;
+}
+
+void SoundEvent::set3DAttributes(const Matrix4& worldTrans) {
+    auto event = system ? system->getEventInstance(ID) : nullptr;
+    if(event) {
+        FMOD_3D_ATTRIBUTES attr;
+        // Set position, forward, up
+        attr.position = VecToFMOD(worldTrans.GetTranslation());
+        // In world transform, first row is forward
+        attr.forward = VecToFMOD(worldTrans.GetXAxis());
+        // Third row is up
+        attr.up = VecToFMOD(worldTrans.GetZAxis());
+        // Set velocity to zero (fix if using Doppler effect)
+        attr.velocity = { 0.0f, 0.0f, 0.0f };
+        event->set3DAttributes(&attr);
+    }
 }
