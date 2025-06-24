@@ -2,7 +2,6 @@
 
 #include "audio_system.h"
 #include "fmod_studio.hpp"
-#include "math.h"
 
 SoundEvent::SoundEvent() : system(nullptr), ID(0) {}
 
@@ -107,6 +106,7 @@ bool SoundEvent::is3D() const {
     return retVal;
 }
 
+namespace {
 FMOD_VECTOR VecToFMOD(const Vector3& in) {
     // Convert from our coordinates (+x forward, +y right, +z up)
     // to FMOD (+z forward, +x right, +y up)
@@ -117,6 +117,7 @@ FMOD_VECTOR VecToFMOD(const Vector3& in) {
 
     return v;
 }
+} // namespace
 
 void SoundEvent::set3DAttributes(const Matrix4& worldTrans) {
     auto event = system ? system->getEventInstance(ID) : nullptr;

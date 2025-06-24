@@ -1,6 +1,8 @@
 #ifndef AUDIO_SYSTEM_H
 #define AUDIO_SYSTEM_H
 
+#include "math.h"
+
 #include <string>
 #include <unordered_map>
 

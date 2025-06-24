@@ -1,6 +1,8 @@
 #ifndef SOUND_EVENT_H
 #define SOUND_EVENT_H
 
+#include "math.h"
+
 #include <string>
 class AudioSystem;
 
