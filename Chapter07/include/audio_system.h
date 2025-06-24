@@ -36,7 +36,7 @@ public:
     void unloadAllBanks();
 
     SoundEvent playEvent(const std::string& name);
-    void setListerner(const Matrix4& viewMatrix);
+    void setListener(const Matrix4& viewMatrix);
 
     float getBusVolume(const std::string& name) const;
     void setBusVolume(const std::string& name, float value);

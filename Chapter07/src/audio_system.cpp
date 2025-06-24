@@ -229,7 +229,7 @@ FMOD_VECTOR VecToFMOD(const Vector3& in) {
 }
 } // namespace
 
-void AudioSystem::setListerner(const Matrix4& viewMatrix) {
+void AudioSystem::setListener(const Matrix4& viewMatrix) {
     // Invert the view matrix to get the correct vectors
     Matrix4 invView = viewMatrix;
     invView.Invert();
