@@ -24,6 +24,7 @@ public:
     void removeActor(Actor* actor);
 
     Renderer* getRenderer();
+    AudioSystem* getAudioSystem();
 
 private:
     // Helper functions for the game loop

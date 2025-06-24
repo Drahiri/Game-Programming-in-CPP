@@ -131,6 +131,10 @@ void Game::processInput() {
     updatingActors = false;
 }
 
+AudioSystem* Game::getAudioSystem() {
+    return audioSystem;
+}
+
 void Game::handleKeyPress(int key) {
     // TODO: Implement after implementing sound
 }

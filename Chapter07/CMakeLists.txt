@@ -3,6 +3,7 @@ project(Chapter07 VERSION 1.0 LANGUAGES CXX)
 
 set(SOURCE_FILES
     "src/actor.cpp"
+    "src/audio_component.cpp"
     "src/audio_system.cpp"
     "src/camera_actor.cpp"
     "src/circle_component.cpp"
@@ -25,6 +26,7 @@ set(SOURCE_FILES
 
 set(HEADER_FILES
     "include/actor.h"
+    "include/audio_component.h"
     "include/audio_system.h"
     "include/camera_actor.h"
     "include/circle_component.h"
