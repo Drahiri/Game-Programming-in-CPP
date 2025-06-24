@@ -10,6 +10,7 @@ class Actor;
 class SoundEvent;
 
 class AudioComponent : public Component {
+public:
     AudioComponent(Actor* owner, int updateOrder = 200);
     ~AudioComponent();
 
