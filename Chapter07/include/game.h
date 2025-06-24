@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include "math.h"
+#include "sound_event.h"
 
 #include <SDL3/SDL.h>
 #include <string>
@@ -51,11 +52,8 @@ private:
 
     // Game-specific code
     CameraActor* cameraActor;
-    // TODO: Uncomment after implementing sound
-    /*
     SoundEvent musicEvent;
     SoundEvent reverbSnap;
-    */
 };
 
 #endif

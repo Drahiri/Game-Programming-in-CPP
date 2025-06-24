@@ -1,5 +1,7 @@
 #include "camera_actor.h"
 
+#include "audio_component.h"
+#include "audio_system.h"
 #include "game.h"
 #include "math.h"
 #include "move_component.h"
@@ -7,7 +9,10 @@
 
 CameraActor::CameraActor(Game* game) : Actor(game) {
     moveComp = new MoveComponent(this);
+    audioComp = new AudioComponent(this);
     lastFootstep = 0.0f;
+    footstep = audioComp->playEvent("event:/Footstep");
+    footstep.setPaused(true);
 }
 
 void CameraActor::updateActor(float deltaTime) {
@@ -16,11 +21,8 @@ void CameraActor::updateActor(float deltaTime) {
     // Play the footstep if we're moving and havent't recently
     lastFootstep -= deltaTime;
     if(!Math::NearZero(moveComp->getForwardSpeed()) && lastFootstep <= 0.0f) {
-        // TODO: Uncomment after implementing sound
-        /*
         footstep.setPaused(false);
         footstep.restart();
-        */
         lastFootstep = 0.5f;
     }
 
@@ -30,10 +32,7 @@ void CameraActor::updateActor(float deltaTime) {
     Vector3 up = Vector3::UnitZ;
     Matrix4 view = Matrix4::CreateLookAt(cameraPos, target, up);
     getGame()->getRenderer()->setViewMatrix(view);
-    // TODO: Uncomment after implementing sound
-    /*
-    getGame()->getAudio()->setListener(view);
-    */
+    getGame()->getAudioSystem()->setListener(view);
 }
 
 void CameraActor::actorInput(const bool* keys) {
@@ -60,9 +59,6 @@ void CameraActor::actorInput(const bool* keys) {
 void CameraActor::setFootstepSurface(float value) {
     // Pause here because the way parameter is setup for FMOD
     // changing it will play a footstep
-    // TODO: Uncomment after implementing sound
-    /*
     footstep.setPaused(true);
     footstep.setParameter("Surface", value);
-    */
 }

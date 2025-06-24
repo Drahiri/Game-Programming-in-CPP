@@ -1,6 +1,7 @@
 #include "game.h"
 
 #include "actor.h"
+#include "audio_component.h"
 #include "audio_system.h"
 #include "camera_actor.h"
 #include "mesh_component.h"
@@ -136,7 +137,51 @@ AudioSystem* Game::getAudioSystem() {
 }
 
 void Game::handleKeyPress(int key) {
-    // TODO: Implement after implementing sound
+    switch(key) {
+    case '-': { // Reduce master volume
+        float volume = audioSystem->getBusVolume("bus:/");
+        volume = Math::Max(0.0f, volume - 0.1f);
+        audioSystem->setBusVolume("bus:/", volume);
+        break;
+    }
+
+    case '=': { // Increase master volume
+        float volume = audioSystem->getBusVolume("bus:/");
+        volume = Math::Max(0.0f, volume + 0.1f);
+        audioSystem->setBusVolume("bus:/", volume);
+        break;
+    }
+
+    case 'e':
+        // Play expliosion
+        audioSystem->playEvent("event:/Explosion2D");
+        break;
+
+    case 'm':
+        musicEvent.setPaused(!musicEvent.getPaused());
+        break;
+
+    case 'r':
+        // Stop or start reverb snapshot
+        if(!reverbSnap.isValid()) {
+            reverbSnap = audioSystem->playEvent("snapshot:/WithReverb");
+        } else {
+            reverbSnap.stop();
+        }
+        break;
+
+    case '1':
+        // Set default footstep surface
+        cameraActor->setFootstepSurface(0.0f);
+        break;
+
+    case '2':
+        cameraActor->setFootstepSurface(0.5f);
+        break;
+
+    default:
+        break;
+    }
 }
 
 void Game::updateGame() {
@@ -267,7 +312,18 @@ void Game::loadData() {
     sc = new SpriteComponent(a);
     sc->setTexture(renderer->getTexture("assets/Radar.png"));
 
-    // TODO: Add actor with audio components
+    // Create spheres with audio components playing different sounds
+    a = new Actor(this);
+    a->setPosition(Vector3(500.0f, -75.0f, 0.0f));
+    a->setScale(1.0f);
+
+    mc = new MeshComponent(a);
+    mc->setMesh(renderer->getMesh("assets/Sphere.gpmesh"));
+    AudioComponent* ac = new AudioComponent(a);
+    ac->playEvent("event:/FireLoop");
+
+    // Start music
+    musicEvent = audioSystem->playEvent("event:/Music");
 }
 
 void Game::unloadData() {

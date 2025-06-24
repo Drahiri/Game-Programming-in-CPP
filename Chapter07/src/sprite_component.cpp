@@ -23,7 +23,6 @@ SpriteComponent::~SpriteComponent() {
 
 void SpriteComponent::draw(Shader* shader) {
     // Scale the quad by the width/height of texture
-    // TODO: change hardcodded values to texWidth/texHeight
     Matrix4 scaleMat =
           Matrix4::CreateScale(static_cast<float>(texWidth), static_cast<float>(texHeight), 1.0f);
 

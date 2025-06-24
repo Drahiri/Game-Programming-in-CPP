@@ -2,9 +2,11 @@
 #define CAMERA_ACTOR_H
 
 #include "actor.h"
+#include "sound_event.h"
 
 class Game;
 class MoveComponent;
+class AudioComponent;
 
 class CameraActor : public Actor {
 public:
@@ -18,11 +20,8 @@ public:
 private:
     MoveComponent* moveComp;
 
-    // TODO: uncomment after implementing sound
-    /*
-        AudioComponent* audioComp;
-        SoundEvent footstep;
-    */
+    AudioComponent* audioComp;
+    SoundEvent footstep;
 
     float lastFootstep;
 };
