@@ -60,7 +60,7 @@ bool SoundEvent::getPaused() const {
     bool retVal = false;
     auto event = system ? system->getEventInstance(ID) : nullptr;
     if(event) {
-        retVal = event->getPaused(&retVal);
+        event->getPaused(&retVal);
     }
     return retVal;
 }
@@ -69,7 +69,7 @@ float SoundEvent::getVolume() const {
     float retVal = false;
     auto event = system ? system->getEventInstance(ID) : nullptr;
     if(event) {
-        retVal = event->getVolume(&retVal);
+        event->getVolume(&retVal);
     }
     return retVal;
 }
@@ -78,7 +78,7 @@ float SoundEvent::getPitch() const {
     float retVal = false;
     auto event = system ? system->getEventInstance(ID) : nullptr;
     if(event) {
-        retVal = event->getPitch(&retVal);
+        event->getPitch(&retVal);
     }
     return retVal;
 }
@@ -87,7 +87,7 @@ float SoundEvent::getParameter(const std::string& name) {
     float retVal = false;
     auto event = system ? system->getEventInstance(ID) : nullptr;
     if(event) {
-        retVal = event->getParameterByName(name.c_str(), &retVal);
+        event->getParameterByName(name.c_str(), &retVal);
     }
     return retVal;
 }
