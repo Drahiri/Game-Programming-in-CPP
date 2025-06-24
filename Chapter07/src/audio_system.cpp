@@ -198,3 +198,31 @@ FMOD::Studio::EventInstance* AudioSystem::getEventInstance(unsigned int id) cons
 
     return iter->second;
 }
+
+void AudioSystem::setListerner(const Matrix4& viewMatrix) {
+    // Invert the view matrix to get the correct vectors
+    Matrix4 invView = viewMatrix;
+    invView.Invert();
+    FMOD_3D_ATTRIBUTES listener;
+    // Set position, forward, up
+    listener.position = VecToFMOD(invView.GetTranslation());
+    // In the inverted view, third row is forward
+    listener.forward = VecToFMOD(invView.GetZAxis());
+    // In the inverted view, second row is up
+    listener.up = VecToFMOD(invView.GetYAxis());
+    // Set velocity to zero (fix if using Doppler effect)
+    listener.velocity = { 0.0f, 0.0f, 0.0f };
+    // Send to FMOD (0 = only one listener)
+    system->setListenerAttributes(0, &listener);
+}
+
+FMOD_VECTOR VecToFMOD(const Vector3& in) {
+    // Convert from our coordinates (+x forward, +y right, +z up)
+    // to FMOD (+z forward, +x right, +y up)
+    FMOD_VECTOR v;
+    v.x = in.y;
+    v.y = in.z;
+    v.z = in.x;
+
+    return v;
+}

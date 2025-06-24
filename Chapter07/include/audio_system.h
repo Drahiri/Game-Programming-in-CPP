@@ -33,6 +33,7 @@ public:
     void unloadAllBanks();
 
     SoundEvent playEvent(const std::string& name);
+    void setListerner(const Matrix4& viewMatrix);
 
 protected:
     friend SoundEvent;
