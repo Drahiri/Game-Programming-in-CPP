@@ -4,12 +4,17 @@
 #include "audio_system.h"
 #include "game.h"
 #include "math.h"
+#include "mesh_component.h"
 #include "move_component.h"
 #include "renderer.h"
 
 CameraActor::CameraActor(Game* game) : Actor(game) {
     moveComp = new MoveComponent(this);
     audioComp = new AudioComponent(this);
+
+    MeshComponent* mc = new MeshComponent(this);
+    mc->setMesh(game->getRenderer()->getMesh("assets/Sphere.gpmesh"));
+
     lastFootstep = 0.0f;
     footstep = audioComp->playEvent("event:/Footstep");
     footstep.setPaused(true);
@@ -27,7 +32,7 @@ void CameraActor::updateActor(float deltaTime) {
     }
 
     // Compute new camera from this actor
-    Vector3 cameraPos = getPosition();
+    cameraPos = getPosition() - getForward() * 200.0f + Vector3::UnitZ * 100.0f;
     Vector3 target = getPosition() + getForward() * 100.0f;
     Vector3 up = Vector3::UnitZ;
     Matrix4 view = Matrix4::CreateLookAt(cameraPos, target, up);
@@ -63,4 +68,8 @@ void CameraActor::setFootstepSurface(float value) {
     // changing it will play a footstep
     footstep.setPaused(true);
     footstep.setParameter("Surface", value);
+}
+
+const Vector3& CameraActor::getCameraPosition() const {
+    return cameraPos;
 }

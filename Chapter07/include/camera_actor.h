@@ -2,6 +2,7 @@
 #define CAMERA_ACTOR_H
 
 #include "actor.h"
+#include "math.h"
 #include "sound_event.h"
 
 class Game;
@@ -17,8 +18,11 @@ public:
 
     void setFootstepSurface(float value);
 
+    const Vector3& getCameraPosition() const;
+
 private:
     MoveComponent* moveComp;
+    Vector3 cameraPos;
 
     AudioComponent* audioComp;
     SoundEvent footstep;
