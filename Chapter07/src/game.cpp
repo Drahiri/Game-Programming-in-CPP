@@ -4,6 +4,7 @@
 #include "audio_component.h"
 #include "audio_system.h"
 #include "camera_actor.h"
+#include "doppler_actor.h"
 #include "mesh_component.h"
 #include "plane_actor.h"
 #include "renderer.h"
@@ -324,6 +325,14 @@ void Game::loadData() {
 
     // Start music
     musicEvent = audioSystem->playEvent("event:/Music");
+
+    // Doppler Actor
+    a = new DopplerActor(this);
+    a->setPosition(Vector3(-300.0f, 0.0f, 0.0f));
+    mc = new MeshComponent(a);
+    mc->setMesh(renderer->getMesh("assets/Sphere.gpmesh"));
+    ac = new AudioComponent(a);
+    ac->playEvent("event:/FireLoop");
 }
 
 void Game::unloadData() {
