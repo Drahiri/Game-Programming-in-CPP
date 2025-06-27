@@ -59,6 +59,12 @@ public:
     void computeWorldTransform();
     const Matrix4& getWorldTransform() const;
 
+    const Vector3& getVelocity() const;
+    void setVelocity(const Vector3& vel);
+
+    float getMass() const;
+    void setMass(float value);
+
 private:
     // Actor's state
     State state;
@@ -74,6 +80,9 @@ private:
     // Components held by this actor
     std::vector<Component*> components;
     Game* game;
+
+    float mass;
+    Vector3 velocity;
 };
 
 #endif

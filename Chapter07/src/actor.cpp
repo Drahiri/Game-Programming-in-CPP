@@ -11,7 +11,9 @@ Actor::Actor(Game* game) :
     scale(1.0f),
     rotation(Quaternion::Identity),
     recomputeWorldTransform(true),
-    game(game) {
+    game(game),
+    mass(1.0f),
+    velocity(Vector3::Zero) {
     this->game->addActor(this);
 }
 
@@ -136,4 +138,20 @@ void Actor::computeWorldTransform() {
 
 const Matrix4& Actor::getWorldTransform() const {
     return worldTransform;
+}
+
+const Vector3& Actor::getVelocity() const {
+    return velocity;
+}
+
+void Actor::setVelocity(const Vector3& vel) {
+    velocity = vel;
+}
+
+float Actor::getMass() const {
+    return mass;
+}
+
+void Actor::setMass(float value) {
+    mass = value;
 }

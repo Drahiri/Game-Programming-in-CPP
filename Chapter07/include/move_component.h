@@ -17,6 +17,8 @@ public:
     float getForwardSpeed() const;
     void setForwardSpeed(float speed);
 
+    void addForce(const Vector3& force);
+
 private:
     // Controls rotation (radians/second)
     float angularSpeed;
@@ -25,6 +27,10 @@ private:
 
     // Screen size
     Vector2 screenSize;
+
+    Vector3 sumOfForces;
+    float timeStep;
+    float lastTimeCall;
 };
 
 #endif

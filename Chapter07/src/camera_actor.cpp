@@ -20,7 +20,7 @@ void CameraActor::updateActor(float deltaTime) {
 
     // Play the footstep if we're moving and havent't recently
     lastFootstep -= deltaTime;
-    if(!Math::NearZero(moveComp->getForwardSpeed()) && lastFootstep <= 0.0f) {
+    if(!Math::NearZero(getVelocity().Length()) && lastFootstep <= 0.0f) {
         footstep.setPaused(false);
         footstep.restart();
         lastFootstep = 0.5f;
@@ -40,10 +40,12 @@ void CameraActor::actorInput(const bool* keys) {
     float angularSpeed = 0.0f;
     // wasd movement
     if(keys[SDL_SCANCODE_W]) {
-        forwardSpeed += 300.0f;
+        // forwardSpeed += 300.0f;
+        moveComp->addForce(getForward() * 300.0f);
     }
     if(keys[SDL_SCANCODE_S]) {
-        forwardSpeed -= 300.0f;
+        // forwardSpeed -= 300.0f;
+        moveComp->addForce(getForward() * -300.0f);
     }
     if(keys[SDL_SCANCODE_A]) {
         angularSpeed -= Math::TwoPi;

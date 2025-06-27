@@ -7,7 +7,9 @@
 MoveComponent::MoveComponent(Actor* owner, int updateOrder) :
     Component(owner, updateOrder),
     angularSpeed(0.0f),
-    forwardSpeed(0.0f) {
+    forwardSpeed(0.0f),
+    timeStep(1.0f / 60.0f),
+    lastTimeCall(0.0f) {
     screenSize.x = owner->getGame()->getRenderer()->getScreenWidth();
     screenSize.y = owner->getGame()->getRenderer()->getScreenHeight();
 }
@@ -24,11 +26,31 @@ void MoveComponent::update(float deltaTime) {
         owner->setRotation(rot);
     }
 
-    if(!Math::NearZero(forwardSpeed)) {
-        Vector3 pos = owner->getPosition();
-        pos += owner->getForward() * forwardSpeed * deltaTime;
-        owner->setPosition(pos);
+    lastTimeCall += deltaTime;
+    // Physics base forward movement
+    while(lastTimeCall > timeStep) {
+        owner->setVelocity(Vector3::Zero);
+        Vector3 accel = sumOfForces * (1 / owner->getMass());
+
+        Vector3 velocity = owner->getVelocity();
+        velocity += accel * timeStep;
+        owner->setVelocity(velocity);
+
+        lastTimeCall -= timeStep;
     }
+
+    Vector3 position = owner->getPosition();
+    // Skipping multiplying by timeStep, because objects are big
+    position += owner->getVelocity();
+    owner->setPosition(position);
+
+    sumOfForces = Vector3::Zero;
+
+    // if(!Math::NearZero(forwardSpeed)) {
+    //     Vector3 pos = owner->getPosition();
+    //     pos += owner->getForward() * forwardSpeed * deltaTime;
+    //     owner->setPosition(pos);
+    // }
 }
 
 float MoveComponent::getAngularSpeed() const {
@@ -45,4 +67,8 @@ float MoveComponent::getForwardSpeed() const {
 
 void MoveComponent::setForwardSpeed(float speed) {
     forwardSpeed = speed;
+}
+
+void MoveComponent::addForce(const Vector3& force) {
+    sumOfForces += force;
 }
