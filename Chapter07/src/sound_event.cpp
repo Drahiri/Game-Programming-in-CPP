@@ -119,7 +119,7 @@ FMOD_VECTOR VecToFMOD(const Vector3& in) {
 }
 } // namespace
 
-void SoundEvent::set3DAttributes(const Matrix4& worldTrans) {
+void SoundEvent::set3DAttributes(const Matrix4& worldTrans, const Vector3& velocity) {
     auto event = system ? system->getEventInstance(ID) : nullptr;
     if(event) {
         FMOD_3D_ATTRIBUTES attr;
@@ -130,7 +130,7 @@ void SoundEvent::set3DAttributes(const Matrix4& worldTrans) {
         // Third row is up
         attr.up = VecToFMOD(worldTrans.GetZAxis());
         // Set velocity to zero (fix if using Doppler effect)
-        attr.velocity = { 0.0f, 0.0f, 0.0f };
+        attr.velocity = VecToFMOD(velocity);
         event->set3DAttributes(&attr);
     }
 }

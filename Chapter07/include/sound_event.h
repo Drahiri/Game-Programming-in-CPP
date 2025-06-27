@@ -28,7 +28,7 @@ public:
     float getParameter(const std::string& name);
     // Positionals
     bool is3D() const;
-    void set3DAttributes(const Matrix4& worldTrans);
+    void set3DAttributes(const Matrix4& worldTrans, const Vector3& velocity);
 
 protected:
     // Make this constructor protected and AudioSystem a friend

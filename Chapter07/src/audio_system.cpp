@@ -229,7 +229,7 @@ FMOD_VECTOR VecToFMOD(const Vector3& in) {
 }
 } // namespace
 
-void AudioSystem::setListener(const Matrix4& viewMatrix) {
+void AudioSystem::setListener(const Matrix4& viewMatrix, const Vector3& velocity) {
     // Invert the view matrix to get the correct vectors
     Matrix4 invView = viewMatrix;
     invView.Invert();
@@ -241,7 +241,7 @@ void AudioSystem::setListener(const Matrix4& viewMatrix) {
     // In the inverted view, second row is up
     listener.up = VecToFMOD(invView.GetYAxis());
     // Set velocity to zero (fix if using Doppler effect)
-    listener.velocity = { 0.0f, 0.0f, 0.0f };
+    listener.velocity = VecToFMOD(velocity);
     // Send to FMOD (0 = only one listener)
     system->setListenerAttributes(0, &listener);
 }

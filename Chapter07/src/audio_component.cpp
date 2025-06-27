@@ -18,7 +18,7 @@ SoundEvent AudioComponent::playEvent(const std::string& name) {
     if(e.is3D()) {
         events3D.emplace_back(e);
         // Set initial 3D attributes
-        e.set3DAttributes(owner->getWorldTransform());
+        e.set3DAttributes(owner->getWorldTransform(), owner->getVelocity());
     } else {
         events2D.emplace_back(e);
     }
@@ -54,7 +54,7 @@ void AudioComponent::onUpdateWorldTransform() {
     Matrix4 world = owner->getWorldTransform();
     for(auto& event: events3D) {
         if(event.isValid()) {
-            event.set3DAttributes(world);
+            event.set3DAttributes(world, owner->getVelocity());
         }
     }
 }
