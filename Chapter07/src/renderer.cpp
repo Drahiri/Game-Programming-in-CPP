@@ -265,8 +265,10 @@ bool Renderer::loadShaders() {
     }
 
     spriteShader->setActive();
-    Matrix4 viewProj = Matrix4::CreateSimpleViewProj(screenWidth, screenHeight);
-    spriteShader->setMatrixUniform("uViewProj", viewProj);
+    viewMatrix = Matrix4::CreateLookAt(Vector3::Zero, Vector3::UnitX, Vector3::UnitZ);
+    projectionMatrix = Matrix4::CreatePerspectiveFOV(
+          Math::ToRadians(70.0), screenWidth, screenHeight, 0.25f, 10000.0f);
+    spriteShader->setMatrixUniform("uViewProj", viewMatrix * projectionMatrix);
 
     // Load mesh shader
     meshShader = new Shader();
