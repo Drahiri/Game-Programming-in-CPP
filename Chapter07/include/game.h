@@ -27,6 +27,8 @@ public:
     Renderer* getRenderer();
     AudioSystem* getAudioSystem();
 
+    CameraActor* getCameraActor();
+
 private:
     // Helper functions for the game loop
     void processInput();

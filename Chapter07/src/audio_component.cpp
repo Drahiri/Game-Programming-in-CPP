@@ -2,6 +2,7 @@
 
 #include "actor.h"
 #include "audio_system.h"
+#include "camera_actor.h"
 #include "game.h"
 #include "sound_event.h"
 
@@ -18,7 +19,7 @@ SoundEvent AudioComponent::playEvent(const std::string& name) {
     if(e.is3D()) {
         events3D.emplace_back(e);
         // Set initial 3D attributes
-        e.set3DAttributes(owner->getWorldTransform(), owner->getVelocity());
+        e.set3DAttributes(getVirtualTransform(), owner->getVelocity());
     } else {
         events2D.emplace_back(e);
     }
@@ -29,6 +30,7 @@ SoundEvent AudioComponent::playEvent(const std::string& name) {
 void AudioComponent::update(float deltaTime) {
     Component::update(deltaTime);
 
+    updateVirtualTransform();
     // Remove invalid 2D events
     auto iter = events2D.begin();
     while(iter != events2D.end()) {
@@ -51,7 +53,7 @@ void AudioComponent::update(float deltaTime) {
 }
 
 void AudioComponent::onUpdateWorldTransform() {
-    Matrix4 world = owner->getWorldTransform();
+    Matrix4 world = getVirtualTransform();
     for(auto& event: events3D) {
         if(event.isValid()) {
             event.set3DAttributes(world, owner->getVelocity());
@@ -72,4 +74,29 @@ void AudioComponent::stopAllEvents() {
     // Clear events
     events2D.clear();
     events3D.clear();
+}
+
+void AudioComponent::updateVirtualTransform() {
+    if(owner->getGame()->getCameraActor() == nullptr) {
+        return;
+    }
+
+    Vector3 playerToSound =
+          owner->getPosition() - owner->getGame()->getCameraActor()->getPosition();
+    Vector3 cameraToSound =
+          owner->getPosition() - owner->getGame()->getCameraActor()->getCameraPosition();
+    cameraToSound.Normalize();
+
+    Vector3 virtualPosition = playerToSound.Length() * cameraToSound;
+
+    virtualTransform = Matrix4::CreateScale(owner->getScale());
+    virtualTransform *= Matrix4::CreateFromQuaternion(owner->getRotation());
+    virtualTransform *= Matrix4::CreateTranslation(
+          virtualPosition + owner->getGame()->getCameraActor()->getCameraPosition());
+
+    onUpdateWorldTransform();
+}
+
+const Matrix4& AudioComponent::getVirtualTransform() const {
+    return virtualTransform;
 }

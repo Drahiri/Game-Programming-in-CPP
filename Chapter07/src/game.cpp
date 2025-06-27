@@ -15,7 +15,12 @@
 const int windowWidth = 1024;
 const int windowHeight = 768;
 
-Game::Game() : isRunning(true), ticksCount(0), updatingActors(true), renderer(nullptr) {}
+Game::Game() :
+    isRunning(true),
+    ticksCount(0),
+    updatingActors(true),
+    renderer(nullptr),
+    cameraActor(nullptr) {}
 
 bool Game::initialize() {
     // Initialize SDL
@@ -340,4 +345,8 @@ void Game::unloadData() {
     while(!actors.empty()) {
         delete actors.back();
     }
+}
+
+CameraActor* Game::getCameraActor() {
+    return cameraActor;
 }
