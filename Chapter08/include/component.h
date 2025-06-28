@@ -2,7 +2,7 @@
 #define COMPONENT_H
 
 class Actor;
-class InputState;
+struct InputState;
 
 class Component {
 public:
