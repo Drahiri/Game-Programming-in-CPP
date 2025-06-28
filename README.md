@@ -25,3 +25,4 @@ All libraries should be inside **extern** directory in root directory or in defa
 * [GLEW](https://glew.sourceforge.net/)
 * [Simple OpenGL Image Library](https://github.com/kbranigan/Simple-OpenGL-Image-Library) - official site doesn't work
 * [RapidJSON](https://rapidjson.org/)
+* [FMOD](https://www.fmod.com/)
