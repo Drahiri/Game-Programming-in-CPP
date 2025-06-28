@@ -1,6 +1,8 @@
 #ifndef INPUT_SYSTEM_H
 #define INPUT_SYSTEM_H
 
+#include "math.h"
+
 #include <SDL3/SDL_scancode.h>
 
 // The different button states
@@ -29,9 +31,29 @@ private:
     bool prevState[SDL_SCANCODE_COUNT];
 };
 
+// Helper class for mouse input
+class MouseState {
+public:
+    friend class InputSystem;
+    // For mouse position
+    const Vector2& getPosition() const;
+
+    // For buttons
+    bool getButtonValue(int button) const;
+    ButtonState getButtonState(int button) const;
+
+private:
+    // Store mouse position
+    Vector2 mousePos;
+    // Store button data
+    Uint32 currButtons;
+    Uint32 prevButtons;
+};
+
 // Wrapper that contains current state of input
 struct InputState {
     KeyboardState keyboard;
+    MouseState mouse;
 };
 
 class InputSystem {
