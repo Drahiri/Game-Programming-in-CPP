@@ -164,8 +164,7 @@ void Game::processInput() {
     const InputState& state = inputSystem->getState();
 
     // Process keyboard state
-    const bool* keyState = SDL_GetKeyboardState(NULL);
-    if(keyState[SDL_SCANCODE_ESCAPE]) {
+    if(state.keyboard.getKeyState(SDL_SCANCODE_ESCAPE) == ButtonState::Released) {
         isRunning = false;
     }
 
