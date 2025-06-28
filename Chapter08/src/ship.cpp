@@ -2,6 +2,7 @@
 
 #include "game.h"
 #include "input_component.h"
+#include "input_system.h"
 #include "laser.h"
 #include "sprite_component.h"
 
@@ -22,8 +23,8 @@ void Ship::updateActor(float deltaTime) {
     laserCooldown -= deltaTime;
 }
 
-void Ship::actorInput(const bool* keyState) {
-    if(keyState[SDL_SCANCODE_SPACE] && laserCooldown <= 0.0f) {
+void Ship::actorInput(const InputState& inState) {
+    if(inState.keyboard.getKeyValue(SDL_SCANCODE_SPACE) && laserCooldown <= 0.0f) {
         // Create a laser and set it's position/rotation
         Laser* laser = new Laser(getGame());
         laser->setPosition(getPosition());

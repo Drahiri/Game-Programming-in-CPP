@@ -3,13 +3,16 @@
 
 #include "move_component.h"
 
+#include <SDL3/SDL_scancode.h>
+
 class Actor;
+struct InputState;
 
 class InputComponent : public MoveComponent {
 public:
     InputComponent(Actor* owner);
 
-    void processInput(const bool* keyState) override;
+    void processInput(const InputState& inState) override;
 
     // Getters/setters for private variables
     float getMaxForwardSpeed() const;
@@ -19,14 +22,14 @@ public:
     void setMaxAngularSpeed(float speed);
 
     int getForwardKey() const;
-    void setForwardKey(int key);
+    void setForwardKey(SDL_Scancode key);
     int getBackKey() const;
-    void setBackKey(int key);
+    void setBackKey(SDL_Scancode key);
 
     int getClockwiseKey() const;
-    void setClockwiseKey(int key);
+    void setClockwiseKey(SDL_Scancode key);
     int getCounterClockwiseKey() const;
-    void setCounterClockwiseKey(int key);
+    void setCounterClockwiseKey(SDL_Scancode key);
 
 private:
     // The maximum forward/angular speeds
@@ -34,12 +37,12 @@ private:
     float maxAngularSpeed;
 
     // Keys for forward/back movement
-    int forwardKey;
-    int backKey;
+    SDL_Scancode forwardKey;
+    SDL_Scancode backKey;
 
     // Keys for angular movement
-    int clockwiseKey;
-    int counterClockwiseKey;
+    SDL_Scancode clockwiseKey;
+    SDL_Scancode counterClockwiseKey;
 };
 
 #endif

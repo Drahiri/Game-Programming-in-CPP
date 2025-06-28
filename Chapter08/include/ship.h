@@ -4,13 +4,14 @@
 #include "actor.h"
 
 class Game;
+struct InputState;
 
 class Ship : public Actor {
 public:
     Ship(Game* game);
 
     void updateActor(float deltaTime) override;
-    void actorInput(const bool* keyState) override;
+    void actorInput(const InputState& inState) override;
 
     float getRightSpeed() const;
     float getDownSpeed() const;
