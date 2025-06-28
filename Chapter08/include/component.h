@@ -2,6 +2,7 @@
 #define COMPONENT_H
 
 class Actor;
+class InputState;
 
 class Component {
 public:
@@ -11,7 +12,7 @@ public:
     // Destructor
     virtual ~Component();
 
-    virtual void processInput(const bool* keyState);
+    virtual void processInput(const InputState& inState);
     virtual void onUpdateWorldTransform();
 
     // Update this component by delta time

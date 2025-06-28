@@ -7,6 +7,7 @@
 
 class Component;
 class Game;
+class InputState;
 
 class Actor {
 public:
@@ -50,10 +51,10 @@ public:
     void removeComponent(Component* component);
 
     // ProcessInput function called from Game (not overridable)
-    void processInput(const bool* keyState);
+    void processInput(const InputState& inState);
 
     // Any actor-specific input code (overridable)
-    virtual void actorInput(const bool* keyState);
+    virtual void actorInput(const InputState& inState);
 
     // Matrix transforms
     void computeWorldTransform();

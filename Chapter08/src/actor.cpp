@@ -2,6 +2,7 @@
 
 #include "component.h"
 #include "game.h"
+#include "input_system.h"
 
 #include <algorithm>
 
@@ -85,16 +86,16 @@ Vector2 Actor::getForward() const {
     return Vector2(Math::Cos(rotation), Math::Sin(rotation));
 }
 
-void Actor::processInput(const bool* keyState) {
+void Actor::processInput(const InputState& inState) {
     if(state == State::Active) {
         for(auto comp: components) {
-            comp->processInput(keyState);
+            comp->processInput(inState);
         }
-        actorInput(keyState);
+        actorInput(inState);
     }
 }
 
-void Actor::actorInput(const bool* keyState) {}
+void Actor::actorInput(const InputState& inState) {}
 
 void Actor::addComponent(Component* component) {
     // Find the insertion point in the sorted vector

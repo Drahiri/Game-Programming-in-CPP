@@ -1,6 +1,7 @@
 #include "component.h"
 
 #include "actor.h"
+#include "input_system.h"
 
 Component::Component(Actor* owner, int updateOrder) : owner(owner), updateOrder(updateOrder) {
     owner->addComponent(this);
@@ -10,7 +11,7 @@ Component::~Component() {
     owner->removeComponent(this);
 }
 
-void Component::processInput(const bool* keyState) {}
+void Component::processInput(const InputState& inState) {}
 
 void Component::onUpdateWorldTransform() {}
 

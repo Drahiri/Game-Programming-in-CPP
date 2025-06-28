@@ -9,12 +9,13 @@
 #include <vector>
 
 class Actor;
-class SpriteComponent;
-class Ship;
 class Asteroid;
-class VertexArray;
+class InputSystem;
+class Ship;
 class Shader;
+class SpriteComponent;
 class Texture;
+class VertexArray;
 
 class Game {
 public:
@@ -78,6 +79,9 @@ private:
 
     // Shaders
     Shader* spriteShader;
+
+    // Input System
+    InputSystem* inputSystem;
 };
 
 #endif

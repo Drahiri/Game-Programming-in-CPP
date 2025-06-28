@@ -2,6 +2,7 @@
 
 #include "actor.h"
 #include "asteroid.h"
+#include "input_system.h"
 #include "shader.h"
 #include "ship.h"
 #include "sprite_component.h"
@@ -21,7 +22,8 @@ Game::Game() :
     context(nullptr),
     ticksCount(0),
     updatingActors(true),
-    ship(nullptr) {}
+    ship(nullptr),
+    inputSystem(nullptr) {}
 
 bool Game::initialize() {
     // Initialize SDL
@@ -81,6 +83,13 @@ bool Game::initialize() {
         return false;
     }
 
+    // Initialize Input System
+    inputSystem = new InputSystem();
+    if(!inputSystem->initialize()) {
+        SDL_Log("Failed to initialize input system.");
+        return false;
+    }
+
     loadData();
     initSpriteVerts();
 
@@ -96,6 +105,9 @@ void Game::runLoop() {
 }
 
 void Game::shutdown() {
+    inputSystem->shutdown();
+    delete inputSystem;
+
     // Because ~Actor calls RemoveActor, use a different style loop
     unloadData();
 
@@ -132,6 +144,7 @@ void Game::removeActor(Actor* actor) {
 }
 
 void Game::processInput() {
+    inputSystem->prepareForUpdate();
     // Process SDL events
     SDL_Event event;
 
@@ -146,9 +159,13 @@ void Game::processInput() {
         }
     }
 
+    inputSystem->update();
+
+    const InputState& state = inputSystem->getState();
+
     // Process keyboard state
-    const bool* state = SDL_GetKeyboardState(NULL);
-    if(state[SDL_SCANCODE_ESCAPE]) {
+    const bool* keyState = SDL_GetKeyboardState(NULL);
+    if(keyState[SDL_SCANCODE_ESCAPE]) {
         isRunning = false;
     }
 
