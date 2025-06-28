@@ -3,7 +3,7 @@
 
 #include "math.h"
 
-#include <SDL3/SDL_scancode.h>
+#include <SDL3/SDL.h>
 
 // The different button states
 enum class ButtonState {
@@ -48,6 +48,8 @@ private:
     // Store button data
     Uint32 currButtons;
     Uint32 prevButtons;
+    // Is relative
+    bool isRelative;
 };
 
 // Wrapper that contains current state of input
@@ -67,6 +69,8 @@ public:
     void update();
 
     const InputState& getState() const;
+
+    void setRelativeMouseMode(SDL_Window* window, bool value);
 
 private:
     InputState state;

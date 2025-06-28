@@ -1,8 +1,5 @@
 #include "input_system.h"
 
-#include <SDL3/SDL_keyboard.h>
-#include <SDL3/SDL_mouse.h>
-
 bool KeyboardState::getKeyValue(SDL_Scancode keyCode) const {
     return currState[keyCode];
 }
@@ -49,30 +46,46 @@ ButtonState MouseState::getButtonState(int button) const {
 }
 
 bool InputSystem::initialize() {
+    // Keyboard
     // Assign current state pointer
     state.keyboard.currState = SDL_GetKeyboardState(NULL);
-
     // Clear previous state memory
     memset(state.keyboard.prevState, 0, SDL_SCANCODE_COUNT);
+
+    // Mouse
+    state.mouse.isRelative = false;
+
     return true;
 }
 
 void InputSystem::shutdown() {}
 
 void InputSystem::prepareForUpdate() {
+    // Keyboard
     memcpy(state.keyboard.prevState, state.keyboard.currState, SDL_SCANCODE_COUNT);
 
+    // Mouse
     state.mouse.prevButtons = state.mouse.currButtons;
 }
 
 void InputSystem::update() {
     // Mouse
     float x = 0.0f, y = 0.0f;
-    state.mouse.currButtons = SDL_GetMouseState(&x, &y);
+    if(state.mouse.isRelative) {
+        state.mouse.currButtons = SDL_GetRelativeMouseState(&x, &y);
+    } else {
+        state.mouse.currButtons = SDL_GetMouseState(&x, &y);
+    }
+
     state.mouse.mousePos.x = x;
     state.mouse.mousePos.y = y;
 }
 
 const InputState& InputSystem::getState() const {
     return state;
+}
+
+void InputSystem::setRelativeMouseMode(SDL_Window* window, bool value) {
+    SDL_SetWindowRelativeMouseMode(window, value);
+    state.mouse.isRelative = value;
 }
