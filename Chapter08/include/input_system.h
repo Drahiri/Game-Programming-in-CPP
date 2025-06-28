@@ -41,6 +41,8 @@ public:
     // For buttons
     bool getButtonValue(int button) const;
     ButtonState getButtonState(int button) const;
+    // For scroll wheel
+    const Vector2& getScrollWheel() const;
 
 private:
     // Store mouse position
@@ -50,6 +52,8 @@ private:
     Uint32 prevButtons;
     // Is relative
     bool isRelative;
+    // Scroll wheel
+    Vector2 scrollWheel;
 };
 
 // Wrapper that contains current state of input
@@ -67,6 +71,8 @@ public:
     void prepareForUpdate();
     // Called right after SDL_PollEvents loop
     void update();
+    // Mouse wheel
+    void processEvent(SDL_Event& event);
 
     const InputState& getState() const;
 

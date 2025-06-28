@@ -154,6 +154,10 @@ void Game::processInput() {
             isRunning = false;
             break;
 
+        case SDL_EVENT_MOUSE_WHEEL:
+            inputSystem->processEvent(event);
+            break;
+
         default:
             break;
         }

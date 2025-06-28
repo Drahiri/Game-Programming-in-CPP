@@ -45,6 +45,10 @@ ButtonState MouseState::getButtonState(int button) const {
     }
 }
 
+const Vector2& MouseState::getScrollWheel() const {
+    return scrollWheel;
+}
+
 bool InputSystem::initialize() {
     // Keyboard
     // Assign current state pointer
@@ -66,6 +70,7 @@ void InputSystem::prepareForUpdate() {
 
     // Mouse
     state.mouse.prevButtons = state.mouse.currButtons;
+    state.mouse.scrollWheel = Vector2::Zero;
 }
 
 void InputSystem::update() {
@@ -79,6 +84,17 @@ void InputSystem::update() {
 
     state.mouse.mousePos.x = x;
     state.mouse.mousePos.y = y;
+}
+
+void InputSystem::processEvent(SDL_Event& event) {
+    switch(event.type) {
+    case SDL_EVENT_MOUSE_WHEEL:
+        state.mouse.scrollWheel = Vector2(event.wheel.x, event.wheel.y);
+        break;
+
+    default:
+        break;
+    }
 }
 
 const InputState& InputSystem::getState() const {
