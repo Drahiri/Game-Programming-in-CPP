@@ -65,6 +65,10 @@ public:
     bool getButtonValue(SDL_GamepadButton button) const;
     ButtonState getButtonState(SDL_GamepadButton button) const;
 
+    // For triggers
+    float getLeftTrigger() const;
+    float getRightTrigger() const;
+
     bool getIsConnected() const;
 
 private:
@@ -74,6 +78,9 @@ private:
 
     // Is this gamepad connected?
     bool isConnected;
+
+    float leftTrigger;
+    float rightTrigger;
 };
 
 // Wrapper that contains current state of input
@@ -98,6 +105,8 @@ public:
     const InputState& getState() const;
 
     void setRelativeMouseMode(SDL_Window* window, bool value);
+
+    float filter1D(int input);
 
 private:
     InputState state;

@@ -73,6 +73,14 @@ bool GamepadState::getIsConnected() const {
     return isConnected;
 }
 
+float GamepadState::getLeftTrigger() const {
+    return leftTrigger;
+}
+
+float GamepadState::getRightTrigger() const {
+    return rightTrigger;
+}
+
 bool InputSystem::initialize() {
     // Keyboard
     // Assign current state pointer
@@ -122,6 +130,11 @@ void InputSystem::update() {
     for(int i = 0; i < SDL_GAMEPAD_BUTTON_COUNT; i++) {
         state.gamepad.currButtons[i] = SDL_GetGamepadButton(gamepad, SDL_GamepadButton(i));
     }
+
+    state.gamepad.leftTrigger =
+          filter1D(SDL_GetGamepadAxis(gamepad, SDL_GAMEPAD_AXIS_LEFT_TRIGGER));
+    state.gamepad.rightTrigger =
+          filter1D(SDL_GetGamepadAxis(gamepad, SDL_GAMEPAD_AXIS_RIGHT_TRIGGER));
 }
 
 void InputSystem::processEvent(SDL_Event& event) {
@@ -142,4 +155,29 @@ const InputState& InputSystem::getState() const {
 void InputSystem::setRelativeMouseMode(SDL_Window* window, bool value) {
     SDL_SetWindowRelativeMouseMode(window, value);
     state.mouse.isRelative = value;
+}
+
+float InputSystem::filter1D(int input) {
+    // A value < dead zone is interpreted as 0%
+    const int deadZone = 250;
+    // A value > max value is interpreted as 100%
+    const int maxValue = 30000;
+
+    float retVal = 0.0f;
+
+    // Take absolute value of input
+    int absValue = input > 0 ? input : -input;
+    // Ignore input within dead zone
+    if(absValue > deadZone) {
+        // Compute fractional value between dead zone and max value
+        retVal = static_cast<float>(absValue - deadZone) / (maxValue - deadZone);
+
+        // Make sure sign mastcher original value
+        retVal = input > 0 ? retVal : -1.0f * retVal;
+
+        // Clamp between -1.0f and 1.0f
+        retVal = Math::Clamp(retVal, -1.0f, 1.0f);
+    }
+
+    return retVal;
 }
