@@ -49,6 +49,30 @@ const Vector2& MouseState::getScrollWheel() const {
     return scrollWheel;
 }
 
+bool GamepadState::getButtonValue(SDL_GamepadButton button) const {
+    return currButtons[button];
+}
+
+ButtonState GamepadState::getButtonState(SDL_GamepadButton button) const {
+    if(prevButtons[button] == 0) {
+        if(currButtons[button] == 0) {
+            return ButtonState::None;
+        } else {
+            return ButtonState::Pressed;
+        }
+    } else {
+        if(currButtons[button] == 0) {
+            return ButtonState::Released;
+        } else {
+            return ButtonState::Held;
+        }
+    }
+}
+
+bool GamepadState::getIsConnected() const {
+    return isConnected;
+}
+
 bool InputSystem::initialize() {
     // Keyboard
     // Assign current state pointer
@@ -60,7 +84,11 @@ bool InputSystem::initialize() {
     state.mouse.isRelative = false;
 
     // Gamepad
-    state.gamepad = SDL_OpenGamepad(0);
+    gamepad = SDL_OpenGamepad(0);
+    state.gamepad.isConnected = (gamepad != nullptr);
+    memset(state.gamepad.currButtons, 0, SDL_GAMEPAD_BUTTON_COUNT);
+    memset(state.gamepad.prevButtons, 0, SDL_GAMEPAD_BUTTON_COUNT);
+
     return true;
 }
 
@@ -73,6 +101,9 @@ void InputSystem::prepareForUpdate() {
     // Mouse
     state.mouse.prevButtons = state.mouse.currButtons;
     state.mouse.scrollWheel = Vector2::Zero;
+
+    // Gamepad
+    memcpy(state.gamepad.prevButtons, state.gamepad.currButtons, SDL_GAMEPAD_BUTTON_COUNT);
 }
 
 void InputSystem::update() {
@@ -86,6 +117,11 @@ void InputSystem::update() {
 
     state.mouse.mousePos.x = x;
     state.mouse.mousePos.y = y;
+
+    // Gamepad
+    for(int i = 0; i < SDL_GAMEPAD_BUTTON_COUNT; i++) {
+        state.gamepad.currButtons[i] = SDL_GetGamepadButton(gamepad, SDL_GamepadButton(i));
+    }
 }
 
 void InputSystem::processEvent(SDL_Event& event) {

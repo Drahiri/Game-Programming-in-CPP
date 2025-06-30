@@ -56,11 +56,31 @@ private:
     Vector2 scrollWheel;
 };
 
+// Helper class for gamepads
+class GamepadState {
+public:
+    friend class InputSystem;
+
+    // For buttons
+    bool getButtonValue(SDL_GamepadButton button) const;
+    ButtonState getButtonState(SDL_GamepadButton button) const;
+
+    bool getIsConnected() const;
+
+private:
+    // Current/previous buttons
+    Uint8 currButtons[SDL_GAMEPAD_BUTTON_COUNT];
+    Uint8 prevButtons[SDL_GAMEPAD_BUTTON_COUNT];
+
+    // Is this gamepad connected?
+    bool isConnected;
+};
+
 // Wrapper that contains current state of input
 struct InputState {
     KeyboardState keyboard;
     MouseState mouse;
-    SDL_Gamepad* gamepad;
+    GamepadState gamepad;
 };
 
 class InputSystem {
@@ -81,6 +101,7 @@ public:
 
 private:
     InputState state;
+    SDL_Gamepad* gamepad;
 };
 
 #endif
