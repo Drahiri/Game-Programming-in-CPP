@@ -110,7 +110,9 @@ bool InputSystem::initialize() {
     return true;
 }
 
-void InputSystem::shutdown() {}
+void InputSystem::shutdown() {
+    SDL_CloseGamepad(gamepad);
+}
 
 void InputSystem::prepareForUpdate() {
     // Keyboard
