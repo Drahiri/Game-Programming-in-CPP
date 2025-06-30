@@ -69,6 +69,10 @@ public:
     float getLeftTrigger() const;
     float getRightTrigger() const;
 
+    // For sticks
+    const Vector2& getLeftStick() const;
+    const Vector2& getRightStick() const;
+
     bool getIsConnected() const;
 
 private:
@@ -79,8 +83,13 @@ private:
     // Is this gamepad connected?
     bool isConnected;
 
+    // Triggers
     float leftTrigger;
     float rightTrigger;
+
+    // Sticks
+    Vector2 leftStick;
+    Vector2 rightStick;
 };
 
 // Wrapper that contains current state of input
@@ -107,6 +116,7 @@ public:
     void setRelativeMouseMode(SDL_Window* window, bool value);
 
     float filter1D(int input);
+    Vector2 filter2D(int inputX, int inputY);
 
 private:
     InputState state;

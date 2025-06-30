@@ -81,6 +81,14 @@ float GamepadState::getRightTrigger() const {
     return rightTrigger;
 }
 
+const Vector2& GamepadState::getLeftStick() const {
+    return leftStick;
+}
+
+const Vector2& GamepadState::getRightStick() const {
+    return rightStick;
+}
+
 bool InputSystem::initialize() {
     // Keyboard
     // Assign current state pointer
@@ -135,6 +143,14 @@ void InputSystem::update() {
           filter1D(SDL_GetGamepadAxis(gamepad, SDL_GAMEPAD_AXIS_LEFT_TRIGGER));
     state.gamepad.rightTrigger =
           filter1D(SDL_GetGamepadAxis(gamepad, SDL_GAMEPAD_AXIS_RIGHT_TRIGGER));
+
+    x = SDL_GetGamepadAxis(gamepad, SDL_GAMEPAD_AXIS_LEFTX);
+    y = -SDL_GetGamepadAxis(gamepad, SDL_GAMEPAD_AXIS_LEFTY);
+    state.gamepad.leftStick = filter2D(x, y);
+
+    x = SDL_GetGamepadAxis(gamepad, SDL_GAMEPAD_AXIS_RIGHTX);
+    y = -SDL_GetGamepadAxis(gamepad, SDL_GAMEPAD_AXIS_RIGHTY);
+    state.gamepad.rightStick = filter2D(x, y);
 }
 
 void InputSystem::processEvent(SDL_Event& event) {
@@ -180,4 +196,31 @@ float InputSystem::filter1D(int input) {
     }
 
     return retVal;
+}
+
+Vector2 InputSystem::filter2D(int inputX, int inputY) {
+    const float deadZone = 8000.0f;
+    const float maxValue = 30000.0f;
+
+    // Make into 2D vector
+    Vector2 dir;
+    dir.x = static_cast<float>(inputX);
+    dir.y = static_cast<float>(inputY);
+
+    float length = dir.Length();
+
+    // If length < deadZone, should be no input
+    if(length < deadZone) {
+        dir = Vector2::Zero;
+    } else {
+        // Calculate fractional value between
+        // dead zone and max value circles
+        float f = (length - deadZone) / (maxValue - deadZone);
+        // Clamp f between 0.0f and 1.0f
+        f = Math::Clamp(f, 0.0f, 1.0f);
+        // Normalize the vector, and then scale it to the fractional value
+        dir *= f / length;
+    }
+
+    return dir;
 }
