@@ -100,7 +100,9 @@ bool InputSystem::initialize() {
     state.mouse.isRelative = false;
 
     // Gamepad
-    gamepad = SDL_OpenGamepad(0);
+    int gamepadCount = 0;
+    SDL_JoystickID* gamepads = SDL_GetGamepads(&gamepadCount);
+    gamepad = SDL_OpenGamepad(gamepads[0]);
     state.gamepad.isConnected = (gamepad != nullptr);
     memset(state.gamepad.currButtons, 0, SDL_GAMEPAD_BUTTON_COUNT);
     memset(state.gamepad.prevButtons, 0, SDL_GAMEPAD_BUTTON_COUNT);
