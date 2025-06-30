@@ -59,6 +59,8 @@ bool InputSystem::initialize() {
     // Mouse
     state.mouse.isRelative = false;
 
+    // Gamepad
+    state.gamepad = SDL_OpenGamepad(0);
     return true;
 }
 

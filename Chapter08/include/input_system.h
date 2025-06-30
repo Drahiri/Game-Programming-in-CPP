@@ -60,6 +60,7 @@ private:
 struct InputState {
     KeyboardState keyboard;
     MouseState mouse;
+    SDL_Gamepad* gamepad;
 };
 
 class InputSystem {
