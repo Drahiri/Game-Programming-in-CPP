@@ -20,6 +20,10 @@ private:
     float rightSpeed;
     float downSpeed;
     float laserCooldown;
+
+    Vector2 velocitDir;
+    Vector2 rotationDir;
+    float speed;
 };
 
 #endif
