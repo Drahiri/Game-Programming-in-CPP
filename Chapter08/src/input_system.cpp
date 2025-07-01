@@ -107,6 +107,8 @@ bool InputSystem::initialize() {
     memset(state.gamepad.currButtons, 0, SDL_GAMEPAD_BUTTON_COUNT);
     memset(state.gamepad.prevButtons, 0, SDL_GAMEPAD_BUTTON_COUNT);
 
+    SDL_free(gamepads);
+
     return true;
 }
 
