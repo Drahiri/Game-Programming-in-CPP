@@ -101,19 +101,27 @@ bool InputSystem::initialize() {
 
     // Gamepad
     int gamepadCount = 0;
-    SDL_JoystickID* gamepads = SDL_GetGamepads(&gamepadCount);
-    gamepad = SDL_OpenGamepad(gamepads[0]);
-    state.gamepad.isConnected = (gamepad != nullptr);
-    memset(state.gamepad.currButtons, 0, SDL_GAMEPAD_BUTTON_COUNT);
-    memset(state.gamepad.prevButtons, 0, SDL_GAMEPAD_BUTTON_COUNT);
+    SDL_JoystickID* connectedGamepads = SDL_GetGamepads(&gamepadCount);
+    for(int i = 0; i < gamepadCount; i++) {
+        if(i < gamepads.size()) {
+            gamepads[i] = SDL_OpenGamepad(connectedGamepads[i]);
+            state.gamepads[i].isConnected = (gamepads[i] != nullptr);
+            memset(state.gamepads[i].currButtons, 0, SDL_GAMEPAD_BUTTON_COUNT);
+            memset(state.gamepads[i].prevButtons, 0, SDL_GAMEPAD_BUTTON_COUNT);
+        }
+    }
 
-    SDL_free(gamepads);
+    SDL_free(connectedGamepads);
 
     return true;
 }
 
 void InputSystem::shutdown() {
-    SDL_CloseGamepad(gamepad);
+    for(int i = 0; i < gamepads.size(); i++) {
+        if(gamepads[i] != nullptr) {
+            SDL_CloseGamepad(gamepads[i]);
+        }
+    }
 }
 
 void InputSystem::prepareForUpdate() {
@@ -125,7 +133,13 @@ void InputSystem::prepareForUpdate() {
     state.mouse.scrollWheel = Vector2::Zero;
 
     // Gamepad
-    memcpy(state.gamepad.prevButtons, state.gamepad.currButtons, SDL_GAMEPAD_BUTTON_COUNT);
+    for(int i = 0; i < gamepads.size(); i++) {
+        if(gamepads[i] != nullptr) {
+            memcpy(state.gamepads[i].prevButtons,
+                  state.gamepads[i].currButtons,
+                  SDL_GAMEPAD_BUTTON_COUNT);
+        }
+    }
 }
 
 void InputSystem::update() {
@@ -141,22 +155,29 @@ void InputSystem::update() {
     state.mouse.mousePos.y = y;
 
     // Gamepad
-    for(int i = 0; i < SDL_GAMEPAD_BUTTON_COUNT; i++) {
-        state.gamepad.currButtons[i] = SDL_GetGamepadButton(gamepad, SDL_GamepadButton(i));
+    for(int j = 0; j < gamepads.size(); j++) {
+        if(gamepads[j] == nullptr) {
+            continue;
+        }
+
+        for(int i = 0; i < SDL_GAMEPAD_BUTTON_COUNT; i++) {
+            state.gamepads[j].currButtons[i] =
+                  SDL_GetGamepadButton(gamepads[j], SDL_GamepadButton(i));
+        }
+
+        state.gamepads[j].leftTrigger =
+              filter1D(SDL_GetGamepadAxis(gamepads[j], SDL_GAMEPAD_AXIS_LEFT_TRIGGER));
+        state.gamepads[j].rightTrigger =
+              filter1D(SDL_GetGamepadAxis(gamepads[j], SDL_GAMEPAD_AXIS_RIGHT_TRIGGER));
+
+        x = SDL_GetGamepadAxis(gamepads[j], SDL_GAMEPAD_AXIS_LEFTX);
+        y = -SDL_GetGamepadAxis(gamepads[j], SDL_GAMEPAD_AXIS_LEFTY);
+        state.gamepads[j].leftStick = filter2D(x, y);
+
+        x = SDL_GetGamepadAxis(gamepads[j], SDL_GAMEPAD_AXIS_RIGHTX);
+        y = -SDL_GetGamepadAxis(gamepads[j], SDL_GAMEPAD_AXIS_RIGHTY);
+        state.gamepads[j].rightStick = filter2D(x, y);
     }
-
-    state.gamepad.leftTrigger =
-          filter1D(SDL_GetGamepadAxis(gamepad, SDL_GAMEPAD_AXIS_LEFT_TRIGGER));
-    state.gamepad.rightTrigger =
-          filter1D(SDL_GetGamepadAxis(gamepad, SDL_GAMEPAD_AXIS_RIGHT_TRIGGER));
-
-    x = SDL_GetGamepadAxis(gamepad, SDL_GAMEPAD_AXIS_LEFTX);
-    y = -SDL_GetGamepadAxis(gamepad, SDL_GAMEPAD_AXIS_LEFTY);
-    state.gamepad.leftStick = filter2D(x, y);
-
-    x = SDL_GetGamepadAxis(gamepad, SDL_GAMEPAD_AXIS_RIGHTX);
-    y = -SDL_GetGamepadAxis(gamepad, SDL_GAMEPAD_AXIS_RIGHTY);
-    state.gamepad.rightStick = filter2D(x, y);
 }
 
 void InputSystem::processEvent(SDL_Event& event) {

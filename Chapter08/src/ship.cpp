@@ -29,14 +29,14 @@ void Ship::updateActor(float deltaTime) {
 }
 
 void Ship::actorInput(const InputState& inState) {
-    if(inState.gamepad.getIsConnected()) {
-        velocitDir = inState.gamepad.getLeftStick();
-        if(!Math::NearZero(inState.gamepad.getRightStick().Length())) {
-            rotationDir = inState.gamepad.getRightStick();
+    if(inState.gamepads[0].getIsConnected()) {
+        velocitDir = inState.gamepads[0].getLeftStick();
+        if(!Math::NearZero(inState.gamepads[0].getRightStick().Length())) {
+            rotationDir = inState.gamepads[0].getRightStick();
         }
     }
 
-    if(inState.gamepad.getRightTrigger() > 0.25f && laserCooldown <= 0.0f) {
+    if(inState.gamepads[0].getRightTrigger() > 0.25f && laserCooldown <= 0.0f) {
         // Create a laser and set it's position/rotation
         Laser* laser = new Laser(getGame());
         laser->setPosition(getPosition());

@@ -3,6 +3,7 @@
 
 #include "math.h"
 
+#include <array>
 #include <SDL3/SDL.h>
 
 // The different button states
@@ -96,7 +97,7 @@ private:
 struct InputState {
     KeyboardState keyboard;
     MouseState mouse;
-    GamepadState gamepad;
+    std::array<GamepadState, 4> gamepads;
 };
 
 class InputSystem {
@@ -120,7 +121,7 @@ public:
 
 private:
     InputState state;
-    SDL_Gamepad* gamepad;
+    std::array<SDL_Gamepad*, 4> gamepads;
 };
 
 #endif
