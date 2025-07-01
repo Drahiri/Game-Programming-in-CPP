@@ -120,6 +120,10 @@ public:
     Vector2 filter2D(int inputX, int inputY);
 
 private:
+    // Helper functions
+    void addGamepad(SDL_JoystickID id);
+    void removeGamepad(SDL_JoystickID id);
+
     InputState state;
     std::array<SDL_Gamepad*, 4> gamepads;
 };

@@ -99,20 +99,6 @@ bool InputSystem::initialize() {
     // Mouse
     state.mouse.isRelative = false;
 
-    // Gamepad
-    int gamepadCount = 0;
-    SDL_JoystickID* connectedGamepads = SDL_GetGamepads(&gamepadCount);
-    for(int i = 0; i < gamepadCount; i++) {
-        if(i < gamepads.size()) {
-            gamepads[i] = SDL_OpenGamepad(connectedGamepads[i]);
-            state.gamepads[i].isConnected = (gamepads[i] != nullptr);
-            memset(state.gamepads[i].currButtons, 0, SDL_GAMEPAD_BUTTON_COUNT);
-            memset(state.gamepads[i].prevButtons, 0, SDL_GAMEPAD_BUTTON_COUNT);
-        }
-    }
-
-    SDL_free(connectedGamepads);
-
     return true;
 }
 
@@ -186,8 +172,49 @@ void InputSystem::processEvent(SDL_Event& event) {
         state.mouse.scrollWheel = Vector2(event.wheel.x, event.wheel.y);
         break;
 
+    case SDL_EVENT_GAMEPAD_ADDED:
+        addGamepad(event.gdevice.which);
+        break;
+
+    case SDL_EVENT_GAMEPAD_REMOVED:
+        removeGamepad(event.gdevice.which);
+        break;
+
     default:
         break;
+    }
+}
+
+void InputSystem::addGamepad(SDL_JoystickID id) {
+    // Find if there's slot
+    int i = 0;
+    for(; i < gamepads.size(); i++) {
+        if(gamepads[i] == nullptr) {
+            break;
+        }
+    }
+    if(i == gamepads.size()) {
+        SDL_Log("Can't add gamepad. Too many");
+        return;
+    }
+
+    gamepads[i] = SDL_OpenGamepad(id);
+    state.gamepads[i].isConnected = (gamepads[i] != nullptr);
+    memset(state.gamepads[i].currButtons, 0, SDL_GAMEPAD_BUTTON_COUNT);
+    memset(state.gamepads[i].prevButtons, 0, SDL_GAMEPAD_BUTTON_COUNT);
+}
+
+void InputSystem::removeGamepad(SDL_JoystickID id) {
+    for(int i = 0; i < gamepads.size(); i++) {
+        if(gamepads[i] == nullptr) {
+            continue;
+        }
+
+        if(SDL_GetGamepadID(gamepads[i]) == id) {
+            SDL_CloseGamepad(gamepads[i]);
+            gamepads[i] = nullptr;
+            break;
+        }
     }
 }
 
