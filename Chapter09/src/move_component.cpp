@@ -7,7 +7,8 @@
 MoveComponent::MoveComponent(Actor* owner, int updateOrder) :
     Component(owner, updateOrder),
     angularSpeed(0.0f),
-    forwardSpeed(0.0f) {
+    forwardSpeed(0.0f),
+    strafeSpeed(0.0f) {
     screenSize.x = owner->getGame()->getRenderer()->getScreenWidth();
     screenSize.y = owner->getGame()->getRenderer()->getScreenHeight();
 }
@@ -24,9 +25,11 @@ void MoveComponent::update(float deltaTime) {
         owner->setRotation(rot);
     }
 
-    if(!Math::NearZero(forwardSpeed)) {
+    if(!Math::NearZero(forwardSpeed) || !Math::NearZero(strafeSpeed)) {
         Vector3 pos = owner->getPosition();
         pos += owner->getForward() * forwardSpeed * deltaTime;
+        // Update position based on strafe
+        pos += owner->getRight() * strafeSpeed * deltaTime;
         owner->setPosition(pos);
     }
 }
@@ -45,4 +48,12 @@ float MoveComponent::getForwardSpeed() const {
 
 void MoveComponent::setForwardSpeed(float speed) {
     forwardSpeed = speed;
+}
+
+float MoveComponent::getStrafeSpeed() const {
+    return strafeSpeed;
+}
+
+void MoveComponent::setStrafeSpeed(float speed) {
+    strafeSpeed = speed;
 }

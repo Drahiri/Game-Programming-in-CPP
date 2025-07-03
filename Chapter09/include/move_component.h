@@ -17,11 +17,16 @@ public:
     float getForwardSpeed() const;
     void setForwardSpeed(float speed);
 
+    float getStrafeSpeed() const;
+    void setStrafeSpeed(float speed);
+
 private:
     // Controls rotation (radians/second)
     float angularSpeed;
     // Controls forward movement (units/second)
     float forwardSpeed;
+    // Controls strafe speed
+    float strafeSpeed;
 
     // Screen size
     Vector2 screenSize;
