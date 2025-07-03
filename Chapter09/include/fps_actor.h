@@ -14,6 +14,9 @@ public:
     FPSActor(Game* game);
 
     void actorInput(const bool* keyState) override;
+    void updateActor(float deltaTime) override;
+
+    void setFootstepSurface(float value);
 
 private:
     MoveComponent* moveComp;

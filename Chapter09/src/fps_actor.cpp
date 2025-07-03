@@ -1,9 +1,11 @@
 #include "fps_actor.h"
 
 #include "audio_component.h"
+#include "audio_system.h"
 #include "game.h"
 #include "mesh_component.h"
 #include "move_component.h"
+#include "renderer.h"
 
 FPSActor::FPSActor(Game* game) : Actor(game) {
     moveComp = new MoveComponent(this);
@@ -51,4 +53,31 @@ void FPSActor::actorInput(const bool* keyState) {
     }
 
     moveComp->setAngularSpeed(angularSpeed);
+}
+
+void FPSActor::updateActor(float deltaTime) {
+    Actor::updateActor(deltaTime);
+
+    // Play the footstep if we're moving and havent't recently
+    lastFootstep -= deltaTime;
+    if(!Math::NearZero(moveComp->getForwardSpeed()) && lastFootstep <= 0.0f) {
+        footstep.setPaused(false);
+        footstep.restart();
+        lastFootstep = 0.5f;
+    }
+
+    // Compute new camera from this actor
+    Vector3 cameraPos = getPosition();
+    Vector3 target = getPosition() + getForward() * 100.0f;
+    Vector3 up = Vector3::UnitZ;
+    Matrix4 view = Matrix4::CreateLookAt(cameraPos, target, up);
+    getGame()->getRenderer()->setViewMatrix(view);
+    getGame()->getAudioSystem()->setListener(view);
+}
+
+void FPSActor::setFootstepSurface(float value) {
+    // Pause here because the way parameter is setup for FMOD
+    // changing it will play a footstep
+    footstep.setPaused(true);
+    footstep.setParameter("Surface", value);
 }
