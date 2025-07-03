@@ -32,4 +32,23 @@ void FPSActor::actorInput(const bool* keyState) {
 
     moveComp->setForwardSpeed(forwardSpeed);
     moveComp->setStrafeSpeed(strafeSpeed);
+
+    // Mouse
+    float x, y;
+    Uint32 buttons = SDL_GetRelativeMouseState(&x, &y);
+
+    // Assume mouse movement is usually between -500 and 500
+    const int maxMouseSpeed = 500;
+    // Rotation/sec at maximum speed
+    const float maxAngularSpeed = Math::Pi * 8;
+    float angularSpeed = 0.0f;
+
+    if(x != 0) {
+        // Convert to approximatedly [-1.0, 1.0]
+        angularSpeed = x / maxMouseSpeed;
+        // Multiply by rotation/sec
+        angularSpeed *= maxAngularSpeed;
+    }
+
+    moveComp->setAngularSpeed(angularSpeed);
 }

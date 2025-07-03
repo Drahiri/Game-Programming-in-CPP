@@ -80,6 +80,8 @@ bool Renderer::initialize(float windowWidth, float windowHeight) {
         return false;
     }
 
+    SDL_SetWindowRelativeMouseMode(window, true);
+
     // Create quad for drawing sprites
     createSpriteVerts();
 
