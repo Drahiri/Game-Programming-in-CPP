@@ -85,6 +85,11 @@ Vector3 Actor::getForward() const {
     return Vector3::Transform(Vector3::UnitX, rotation);
 }
 
+Vector3 Actor::getRight() const {
+    // Rotate right axis using quaternion rotation
+    return Vector3::Transform(Vector3::UnitY, rotation);
+}
+
 void Actor::processInput(const bool* keyState) {
     if(state == State::Active) {
         for(auto comp: components) {

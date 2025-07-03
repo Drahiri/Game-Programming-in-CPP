@@ -42,6 +42,7 @@ public:
     void setRotation(const Quaternion& newRotation);
 
     Vector3 getForward() const;
+    Vector3 getRight() const;
 
     Game* getGame() const;
 
