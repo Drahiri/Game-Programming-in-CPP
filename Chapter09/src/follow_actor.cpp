@@ -28,7 +28,7 @@ void FollowActor::actorInput(const bool* keys) {
     if(keys[SDL_SCANCODE_A]) {
         angularSpeed -= Math::Pi;
     }
-    if(keys[SDL_SCANCODE_S]) {
+    if(keys[SDL_SCANCODE_D]) {
         angularSpeed += Math::Pi;
     }
 
