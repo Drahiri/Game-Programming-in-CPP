@@ -81,6 +81,8 @@ bool Renderer::initialize(float windowWidth, float windowHeight) {
     }
 
     SDL_SetWindowRelativeMouseMode(window, true);
+    // Make an initial call to get relative to clear out
+    SDL_GetRelativeMouseState(nullptr, nullptr);
 
     // Create quad for drawing sprites
     createSpriteVerts();
