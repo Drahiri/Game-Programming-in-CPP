@@ -81,3 +81,9 @@ void SplineCamera::setSpline(const Spline& spline) {
 void SplineCamera::setPaused(bool pause) {
     paused = pause;
 }
+
+void SplineCamera::restart() {
+    index = 1;
+    t = 0.0f;
+    paused = false;
+}

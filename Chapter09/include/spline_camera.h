@@ -31,6 +31,8 @@ public:
     void setSpline(const Spline& spline);
     void setPaused(bool pause);
 
+    void restart();
+
 private:
     // Spline path camera follows
     Spline path;
