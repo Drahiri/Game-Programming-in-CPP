@@ -139,7 +139,9 @@ void Renderer::draw() {
     setLightUniforms(meshShader);
 
     for(auto mc: meshComps) {
-        mc->draw(meshShader);
+        if(mc->getVisible()) {
+            mc->draw(meshShader);
+        }
     }
 
     // Draw all sprite components
@@ -154,7 +156,9 @@ void Renderer::draw() {
     spriteShader->setActive();
     spriteVerts->setActive();
     for(auto sprite: sprites) {
-        sprite->draw(spriteShader);
+        if(sprite->getVisible()) {
+            sprite->draw(spriteShader);
+        }
     }
 
     // Swap the buffers, which also display the scene
