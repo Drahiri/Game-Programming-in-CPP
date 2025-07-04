@@ -25,6 +25,8 @@ private:
     MeshComponent* meshComp;
     FPSCamera* cameraComp;
 
+    Actor* fpsModel;
+
     SoundEvent footstep;
     float lastFootstep;
 };

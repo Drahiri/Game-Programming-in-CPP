@@ -16,6 +16,11 @@ FPSActor::FPSActor(Game* game) : Actor(game) {
     lastFootstep = 0.0f;
     footstep = audioComp->playEvent("event:/Footstep");
     footstep.setPaused(true);
+
+    fpsModel = new Actor(game);
+    fpsModel->setScale(0.75f);
+    meshComp = new MeshComponent(fpsModel);
+    meshComp->setMesh(game->getRenderer()->getMesh("assets/Rifle.gpmesh"));
 }
 
 void FPSActor::actorInput(const bool* keyState) {
@@ -80,13 +85,20 @@ void FPSActor::updateActor(float deltaTime) {
         lastFootstep = 0.5f;
     }
 
-    // Compute new camera from this actor
-    Vector3 cameraPos = getPosition();
-    Vector3 target = getPosition() + getForward() * 100.0f;
-    Vector3 up = Vector3::UnitZ;
-    Matrix4 view = Matrix4::CreateLookAt(cameraPos, target, up);
-    getGame()->getRenderer()->setViewMatrix(view);
-    getGame()->getAudioSystem()->setListener(view);
+    // Update position of FPS model relative to actor position
+    const Vector3 modelOffset(Vector3(10.0f, 10.0f, -10.0f));
+    Vector3 modelPos = getPosition();
+    modelPos += getForward() * modelOffset.x;
+    modelPos += getRight() * modelOffset.y;
+    modelPos.z += modelOffset.z;
+    fpsModel->setPosition(modelPos);
+
+    // Initialize rotation to actor rotation
+    Quaternion q = getRotation();
+
+    // Rotate by pitch from camera
+    q = Quaternion::Concatenate(q, Quaternion(getRight(), cameraComp->getPitch()));
+    fpsModel->setRotation(q);
 }
 
 void FPSActor::setFootstepSurface(float value) {
