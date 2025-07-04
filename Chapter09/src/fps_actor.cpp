@@ -2,6 +2,7 @@
 
 #include "audio_component.h"
 #include "audio_system.h"
+#include "fps_camera.h"
 #include "game.h"
 #include "mesh_component.h"
 #include "move_component.h"
@@ -10,6 +11,8 @@
 FPSActor::FPSActor(Game* game) : Actor(game) {
     moveComp = new MoveComponent(this);
     audioComp = new AudioComponent(this);
+    cameraComp = new FPSCamera(this);
+
     lastFootstep = 0.0f;
     footstep = audioComp->playEvent("event:/Footstep");
     footstep.setPaused(true);
@@ -46,13 +49,24 @@ void FPSActor::actorInput(const bool* keyState) {
     float angularSpeed = 0.0f;
 
     if(x != 0) {
-        // Convert to approximatedly [-1.0, 1.0]
+        // Convert to approximately [-1.0, 1.0]
         angularSpeed = x / maxMouseSpeed;
         // Multiply by rotation/sec
         angularSpeed *= maxAngularSpeed;
     }
 
     moveComp->setAngularSpeed(angularSpeed);
+
+    // Compute pitch
+    const float maxPitchSpeed = Math::Pi * 8;
+    float pitchSpeed = 0.0f;
+    if(y != 0) {
+        // Convert to [-1.0, 1.0]
+        pitchSpeed = y / maxPitchSpeed;
+        pitchSpeed *= maxPitchSpeed;
+    }
+
+    cameraComp->setPitchSpeed(pitchSpeed);
 }
 
 void FPSActor::updateActor(float deltaTime) {

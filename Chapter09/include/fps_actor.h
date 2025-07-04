@@ -8,6 +8,7 @@ class Game;
 class AudioComponent;
 class MeshComponent;
 class MoveComponent;
+class FPSCamera;
 
 class FPSActor : public Actor {
 public:
@@ -22,6 +23,7 @@ private:
     MoveComponent* moveComp;
     AudioComponent* audioComp;
     MeshComponent* meshComp;
+    FPSCamera* cameraComp;
 
     SoundEvent footstep;
     float lastFootstep;
