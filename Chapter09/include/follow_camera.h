@@ -13,10 +13,12 @@ public:
     void update(float deltaTime) override;
 
     Vector3 computeCameraPos() const;
+    void snapToIdeal();
 
     void setHorzDist(float dist);
     void setVertDist(float dist);
     void setTargetDist(float dist);
+    void setSpringConstant(float spring);
 
 private:
     // Horizontal follow distance
@@ -25,6 +27,13 @@ private:
     float vertDist;
     // TargetDistance
     float targetDist;
+
+    // Spring constant (higher is stiffier);
+    float springConstant;
+
+    // Actual position of camera
+    Vector3 actualPos;
+    Vector3 velocity;
 };
 
 #endif
