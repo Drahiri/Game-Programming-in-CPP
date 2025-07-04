@@ -14,6 +14,7 @@ class FollowActor;
 class FPSActor;
 class OrbitActor;
 class Renderer;
+class SplineActor;
 class SpriteComponent;
 
 class Game {
@@ -57,6 +58,7 @@ private:
     FPSActor* fpsActor;
     FollowActor* followActor;
     OrbitActor* orbitActor;
+    SplineActor* splineActor;
     SpriteComponent* crosshair;
     SoundEvent musicEvent;
     SoundEvent reverbSnap;

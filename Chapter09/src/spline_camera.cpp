@@ -61,7 +61,7 @@ void SplineCamera::update(float deltaTime) {
 
     // Camera position is the spline at the current t/index
     Vector3 cameraPos = path.compute(index, t);
-    // Target point is juzst a small delta aread of the spline
+    // Target point is just a small delta ahead of the spline
     Vector3 target = path.compute(index, t + 0.01f);
     // Assume spline doesn't flip upside down
     const Vector3 up = Vector3::UnitZ;

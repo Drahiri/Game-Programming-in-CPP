@@ -9,6 +9,7 @@
 #include "orbit_actor.h"
 #include "plane_actor.h"
 #include "renderer.h"
+#include "spline_actor.h"
 #include "sprite_component.h"
 
 #include <algorithm>
@@ -157,6 +158,7 @@ void Game::handleKeyPress(int key) {
     case '1':
     case '2':
     case '3':
+    case '4':
         changeCamera(key);
         break;
 
@@ -301,6 +303,7 @@ void Game::loadData() {
     fpsActor = new FPSActor(this);
     followActor = new FollowActor(this);
     orbitActor = new OrbitActor(this);
+    splineActor = new SplineActor(this);
 
     changeCamera('1');
 }
@@ -321,6 +324,7 @@ void Game::changeCamera(int mode) {
     followActor->setVisible(false);
     orbitActor->setState(Actor::State::Paused);
     orbitActor->setVisible(false);
+    splineActor->setState(Actor::State::Paused);
 
     // Enable the camera specified by the mode
     switch(mode) {
@@ -340,5 +344,9 @@ void Game::changeCamera(int mode) {
         orbitActor->setState(Actor::State::Active);
         orbitActor->setVisible(true);
         break;
+
+    case '4':
+        splineActor->setState(Actor::State::Active);
+        splineActor->restartSpline();
     }
 }
