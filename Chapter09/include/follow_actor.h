@@ -14,6 +14,8 @@ public:
 
     void actorInput(const bool* keys) override;
 
+    void setVisible(bool visible);
+
 private:
     MoveComponent* moveComp;
     FollowCamera* cameraComp;

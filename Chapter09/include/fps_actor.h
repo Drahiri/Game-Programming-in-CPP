@@ -19,6 +19,8 @@ public:
 
     void setFootstepSurface(float value);
 
+    void setVisible(bool visible);
+
 private:
     MoveComponent* moveComp;
     AudioComponent* audioComp;

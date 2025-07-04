@@ -107,3 +107,7 @@ void FPSActor::setFootstepSurface(float value) {
     footstep.setPaused(true);
     footstep.setParameter("Surface", value);
 }
+
+void FPSActor::setVisible(bool visible) {
+    meshComp->setVisible(visible);
+}

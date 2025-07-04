@@ -42,3 +42,7 @@ void FollowActor::actorInput(const bool* keys) {
         cameraComp->setHorzDist(350.0f);
     }
 }
+
+void FollowActor::setVisible(bool visible) {
+    meshComp->setVisible(visible);
+}
