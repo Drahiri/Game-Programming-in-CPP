@@ -22,9 +22,13 @@ public:
 
     void setTextureIndex(size_t index);
 
+    void setVisible(bool visible);
+    bool getVisible() const;
+
 protected:
     Mesh* mesh;
     size_t textureIndex;
+    bool isVisible;
 };
 
 #endif

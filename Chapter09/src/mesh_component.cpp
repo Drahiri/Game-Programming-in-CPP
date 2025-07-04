@@ -8,7 +8,11 @@
 #include "texture.h"
 #include "vertex_array.h"
 
-MeshComponent::MeshComponent(Actor* owner) : Component(owner), mesh(nullptr), textureIndex(0) {
+MeshComponent::MeshComponent(Actor* owner) :
+    Component(owner),
+    mesh(nullptr),
+    textureIndex(0),
+    isVisible(true) {
     owner->getGame()->getRenderer()->addMeshComp(this);
 }
 
@@ -45,4 +49,12 @@ void MeshComponent::setMesh(Mesh* mesh) {
 
 void MeshComponent::setTextureIndex(size_t index) {
     textureIndex = index;
+}
+
+void MeshComponent::setVisible(bool visible) {
+    isVisible = visible;
+}
+
+bool MeshComponent::getVisible() const {
+    return isVisible;
 }
