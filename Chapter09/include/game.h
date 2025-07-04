@@ -12,6 +12,7 @@ class Actor;
 class AudioSystem;
 class FollowActor;
 class FPSActor;
+class OrbitActor;
 class Renderer;
 class SpriteComponent;
 
@@ -55,6 +56,7 @@ private:
     // Game-specific code
     FPSActor* fpsActor;
     FollowActor* followActor;
+    OrbitActor* orbitActor;
     SpriteComponent* crosshair;
     SoundEvent musicEvent;
     SoundEvent reverbSnap;

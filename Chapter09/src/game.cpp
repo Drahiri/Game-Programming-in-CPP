@@ -6,6 +6,7 @@
 #include "follow_actor.h"
 #include "fps_actor.h"
 #include "mesh_component.h"
+#include "orbit_actor.h"
 #include "plane_actor.h"
 #include "renderer.h"
 #include "sprite_component.h"
@@ -155,6 +156,7 @@ void Game::handleKeyPress(int key) {
 
     case '1':
     case '2':
+    case '3':
         changeCamera(key);
         break;
 
@@ -298,6 +300,7 @@ void Game::loadData() {
 
     fpsActor = new FPSActor(this);
     followActor = new FollowActor(this);
+    orbitActor = new OrbitActor(this);
 
     changeCamera('1');
 }
@@ -316,6 +319,8 @@ void Game::changeCamera(int mode) {
     crosshair->setVisible(false);
     followActor->setState(Actor::State::Paused);
     followActor->setVisible(false);
+    orbitActor->setState(Actor::State::Paused);
+    orbitActor->setVisible(false);
 
     // Enable the camera specified by the mode
     switch(mode) {
@@ -329,6 +334,11 @@ void Game::changeCamera(int mode) {
     case '2':
         followActor->setState(Actor::State::Active);
         followActor->setVisible(true);
+        break;
+
+    case '3':
+        orbitActor->setState(Actor::State::Active);
+        orbitActor->setVisible(true);
         break;
     }
 }
