@@ -9,9 +9,10 @@
 #include <vector>
 
 class Actor;
-class Renderer;
-class CameraActor;
 class AudioSystem;
+class FPSActor;
+class Renderer;
+class SpriteComponent;
 
 class Game {
 public:
@@ -51,7 +52,8 @@ private:
     std::vector<Actor*> pendingActors;
 
     // Game-specific code
-    CameraActor* cameraActor;
+    FPSActor* fpsActor;
+    SpriteComponent* crosshair;
     SoundEvent musicEvent;
     SoundEvent reverbSnap;
 };

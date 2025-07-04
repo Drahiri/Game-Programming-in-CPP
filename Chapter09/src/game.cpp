@@ -3,7 +3,7 @@
 #include "actor.h"
 #include "audio_component.h"
 #include "audio_system.h"
-#include "camera_actor.h"
+#include "fps_actor.h"
 #include "mesh_component.h"
 #include "plane_actor.h"
 #include "renderer.h"
@@ -152,33 +152,6 @@ void Game::handleKeyPress(int key) {
         break;
     }
 
-    case 'e':
-        // Play expliosion
-        audioSystem->playEvent("event:/Explosion2D");
-        break;
-
-    case 'm':
-        musicEvent.setPaused(!musicEvent.getPaused());
-        break;
-
-    case 'r':
-        // Stop or start reverb snapshot
-        if(!reverbSnap.isValid()) {
-            reverbSnap = audioSystem->playEvent("snapshot:/WithReverb");
-        } else {
-            reverbSnap.stop();
-        }
-        break;
-
-    case '1':
-        // Set default footstep surface
-        cameraActor->setFootstepSurface(0.0f);
-        break;
-
-    case '2':
-        cameraActor->setFootstepSurface(0.5f);
-        break;
-
     default:
         break;
     }
@@ -297,9 +270,6 @@ void Game::loadData() {
     dir.diffuseColor = Vector3(0.78f, 0.88f, 1.0f);
     dir.specColor = Vector3(0.8f, 0.8f, 0.8f);
 
-    // Camera actor
-    cameraActor = new CameraActor(this);
-
     // // UI elements
     a = new Actor(this);
     a->setPosition(Vector3(-350.0f, -350.0f, 0.0f));
@@ -307,23 +277,20 @@ void Game::loadData() {
     sc->setTexture(renderer->getTexture("assets/HealthBar.png"));
 
     a = new Actor(this);
-    a->setPosition(Vector3(375.0f, -275.0f, 0.0f));
+    a->setPosition(Vector3(-390.0f, 275.0f, 0.0f));
     a->setScale(0.75f);
     sc = new SpriteComponent(a);
     sc->setTexture(renderer->getTexture("assets/Radar.png"));
 
-    // Create spheres with audio components playing different sounds
     a = new Actor(this);
-    a->setPosition(Vector3(500.0f, -75.0f, 0.0f));
-    a->setScale(1.0f);
-
-    mc = new MeshComponent(a);
-    mc->setMesh(renderer->getMesh("assets/Sphere.gpmesh"));
-    AudioComponent* ac = new AudioComponent(a);
-    ac->playEvent("event:/FireLoop");
+    a->setScale(2.0f);
+    crosshair = new SpriteComponent(a);
+    crosshair->setTexture(renderer->getTexture("assets/Crosshair.png"));
 
     // Start music
     musicEvent = audioSystem->playEvent("event:/Music");
+
+    fpsActor = new FPSActor(this);
 }
 
 void Game::unloadData() {

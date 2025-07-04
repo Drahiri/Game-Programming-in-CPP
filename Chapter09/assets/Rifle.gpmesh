@@ -3,7 +3,7 @@
 	"vertexformat":"PosNormTex",
 	"shader":"BasicMesh",
 	"textures":[
-		"Assets/Rifle.png"
+		"assets/Rifle.png"
 	],
 	"specularPower":100.0,
 	"vertices":[

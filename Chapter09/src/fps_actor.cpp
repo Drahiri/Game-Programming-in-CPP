@@ -67,7 +67,7 @@ void FPSActor::actorInput(const bool* keyState) {
     float pitchSpeed = 0.0f;
     if(y != 0) {
         // Convert to [-1.0, 1.0]
-        pitchSpeed = y / maxPitchSpeed;
+        pitchSpeed = y / maxMouseSpeed;
         pitchSpeed *= maxPitchSpeed;
     }
 
