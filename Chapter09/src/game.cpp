@@ -3,6 +3,7 @@
 #include "actor.h"
 #include "audio_component.h"
 #include "audio_system.h"
+#include "follow_actor.h"
 #include "fps_actor.h"
 #include "mesh_component.h"
 #include "plane_actor.h"
@@ -152,6 +153,11 @@ void Game::handleKeyPress(int key) {
         break;
     }
 
+    case '1':
+    case '2':
+        changeCamera(key);
+        break;
+
     default:
         break;
     }
@@ -291,11 +297,38 @@ void Game::loadData() {
     musicEvent = audioSystem->playEvent("event:/Music");
 
     fpsActor = new FPSActor(this);
+    followActor = new FollowActor(this);
+
+    changeCamera('1');
 }
 
 void Game::unloadData() {
     // Delete actors
     while(!actors.empty()) {
         delete actors.back();
+    }
+}
+
+void Game::changeCamera(int mode) {
+    // Disable everything
+    fpsActor->setState(Actor::State::Paused);
+    fpsActor->setVisible(false);
+    crosshair->setVisible(false);
+    followActor->setState(Actor::State::Paused);
+    followActor->setVisible(false);
+
+    // Enable the camera specified by the mode
+    switch(mode) {
+    case '1':
+    default:
+        fpsActor->setState(Actor::State::Active);
+        fpsActor->setVisible(true);
+        crosshair->setVisible(true);
+        break;
+
+    case '2':
+        followActor->setState(Actor::State::Active);
+        followActor->setVisible(true);
+        break;
     }
 }

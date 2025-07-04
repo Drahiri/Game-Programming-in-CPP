@@ -10,6 +10,7 @@
 
 class Actor;
 class AudioSystem;
+class FollowActor;
 class FPSActor;
 class Renderer;
 class SpriteComponent;
@@ -53,9 +54,11 @@ private:
 
     // Game-specific code
     FPSActor* fpsActor;
+    FollowActor* followActor;
     SpriteComponent* crosshair;
     SoundEvent musicEvent;
     SoundEvent reverbSnap;
+    void changeCamera(int mode);
 };
 
 #endif

@@ -3,7 +3,7 @@
 	"vertexformat":"PosNormTex",
 	"shader":"BasicMesh",
 	"textures":[
-		"Assets/RacingCar.png"
+		"assets/RacingCar.png"
 	],
 	"specularPower":100.0,
 	"vertices":[
