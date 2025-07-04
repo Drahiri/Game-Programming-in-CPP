@@ -22,6 +22,9 @@ public:
     int getTexHeight() const;
     int getTexWidth() const;
 
+    void setVisible(bool visible);
+    bool getVisible() const;
+
 protected:
     // Texture to draw
     Texture* texture;
@@ -29,6 +32,8 @@ protected:
     int drawOrder;
     int texHeight;
     int texWidth;
+
+    bool isVisible;
 };
 
 #endif

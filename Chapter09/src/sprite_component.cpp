@@ -13,7 +13,8 @@ SpriteComponent::SpriteComponent(Actor* owner, int drawOrder) :
     drawOrder(drawOrder),
     texture(nullptr),
     texHeight(0),
-    texWidth(0) {
+    texWidth(0),
+    isVisible(true) {
     this->owner->getGame()->getRenderer()->addSprite(this);
 }
 
@@ -58,4 +59,12 @@ int SpriteComponent::getTexHeight() const {
 
 int SpriteComponent::getTexWidth() const {
     return texWidth;
+}
+
+void SpriteComponent::setVisible(bool visible) {
+    isVisible = visible;
+}
+
+bool SpriteComponent::getVisible() const {
+    return isVisible;
 }
