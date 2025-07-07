@@ -265,6 +265,18 @@ void Renderer::setLightUniforms(Shader* shader) {
     shader->setVec3Uniform("uDirLight.specColor", dirLight.specColor);
 }
 
+Vector3 Renderer::unproject(const Vector3& screenPoint) const {
+    // Convert screenPoint to device coordinates (between -1 and +1)
+    Vector3 deviceCoord = screenPoint;
+    deviceCoord.x /= (screenWidth) * 0.5f;
+    deviceCoord.y /= (screenHeight) * 0.5f;
+
+    // Transform vector by unprojection matrix
+    Matrix4 unprojection = viewMatrix * projectionMatrix;
+    unprojection.Invert();
+    return Vector3::TransformWithPerspDiv(deviceCoord, unprojection);
+}
+
 bool Renderer::loadShaders() {
     // Load sprite shader
     spriteShader = new Shader();

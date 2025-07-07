@@ -61,6 +61,9 @@ public:
     // Setting light uniforms
     void setLightUniforms(Shader* shader);
 
+    // Unprojection
+    Vector3 unproject(const Vector3& screenPoint) const;
+
 private:
     bool loadShaders();
     void createSpriteVerts();
