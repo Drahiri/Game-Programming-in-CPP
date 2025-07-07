@@ -60,6 +60,8 @@ private:
     OrbitActor* orbitActor;
     SplineActor* splineActor;
     SpriteComponent* crosshair;
+    Actor* startSphere;
+    Actor* endSphere;
     SoundEvent musicEvent;
     SoundEvent reverbSnap;
     void changeCamera(int mode);

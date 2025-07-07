@@ -116,6 +116,11 @@ void Game::processInput() {
             if(!event.key.repeat) {
                 handleKeyPress(event.key.key);
             }
+            break;
+
+        case SDL_EVENT_MOUSE_BUTTON_DOWN:
+            handleKeyPress(event.button.button);
+            break;
 
         default:
             break;
@@ -161,6 +166,18 @@ void Game::handleKeyPress(int key) {
     case '4':
         changeCamera(key);
         break;
+
+    case SDL_BUTTON_LEFT: {
+        // Get start point (in center of screen on near plane)
+        Vector3 screenPoint(0.0f, 0.0f, 0.0f);
+        Vector3 start = renderer->unproject(screenPoint);
+        // Get end point (in center of screen, between near and far)
+        screenPoint.z = 0.9f;
+        Vector3 end = renderer->unproject(screenPoint);
+        // Set spheres to points
+        startSphere->setPosition(start);
+        endSphere->setPosition(end);
+    }
 
     default:
         break;
@@ -306,6 +323,19 @@ void Game::loadData() {
     splineActor = new SplineActor(this);
 
     changeCamera('1');
+
+    // Spheres for demonstrating unprojection
+    startSphere = new Actor(this);
+    startSphere->setPosition(Vector3(10000.0f, 0.0f, 0.0f));
+    startSphere->setScale(0.25f);
+    mc = new MeshComponent(startSphere);
+    mc->setMesh(renderer->getMesh("assets/Sphere.gpmesh"));
+    endSphere = new Actor(this);
+    endSphere->setPosition(Vector3(10000.0f, 0.0f, 0.0f));
+    endSphere->setScale(0.25f);
+    mc = new MeshComponent(endSphere);
+    mc->setMesh(renderer->getMesh("assets/Sphere.gpmesh"));
+    mc->setTextureIndex(1);
 }
 
 void Game::unloadData() {
