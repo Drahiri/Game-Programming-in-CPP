@@ -63,6 +63,8 @@ public:
 
     // Unprojection
     Vector3 unproject(const Vector3& screenPoint) const;
+    // For picking
+    void getScreenDirection(Vector3& outStart, Vector3& outDir) const;
 
 private:
     bool loadShaders();

@@ -277,6 +277,20 @@ Vector3 Renderer::unproject(const Vector3& screenPoint) const {
     return Vector3::TransformWithPerspDiv(deviceCoord, unprojection);
 }
 
+void Renderer::getScreenDirection(Vector3& outStart, Vector3& outDir) const {
+    // Get start point (in center of screen on near plane)
+    Vector3 screenPoint(0.0f, 0.0f, 0.0f);
+    outStart = unproject(screenPoint);
+
+    // Get end of point (in center of screen, between near and far)
+    screenPoint.z = 0.9f;
+    Vector3 end = unproject(screenPoint);
+
+    // Get direction vector
+    outDir = end - outStart;
+    outDir.Normalize();
+}
+
 bool Renderer::loadShaders() {
     // Load sprite shader
     spriteShader = new Shader();
