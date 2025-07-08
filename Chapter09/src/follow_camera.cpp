@@ -8,35 +8,61 @@ FollowCamera::FollowCamera(Actor* owner) :
     vertDist(150.0f),
     targetDist(100.0f),
     springConstant(64.0f),
+    orbital(false),
     pitchSpeed(0.0f),
     yawSpeed(0.0f),
-    up(Vector3::UnitZ) {}
+    up(Vector3::UnitZ) {
+    offset = computeCameraPos();
+}
 
 void FollowCamera::update(float deltaTime) {
     CameraComponent::update(deltaTime);
 
-    // Compute dampening from sprint constant
-    float dampening = 2.0f * Math::Sqrt(springConstant);
-
-    // Compute ideal position
-    Vector3 idealPos = computeCameraPos();
-
-    // Compute difference between actual and ideal
-    Vector3 diff = actualPos - idealPos;
-    // Compute acceleration of spring
-    Vector3 accel = -springConstant * diff - dampening * velocity;
-
-    // Update velocity
-    velocity += accel * deltaTime;
-    // Update actual camera position
-    actualPos += velocity * deltaTime;
-
     // Target is target dist in front of owning actor
     Vector3 target = owner->getPosition() + owner->getForward() * targetDist;
 
-    // Up is just UnitZ since we don't flip the camera
+    if(!orbital) {
+        // Reset up vector
+        up = Vector3::UnitZ;
+        offset = actualPos - target;
+
+        // Compute dampening from sprint constant
+        float dampening = 2.0f * Math::Sqrt(springConstant);
+
+        // Compute ideal position
+        Vector3 idealPos = computeCameraPos();
+
+        // Compute difference between actual and ideal
+        Vector3 diff = actualPos - idealPos;
+        // Compute acceleration of spring
+        Vector3 accel = -springConstant * diff - dampening * velocity;
+
+        // Update velocity
+        velocity += accel * deltaTime;
+        // Update actual camera position
+        actualPos += velocity * deltaTime;
+    } else {
+        // Yaw
+        Quaternion yaw(Vector3::UnitZ, yawSpeed * deltaTime);
+        offset = Vector3::Transform(offset, yaw);
+        up = Vector3::Transform(up, yaw);
+
+        // Forward and right
+        Vector3 forward = -1.0f * offset;
+        forward.Normalize();
+        Vector3 right = Vector3::Cross(up, forward);
+        right.Normalize();
+
+        // Pitch
+        Quaternion pitch(right, pitchSpeed * deltaTime);
+        offset = Vector3::Transform(offset, pitch);
+        up = Vector3::Transform(up, pitch);
+
+        actualPos = target + offset;
+    }
+
     // Use actual position here, not ideal position
-    Matrix4 view = Matrix4::CreateLookAt(actualPos, target, Vector3::UnitZ);
+    Matrix4 view = Matrix4::CreateLookAt(actualPos, target, up);
     setViewMatrix(view);
 }
 
@@ -82,4 +108,8 @@ void FollowCamera::setPitchSpeed(float speed) {
 
 void FollowCamera::setYawSpeed(float speed) {
     yawSpeed = speed;
+}
+
+void FollowCamera::setOrbital(bool isOrbital) {
+    orbital = isOrbital;
 }

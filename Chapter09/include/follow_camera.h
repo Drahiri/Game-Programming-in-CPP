@@ -22,6 +22,8 @@ public:
     void setPitchSpeed(float speed);
     void setYawSpeed(float soeed);
 
+    void setOrbital(bool isOrbital);
+
 private:
     // Horizontal follow distance
     float horzDist;
@@ -38,9 +40,11 @@ private:
     Vector3 velocity;
 
     // For orbiting
+    bool orbital;
     Vector3 up;
     float pitchSpeed;
     float yawSpeed;
+    Vector3 offset;
 };
 
 #endif
