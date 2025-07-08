@@ -36,26 +36,30 @@ SplineCamera::SplineCamera(Actor* owner) :
     index(1),
     t(0.0f),
     speed(0.5f),
-    paused(true) {}
+    paused(true),
+    direction(1) {}
 
 void SplineCamera::update(float deltaTime) {
     CameraComponent::update(deltaTime);
 
     // Update t value
-    if(!paused) {
-        t += speed * deltaTime;
-        // Advance to the next control point if needed.
-        // This assumes speed isn't so fast that you jump past
-        // multiple control points on one frame
-        if(t >= 1.0f) {
-            // Make sure we have enough points to advance the path
-            if(index < path.getNumPoints() - 3) {
-                index++;
-                t = t - 1.0f;
-            } else {
-                // Path's done, to pause
-                paused = true;
-            }
+    if(paused) {
+        return;
+    }
+
+    // Forward movement
+    t += direction * speed * deltaTime;
+    // Advance to the next control point if needed.
+    // This assumes speed isn't so fast that you jump past
+    // multiple control points on one frame
+    if(t >= 1.0f || t <= 0.0f) {
+        // Make sure we have enough points to advance the path
+        if((index < path.getNumPoints() - 3 && direction == 1) || (index > 1 && direction == -1)) {
+            index += direction;
+            t = t - direction;
+        } else {
+            // Path's done, move backward
+            direction *= -1;
         }
     }
 

@@ -44,6 +44,9 @@ private:
     float speed;
     // Wherther to move the camera along the path
     bool paused;
+
+    // Forward movement = 1, backward movement = -1
+    int direction;
 };
 
 #endif
