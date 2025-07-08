@@ -41,6 +41,32 @@ void FollowActor::actorInput(const bool* keys) {
     } else {
         cameraComp->setHorzDist(350.0f);
     }
+
+    // Mouse movement
+    float x, y;
+    Uint32 buttons = SDL_GetRelativeMouseState(&x, &y);
+    if(buttons & SDL_BUTTON_RMASK) {
+        const int maxMouseSpeed = 500;
+        const float maxOrbitSpeed = Math::Pi * 8;
+
+        // Yaw
+        float yawSpeed = 0.0f;
+
+        if(x != 0) {
+            yawSpeed = x / maxMouseSpeed;
+            yawSpeed *= maxOrbitSpeed;
+        }
+        cameraComp->setYawSpeed(-yawSpeed);
+
+        // Pitch
+        float pitchSpeed = 0.0f;
+        if(y != 0) {
+            pitchSpeed = y / maxMouseSpeed;
+            pitchSpeed *= maxOrbitSpeed;
+        }
+
+        cameraComp->setPitchSpeed(pitchSpeed);
+    }
 }
 
 void FollowActor::setVisible(bool visible) {

@@ -19,6 +19,8 @@ public:
     void setVertDist(float dist);
     void setTargetDist(float dist);
     void setSpringConstant(float spring);
+    void setPitchSpeed(float speed);
+    void setYawSpeed(float soeed);
 
 private:
     // Horizontal follow distance
@@ -34,6 +36,11 @@ private:
     // Actual position of camera
     Vector3 actualPos;
     Vector3 velocity;
+
+    // For orbiting
+    Vector3 up;
+    float pitchSpeed;
+    float yawSpeed;
 };
 
 #endif

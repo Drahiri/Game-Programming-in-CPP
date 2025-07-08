@@ -7,7 +7,10 @@ FollowCamera::FollowCamera(Actor* owner) :
     horzDist(350.f),
     vertDist(150.0f),
     targetDist(100.0f),
-    springConstant(64.0f) {}
+    springConstant(64.0f),
+    pitchSpeed(0.0f),
+    yawSpeed(0.0f),
+    up(Vector3::UnitZ) {}
 
 void FollowCamera::update(float deltaTime) {
     CameraComponent::update(deltaTime);
@@ -32,7 +35,7 @@ void FollowCamera::update(float deltaTime) {
     Vector3 target = owner->getPosition() + owner->getForward() * targetDist;
 
     // Up is just UnitZ since we don't flip the camera
-    // Use actual position here, not ideal
+    // Use actual position here, not ideal position
     Matrix4 view = Matrix4::CreateLookAt(actualPos, target, Vector3::UnitZ);
     setViewMatrix(view);
 }
@@ -71,4 +74,12 @@ void FollowCamera::setTargetDist(float dist) {
 
 void FollowCamera::setSpringConstant(float spring) {
     springConstant = spring;
+}
+
+void FollowCamera::setPitchSpeed(float speed) {
+    pitchSpeed = speed;
+}
+
+void FollowCamera::setYawSpeed(float speed) {
+    yawSpeed = speed;
 }
