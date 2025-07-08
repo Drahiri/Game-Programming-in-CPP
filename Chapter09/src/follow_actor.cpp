@@ -45,7 +45,9 @@ void FollowActor::actorInput(const bool* keys) {
     // Mouse movement
     float x, y;
     Uint32 buttons = SDL_GetRelativeMouseState(&x, &y);
+    cameraComp->setOrbital(false);
     if(buttons & SDL_BUTTON_RMASK) {
+        cameraComp->setOrbital(true);
         const int maxMouseSpeed = 500;
         const float maxOrbitSpeed = Math::Pi * 8;
 
