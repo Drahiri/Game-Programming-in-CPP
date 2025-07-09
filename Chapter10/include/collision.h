@@ -20,4 +20,9 @@ struct Plane {
     float signedDist(const Vector3& point);
 };
 
+struct Sphere {
+    Vector3 center;
+    float radius;
+};
+
 #endif
