@@ -39,4 +39,9 @@ struct OBB {
     Vector3 extents;
 };
 
+struct Capsule {
+    LineSegment segment;
+    float radius;
+};
+
 #endif
