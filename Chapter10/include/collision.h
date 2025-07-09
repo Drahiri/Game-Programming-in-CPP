@@ -3,6 +3,8 @@
 
 #include "math.h"
 
+#include <vector>
+
 struct LineSegment {
     Vector3 start;
     Vector3 end;
@@ -44,4 +46,8 @@ struct Capsule {
     float radius;
 };
 
+struct ConvexPolygon {
+    // Vertices have a clockwise ordering
+    std::vector<Vector2> vertices;
+};
 #endif
