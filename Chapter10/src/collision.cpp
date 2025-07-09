@@ -29,3 +29,20 @@ float LineSegment::minDistSq(const Vector3& point) const {
         return (ac - p).LengthSq();
     }
 }
+
+Plane::Plane(const Vector3& a, const Vector3& b, const Vector3& c) {
+    // Compute vectors from a to b, adn a to c
+    Vector3 ab = b - a;
+    Vector3 ac = c - a;
+
+    // Cross product and normalize to get normal
+    normal = Vector3::Cross(ab, ac);
+    normal.Normalize();
+
+    // d = -P dot n
+    d = -Vector3::Dot(a, normal);
+}
+
+float Plane::signedDist(const Vector3& point) {
+    return Vector3::Dot(point, normal) - d;
+}
