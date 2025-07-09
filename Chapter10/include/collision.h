@@ -25,4 +25,12 @@ struct Sphere {
     float radius;
 };
 
+struct AABB {
+    Vector3 min;
+    Vector3 max;
+
+    void updateMinMax(const Vector3& point);
+    void rotate(const Quaternion& q);
+};
+
 #endif
