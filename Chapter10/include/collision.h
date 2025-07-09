@@ -33,4 +33,10 @@ struct AABB {
     void rotate(const Quaternion& q);
 };
 
+struct OBB {
+    Vector3 center;
+    Quaternion rotation;
+    Vector3 extents;
+};
+
 #endif
