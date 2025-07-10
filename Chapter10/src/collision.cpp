@@ -258,3 +258,33 @@ bool intersect(const LineSegment& l, const Plane& p, float& outT) {
         }
     }
 }
+
+bool intersect(const LineSegment& l, const Sphere& s, float& outT) {
+    // Comput X, Y, a, b, c as per equations
+    Vector3 X = l.start - s.center;
+    Vector3 Y = l.end - l.start;
+    float a = Vector3::Dot(Y, Y);
+    float b = 2.0f * Vector3::Dot(X, Y);
+    float c = Vector3::Dot(X, X) - s.radius * s.radius;
+
+    // Comput discriminant
+    float disc = b * b - 4.0f * a * c;
+    if(disc < 0.0f) {
+        return false;
+    } else {
+        disc = Math::Sqrt(disc);
+        // Compute min and max solutions of t
+        float tMin = (-b - disc) / (2.0f * a);
+        float tMax = (-b + disc) / (2.0f * a);
+        // Check wheter either t is within bounds of segment
+        if(tMin >= 0.0f && tMin <= 1.0f) {
+            outT = tMin;
+            return true;
+        } else if(tMax >= 0.0f && tMax <= 1.0f) {
+            outT = tMax;
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
