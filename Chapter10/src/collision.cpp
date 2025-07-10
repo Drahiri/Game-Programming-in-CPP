@@ -234,3 +234,27 @@ bool intersect(const Capsule& a, const Capsule& b) {
     float sumRadii = a.radius + b.radius;
     return distSq <= (sumRadii * sumRadii);
 }
+
+bool intersect(const LineSegment& l, const Plane& p, float& outT) {
+    // First test if there's a solution for t
+    float denom = Vector3::Dot(l.end - l.start, p.normal);
+    if(Math::NearZero(denom)) {
+        // The only way the intersect if start/end are
+        // points on the plane (P dot N) == d
+        if(Math::NearZero(Vector3::Dot(l.start, p.normal) - p.d)) {
+            outT = 0.0f;
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        float numer = -Vector3::Dot(l.start, p.normal) - p.d;
+        outT = numer / denom;
+        // Validate t is within bounds of the line segment
+        if(outT >= 0.0f && outT <= 1.0f) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}

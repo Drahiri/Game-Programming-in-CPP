@@ -64,5 +64,6 @@ bool intersect(const Sphere& a, const Sphere& b);
 bool intersect(const AABB& a, const AABB& b);
 bool intersect(const Sphere& s, const AABB& box);
 bool intersect(const Capsule& a, const Capsule& b);
+bool intersect(const LineSegment& l, const Plane& p, float& outT);
 
 #endif
