@@ -99,6 +99,19 @@ bool AABB::contains(const Vector3& point) const {
     return !outside;
 }
 
+float AABB::minDistSq(const Vector3& point) const {
+    // Compute differences for each axis
+    float dx = Math::Max(min.x - point.x, 0.0f);
+    dx = Math::Max(dx, point.x - max.x);
+    float dy = Math::Max(min.y - point.y, 0.0f);
+    dy = Math::Max(dy, point.y - max.y);
+    float dz = Math::Max(min.z - point.z, 0.0f);
+    dz = Math::Max(dz, point.z - max.z);
+
+    // Distance squared formula
+    return dx * dx + dy * dy + dz * dz;
+}
+
 bool Capsule::contains(const Vector3& point) const {
     // Get minimal dist. sq. between point and line segment
     float distSq = segment.minDistSq(point);
@@ -129,4 +142,23 @@ bool ConvexPolygon::contains(const Vector2& point) const {
 
     // Return true if approximately 2pi
     return Math::NearZero(sum - Math::TwoPi);
+}
+
+bool intersect(const Sphere& a, const Sphere& b) {
+    float distSq = (a.center - b.center).LengthSq();
+    float sumRadii = a.radius + b.radius;
+    return distSq < (sumRadii * sumRadii);
+}
+
+bool intersect(const AABB& a, const AABB& b) {
+    bool no = a.max.x < b.min.x || a.max.y < b.min.y || a.max.z < b.min.z || b.max.x < a.min.x
+              || b.max.y < a.min.y || b.max.z < a.min.z;
+
+    // If none of these are true, they must intersect
+    return !no;
+}
+
+bool intersect(const Sphere& s, const AABB& box) {
+    float distSq = box.minDistSq(s.center);
+    return distSq <= (s.radius * s.radius);
 }

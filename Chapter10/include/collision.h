@@ -36,6 +36,7 @@ struct AABB {
     void updateMinMax(const Vector3& point);
     void rotate(const Quaternion& q);
     bool contains(const Vector3& point) const;
+    float minDistSq(const Vector3& point) const;
 };
 
 struct OBB {
@@ -57,4 +58,9 @@ struct ConvexPolygon {
 
     bool contains(const Vector2& point) const;
 };
+
+bool intersect(const Sphere& a, const Sphere& b);
+bool intersect(const AABB& a, const AABB& b);
+bool intersect(const Sphere& s, const AABB& box);
+
 #endif
