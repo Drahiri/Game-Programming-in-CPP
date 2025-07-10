@@ -1,6 +1,8 @@
 #include "collision.h"
 
+#include <algorithm>
 #include <array>
+#include <vector>
 
 Vector3 LineSegment::pointOnSegment(float t) const {
     return start + (end - start) * t;
@@ -287,4 +289,51 @@ bool intersect(const LineSegment& l, const Sphere& s, float& outT) {
             return false;
         }
     }
+}
+
+bool testSidePlane(float start, float end, float negd, std::vector<float>& out) {
+    float denom = end - start;
+    if(Math::NearZero(denom)) {
+        return false;
+    } else {
+        float numer = -start + negd;
+        float t = numer / denom;
+        // Test that t is within bounds
+        if(t >= 0.0f && t <= 1.0f) {
+            out.emplace_back(t);
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+bool intersect(const LineSegment& l, const AABB& b, float& outT) {
+    // Vector to save all possible t values
+    std::vector<float> tValues;
+
+    // Test the x planes
+    testSidePlane(l.start.x, l.end.x, b.min.x, tValues);
+    testSidePlane(l.start.x, l.end.x, b.max.x, tValues);
+    // Test the y planes
+    testSidePlane(l.start.y, l.end.y, b.min.y, tValues);
+    testSidePlane(l.start.y, l.end.y, b.max.y, tValues);
+    // Test the z planes
+    testSidePlane(l.start.z, l.end.z, b.min.z, tValues);
+    testSidePlane(l.start.z, l.end.z, b.max.z, tValues);
+
+    // Sort the t values in ascending order
+    std::sort(tValues.begin(), tValues.end());
+
+    // Test if the box contains any of these points of intersection
+    Vector3 point;
+    for(float t: tValues) {
+        point = l.pointOnSegment(t);
+        if(b.contains(point)) {
+            outT = t;
+            return true;
+        }
+    }
+    // None of the intersections are within bounds of box
+    return false;
 }
