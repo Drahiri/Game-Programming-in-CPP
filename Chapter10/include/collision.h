@@ -12,6 +12,7 @@ struct LineSegment {
     Vector3 pointOnSegment(float t) const;
 
     float minDistSq(const Vector3& point) const;
+    static float minDistSq(const LineSegment& s1, const LineSegment& s2);
 };
 
 struct Plane {
@@ -62,5 +63,6 @@ struct ConvexPolygon {
 bool intersect(const Sphere& a, const Sphere& b);
 bool intersect(const AABB& a, const AABB& b);
 bool intersect(const Sphere& s, const AABB& box);
+bool intersect(const Capsule& a, const Capsule& b);
 
 #endif
