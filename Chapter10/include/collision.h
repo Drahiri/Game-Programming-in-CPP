@@ -25,6 +25,8 @@ struct Plane {
 struct Sphere {
     Vector3 center;
     float radius;
+
+    bool contains(const Vector3& point) const;
 };
 
 struct AABB {
@@ -33,6 +35,7 @@ struct AABB {
 
     void updateMinMax(const Vector3& point);
     void rotate(const Quaternion& q);
+    bool contains(const Vector3& point) const;
 };
 
 struct OBB {
@@ -44,10 +47,14 @@ struct OBB {
 struct Capsule {
     LineSegment segment;
     float radius;
+
+    bool contains(const Vector3& point) const;
 };
 
 struct ConvexPolygon {
     // Vertices have a clockwise ordering
     std::vector<Vector2> vertices;
+
+    bool contains(const Vector2& point) const;
 };
 #endif

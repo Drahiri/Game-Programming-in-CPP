@@ -49,6 +49,12 @@ float Plane::signedDist(const Vector3& point) {
     return Vector3::Dot(point, normal) - d;
 }
 
+bool Sphere::contains(const Vector3& point) const {
+    // Get distance squared between center and point
+    float distSq = (center - point).LengthSq();
+    return distSq <= (radius * radius);
+}
+
 void AABB::updateMinMax(const Vector3& point) {
     // Update each component separately
     min.x = Math::Min(min.x, point.x);
@@ -83,4 +89,44 @@ void AABB::rotate(const Quaternion& q) {
         p = Vector3::Transform(points[i], q);
         updateMinMax(p);
     }
+}
+
+bool AABB::contains(const Vector3& point) const {
+    bool outside = point.x < min.x || point.y < min.y || point.z < min.z || point.x > max.x
+                   || point.y > max.y || point.z > max.z;
+
+    // If none of these are true, the point is inside box
+    return !outside;
+}
+
+bool Capsule::contains(const Vector3& point) const {
+    // Get minimal dist. sq. between point and line segment
+    float distSq = segment.minDistSq(point);
+    return distSq <= (radius * radius);
+}
+
+bool ConvexPolygon::contains(const Vector2& point) const {
+    float sum = 0.0f;
+    Vector2 a, b;
+
+    for(size_t i = 0; i < vertices.size() - 1; i++) {
+        // From point to first vertex
+        a = vertices[i] - point;
+        a.Normalize();
+        // From point to second vertex
+        b = vertices[i + 1] - point;
+        b.Normalize();
+        // Add angle to sum
+        sum += Math::Acos(Vector2::Dot(a, b));
+    }
+
+    // Compute angle for last vertex and first vertex
+    a = vertices.back() - point;
+    a.Normalize();
+    b = vertices[0] - point;
+    b.Normalize();
+    sum += Math::Acos(Vector2::Dot(a, b));
+
+    // Return true if approximately 2pi
+    return Math::NearZero(sum - Math::TwoPi);
 }
