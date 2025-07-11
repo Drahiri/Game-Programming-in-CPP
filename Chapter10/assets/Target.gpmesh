@@ -3,7 +3,7 @@
 	"vertexformat":"PosNormTex",
 	"shader":"BasicMesh",
 	"textures":[
-		"Assets/Target.png"
+		"assets/Target.png"
 	],
 	"specularPower":100.0,
 	"vertices":[

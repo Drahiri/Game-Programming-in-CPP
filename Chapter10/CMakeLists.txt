@@ -23,6 +23,7 @@ set(SOURCE_FILES
     "src/shader.cpp"
     "src/sound_event.cpp"
     "src/sprite_component.cpp"
+    "src/target_actor.cpp"
     "src/texture.cpp"
     "src/vertex_array.cpp"
     "src/main.cpp"
@@ -52,6 +53,7 @@ set(HEADER_FILES
     "include/shader.h"
     "include/sound_event.h"
     "include/sprite_component.h"
+    "include/target_actor.h"
     "include/texture.h"
     "include/vertex_array.h"
     
