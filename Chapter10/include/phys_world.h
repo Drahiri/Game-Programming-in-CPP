@@ -3,6 +3,7 @@
 
 #include <vector>
 
+class Actor;
 class BoxComponent;
 class Game;
 
