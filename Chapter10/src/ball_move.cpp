@@ -7,6 +7,10 @@
 
 BallMove::BallMove(Actor* owner) : MoveComponent(owner) {}
 
+void BallMove::setPlayer(Actor* player) {
+    this->player = player;
+}
+
 void BallMove::update(float deltaTime) {
     // Construct segment in direction of travel
     const float segmentLength = 30.0f;
