@@ -337,3 +337,29 @@ bool intersect(const LineSegment& l, const AABB& b, float& outT) {
     // None of the intersections are within bounds of box
     return false;
 }
+
+bool sweptSphere(
+      const Sphere& P0, const Sphere& P1, const Sphere& Q0, const Sphere& Q1, float& outT) {
+    // Compute X, Y, a, b, c
+    Vector3 X = P0.center - Q0.center;
+    Vector3 Y = P1.center - P0.center - (Q1.center - Q0.center);
+    float a = Vector3::Dot(Y, Y);
+    float b = 2.0f * Vector3::Dot(X, Y);
+    float sumRadii = P0.radius + Q0.radius;
+    float c = Vector3::Dot(X, X) - sumRadii * sumRadii;
+
+    // Solve discriminant
+    float disc = b * b - 4.0f * a * c;
+    if(disc < 0.0f) {
+        return false;
+    } else {
+        disc = Math::Sqrt(disc);
+        // We only care about the smaller solution
+        outT = (-b - disc) / (2.0f * a);
+        if(outT >= 0.0f && outT <= 1.0f) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
