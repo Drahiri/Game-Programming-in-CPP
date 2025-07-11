@@ -1,9 +1,11 @@
 #include "ball_move.h"
 
 #include "actor.h"
+#include "ball_actor.h"
 #include "collision.h"
 #include "game.h"
 #include "phys_world.h"
+#include "target_actor.h"
 
 BallMove::BallMove(Actor* owner) : MoveComponent(owner) {}
 
@@ -27,6 +29,11 @@ void BallMove::update(float deltaTime) {
         // If we collided, reflect the direction about the normal
         dir = Vector3::Reflect(dir, info.normal);
         owner->rotateToNewForward(dir);
+        // Did we hit a target?
+        TargetActor* target = dynamic_cast<TargetActor*>(info.actor);
+        if(target) {
+            static_cast<BallActor*>(owner)->hitTarget();
+        }
     }
 
     // Base class update moves based on forward speed
