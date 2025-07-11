@@ -39,6 +39,7 @@ bool PhysWorld::segmentCast(const LineSegment& l, CollisionInfo& outColl) {
                 outColl.box = box;
                 outColl.actor = box->getOwner();
                 collided = true;
+                closestT = t;
             }
         }
     }
