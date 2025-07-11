@@ -11,6 +11,7 @@
 class Actor;
 class AudioSystem;
 class FPSActor;
+class PhysWorld;
 class Renderer;
 class SpriteComponent;
 
@@ -27,6 +28,7 @@ public:
 
     Renderer* getRenderer();
     AudioSystem* getAudioSystem();
+    PhysWorld* getPhysWorld();
 
 private:
     // Helper functions for the game loop
@@ -42,6 +44,7 @@ private:
 
     Renderer* renderer;
     AudioSystem* audioSystem;
+    PhysWorld* physWorld;
 
     // Time keeping
     Uint32 ticksCount;

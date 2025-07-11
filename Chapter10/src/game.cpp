@@ -5,6 +5,7 @@
 #include "audio_system.h"
 #include "fps_actor.h"
 #include "mesh_component.h"
+#include "phys_world.h"
 #include "plane_actor.h"
 #include "renderer.h"
 #include "sprite_component.h"
@@ -14,7 +15,12 @@
 const int windowWidth = 1024;
 const int windowHeight = 768;
 
-Game::Game() : isRunning(true), ticksCount(0), updatingActors(true), renderer(nullptr) {}
+Game::Game() :
+    isRunning(true),
+    ticksCount(0),
+    updatingActors(true),
+    renderer(nullptr),
+    physWorld(nullptr) {}
 
 bool Game::initialize() {
     // Initialize SDL
@@ -40,6 +46,9 @@ bool Game::initialize() {
         audioSystem = nullptr;
         return false;
     }
+
+    // Create the physics world
+    physWorld = new PhysWorld(this);
 
     loadData();
 
@@ -139,6 +148,10 @@ void Game::processInput() {
 
 AudioSystem* Game::getAudioSystem() {
     return audioSystem;
+}
+
+PhysWorld* Game::getPhysWorld() {
+    return physWorld;
 }
 
 void Game::handleKeyPress(int key) {
