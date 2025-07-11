@@ -3,6 +3,7 @@
 
 #include "actor.h"
 
+class AudioComponent;
 class BallMove;
 class Game;
 
@@ -11,9 +12,14 @@ public:
     BallActor(Game* game);
 
     void updateActor(float deltaTime) override;
+    void setPlayer(Actor* player);
+
+    void hitTarget();
 
 private:
+    AudioComponent* audioComp;
     BallMove* myMove;
+    float lifeSpan;
 };
 
 #endif
