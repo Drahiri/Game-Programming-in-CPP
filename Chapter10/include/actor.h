@@ -60,6 +60,8 @@ public:
     void computeWorldTransform();
     const Matrix4& getWorldTransform() const;
 
+    void rotateToNewForward(const Vector3& forward);
+
 private:
     // Actor's state
     State state;

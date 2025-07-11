@@ -142,3 +142,23 @@ void Actor::computeWorldTransform() {
 const Matrix4& Actor::getWorldTransform() const {
     return worldTransform;
 }
+
+void Actor::rotateToNewForward(const Vector3& forward) {
+    // Figure out differences between original (unit x) and new
+    float dot = Vector3::Dot(Vector3::UnitX, forward);
+    float angle = Math::Acos(dot);
+
+    // Are we facing down X?
+    if(dot > 0.9999f) {
+        setRotation(Quaternion::Identity);
+    }
+    // Are we facing down -X?
+    else if(dot < -0.9999f) {
+        setRotation(Quaternion(Vector3::UnitZ, Math::Pi));
+    } else {
+        // Rotate about axis from cross product
+        Vector3 axis = Vector3::Cross(Vector3::UnitX, forward);
+        axis.Normalize();
+        setRotation(Quaternion(axis, angle));
+    }
+}
