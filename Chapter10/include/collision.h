@@ -6,6 +6,8 @@
 #include <vector>
 
 struct LineSegment {
+    LineSegment(const Vector3& start, const Vector3& end);
+
     Vector3 start;
     Vector3 end;
 
@@ -16,28 +18,36 @@ struct LineSegment {
 };
 
 struct Plane {
+    Plane(const Vector3& normal, float d);
+    // Construct plane from three points
+    Plane(const Vector3& a, const Vector3& b, const Vector3& c);
+
+    // Get the signed distance between the point and the plane
+    float signedDist(const Vector3& point);
+
     Vector3 normal;
     float d;
-
-    Plane(const Vector3& a, const Vector3& b, const Vector3& c);
-    float signedDist(const Vector3& point);
 };
 
 struct Sphere {
-    Vector3 center;
-    float radius;
+    Sphere(const Vector3& center, float radius);
 
     bool contains(const Vector3& point) const;
+
+    Vector3 center;
+    float radius;
 };
 
 struct AABB {
-    Vector3 min;
-    Vector3 max;
-
+    AABB(const Vector3& min, const Vector3& max);
+    // Update min and max accounting for this point
     void updateMinMax(const Vector3& point);
     void rotate(const Quaternion& q);
     bool contains(const Vector3& point) const;
     float minDistSq(const Vector3& point) const;
+
+    Vector3 min;
+    Vector3 max;
 };
 
 struct OBB {
@@ -47,17 +57,19 @@ struct OBB {
 };
 
 struct Capsule {
-    LineSegment segment;
-    float radius;
+    Capsule(const Vector3& start, const Vector3& end, float radius);
 
     bool contains(const Vector3& point) const;
+
+    LineSegment segment;
+    float radius;
 };
 
 struct ConvexPolygon {
+    bool contains(const Vector2& point) const;
+
     // Vertices have a clockwise ordering
     std::vector<Vector2> vertices;
-
-    bool contains(const Vector2& point) const;
 };
 
 bool intersect(const Sphere& a, const Sphere& b);

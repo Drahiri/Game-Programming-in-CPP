@@ -4,6 +4,8 @@
 #include <array>
 #include <vector>
 
+LineSegment::LineSegment(const Vector3& start, const Vector3& end) : start(start), end(end) {}
+
 Vector3 LineSegment::pointOnSegment(float t) const {
     return start + (end - start) * t;
 }
@@ -100,6 +102,8 @@ float LineSegment::minDistSq(const LineSegment& s1, const LineSegment& s2) {
     return dP.LengthSq(); // return the closest distance squared
 }
 
+Plane::Plane(const Vector3& normal, float d) : normal(normal), d(d) {}
+
 Plane::Plane(const Vector3& a, const Vector3& b, const Vector3& c) {
     // Compute vectors from a to b, adn a to c
     Vector3 ab = b - a;
@@ -117,11 +121,15 @@ float Plane::signedDist(const Vector3& point) {
     return Vector3::Dot(point, normal) - d;
 }
 
+Sphere::Sphere(const Vector3& center, float radius) : center(center), radius(radius) {}
+
 bool Sphere::contains(const Vector3& point) const {
     // Get distance squared between center and point
     float distSq = (center - point).LengthSq();
     return distSq <= (radius * radius);
 }
+
+AABB::AABB(const Vector3& min, const Vector3& max) : min(min), max(max) {}
 
 void AABB::updateMinMax(const Vector3& point) {
     // Update each component separately
@@ -179,6 +187,10 @@ float AABB::minDistSq(const Vector3& point) const {
     // Distance squared formula
     return dx * dx + dy * dy + dz * dz;
 }
+
+Capsule::Capsule(const Vector3& start, const Vector3& end, float radius) :
+    segment(LineSegment(start, end)),
+    radius(radius) {}
 
 bool Capsule::contains(const Vector3& point) const {
     // Get minimal dist. sq. between point and line segment
