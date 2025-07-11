@@ -19,3 +19,29 @@ void PhysWorld::removeBox(BoxComponent* box) {
         boxes.pop_back();
     }
 }
+
+bool PhysWorld::segmentCast(const LineSegment& l, CollisionInfo& outColl) {
+    bool collided = false;
+    // Initialize closestT to infinity so first
+    // intersection will always update closest T
+    float closestT = Math::Infinity;
+    Vector3 norm;
+
+    // Test against all boxes
+    for(auto box: boxes) {
+        float t;
+        // Does the segment intersect with the box?
+        if(intersect(l, box->getWorldBox(), t, norm)) {
+            // Is this closer than previous intersection?
+            if(t < closestT) {
+                outColl.point = l.pointOnSegment(t);
+                outColl.normal = norm;
+                outColl.box = box;
+                outColl.actor = box->getOwner();
+                collided = true;
+            }
+        }
+    }
+
+    return collided;
+}
