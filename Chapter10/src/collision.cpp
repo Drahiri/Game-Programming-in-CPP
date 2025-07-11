@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <array>
-#include <vector>
 
 LineSegment::LineSegment(const Vector3& start, const Vector3& end) : start(start), end(end) {}
 
@@ -303,7 +302,11 @@ bool intersect(const LineSegment& l, const Sphere& s, float& outT) {
     }
 }
 
-bool testSidePlane(float start, float end, float negd, std::vector<float>& out) {
+bool testSidePlane(float start,
+      float end,
+      float negd,
+      const Vector3& norm,
+      std::vector<std::pair<float, Vector3>>& out) {
     float denom = end - start;
     if(Math::NearZero(denom)) {
         return false;
@@ -312,7 +315,7 @@ bool testSidePlane(float start, float end, float negd, std::vector<float>& out) 
         float t = numer / denom;
         // Test that t is within bounds
         if(t >= 0.0f && t <= 1.0f) {
-            out.emplace_back(t);
+            out.emplace_back(t, norm);
             return true;
         } else {
             return false;
@@ -320,29 +323,34 @@ bool testSidePlane(float start, float end, float negd, std::vector<float>& out) 
     }
 }
 
-bool intersect(const LineSegment& l, const AABB& b, float& outT) {
+bool intersect(const LineSegment& l, const AABB& b, float& outT, Vector3& outNorm) {
     // Vector to save all possible t values
-    std::vector<float> tValues;
+    std::vector<std::pair<float, Vector3>> tValues;
 
     // Test the x planes
-    testSidePlane(l.start.x, l.end.x, b.min.x, tValues);
-    testSidePlane(l.start.x, l.end.x, b.max.x, tValues);
+    testSidePlane(l.start.x, l.end.x, b.min.x, Vector3::NegUnitX, tValues);
+    testSidePlane(l.start.x, l.end.x, b.max.x, Vector3::UnitX, tValues);
     // Test the y planes
-    testSidePlane(l.start.y, l.end.y, b.min.y, tValues);
-    testSidePlane(l.start.y, l.end.y, b.max.y, tValues);
+    testSidePlane(l.start.y, l.end.y, b.min.y, Vector3::NegUnitY, tValues);
+    testSidePlane(l.start.y, l.end.y, b.max.y, Vector3::UnitY, tValues);
     // Test the z planes
-    testSidePlane(l.start.z, l.end.z, b.min.z, tValues);
-    testSidePlane(l.start.z, l.end.z, b.max.z, tValues);
+    testSidePlane(l.start.z, l.end.z, b.min.z, Vector3::NegUnitZ, tValues);
+    testSidePlane(l.start.z, l.end.z, b.max.z, Vector3::UnitZ, tValues);
 
     // Sort the t values in ascending order
-    std::sort(tValues.begin(), tValues.end());
+    std::sort(tValues.begin(),
+          tValues.end(),
+          [](const std::pair<float, Vector3>& a, const std::pair<float, Vector3>& b) {
+              return a.first < b.first;
+          });
 
     // Test if the box contains any of these points of intersection
     Vector3 point;
-    for(float t: tValues) {
-        point = l.pointOnSegment(t);
+    for(auto& t: tValues) {
+        point = l.pointOnSegment(t.first);
         if(b.contains(point)) {
-            outT = t;
+            outT = t.first;
+            outNorm = t.second;
             return true;
         }
     }
