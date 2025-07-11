@@ -9,6 +9,7 @@
 #include "plane_actor.h"
 #include "renderer.h"
 #include "sprite_component.h"
+#include "target_actor.h"
 
 #include <algorithm>
 
@@ -182,6 +183,11 @@ void Game::handleKeyPress(int key) {
         audioSystem->setBusVolume("bus:/", volume);
         break;
     }
+    case SDL_BUTTON_LEFT: {
+        // Fire weapon
+        fpsActor->shoot();
+        break;
+    }
 
     default:
         break;
@@ -243,22 +249,8 @@ void Game::generateOutput() {
 
 void Game::loadData() {
     // Create actors
-    // Cube
-    Actor* a = new Actor(this);
-    a->setPosition(Vector3(200.0f, 75.0f, 0.0f));
-    a->setScale(100.0f);
-    Quaternion q(Vector3::UnitY, -Math::PiOver2);
-    q = Quaternion::Concatenate(q, Quaternion(Vector3::UnitZ, Math::Pi + Math::Pi / 4.0f));
-    a->setRotation(q);
-    MeshComponent* mc = new MeshComponent(a);
-    mc->setMesh(renderer->getMesh("assets/Cube.gpmesh"));
-
-    // Sphere
-    a = new Actor(this);
-    a->setPosition(Vector3(200.0f, -75.0f, 0.0f));
-    a->setScale(3.0f);
-    mc = new MeshComponent(a);
-    mc->setMesh(renderer->getMesh("assets/Sphere.gpmesh"));
+    Actor* a = nullptr;
+    Quaternion q;
 
     // Setup floor
     const float start = -1250.0f;
@@ -322,6 +314,16 @@ void Game::loadData() {
     musicEvent = audioSystem->playEvent("event:/Music");
 
     fpsActor = new FPSActor(this);
+
+    // Create target actors
+    a = new TargetActor(this);
+    a->setPosition(Vector3(1450.0f, 0.0f, 100.0f));
+    a = new TargetActor(this);
+    a->setPosition(Vector3(1450.0f, 0.0f, 400.0f));
+    a = new TargetActor(this);
+    a->setPosition(Vector3(1450.0f, -500.0f, 200.0f));
+    a = new TargetActor(this);
+    a->setPosition(Vector3(1450.0f, 500.0f, 200.0f));
 }
 
 void Game::unloadData() {
