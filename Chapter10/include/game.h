@@ -12,6 +12,7 @@ class Actor;
 class AudioSystem;
 class FPSActor;
 class PhysWorld;
+class PlaneActor;
 class Renderer;
 class SpriteComponent;
 
@@ -29,6 +30,11 @@ public:
     Renderer* getRenderer();
     AudioSystem* getAudioSystem();
     PhysWorld* getPhysWorld();
+
+    // Game specific
+    void addPlane(PlaneActor* plane);
+    void removePlane(PlaneActor* plane);
+    std::vector<PlaneActor*>& getPlanes();
 
 private:
     // Helper functions for the game loop
@@ -55,10 +61,10 @@ private:
     std::vector<Actor*> pendingActors;
 
     // Game-specific code
+    std::vector<PlaneActor*> planes;
     FPSActor* fpsActor;
     SpriteComponent* crosshair;
     SoundEvent musicEvent;
-    SoundEvent reverbSnap;
 };
 
 #endif

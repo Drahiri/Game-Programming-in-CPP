@@ -154,6 +154,19 @@ PhysWorld* Game::getPhysWorld() {
     return physWorld;
 }
 
+void Game::addPlane(PlaneActor* plane) {
+    planes.emplace_back(plane);
+}
+
+void Game::removePlane(PlaneActor* plane) {
+    auto iter = std::find(planes.begin(), planes.end(), plane);
+    planes.erase(iter);
+}
+
+std::vector<PlaneActor*>& Game::getPlanes() {
+    return planes;
+}
+
 void Game::handleKeyPress(int key) {
     switch(key) {
     case '-': { // Reduce master volume
