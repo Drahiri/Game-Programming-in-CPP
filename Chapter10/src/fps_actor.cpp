@@ -2,6 +2,8 @@
 
 #include "audio_component.h"
 #include "audio_system.h"
+#include "box_component.h"
+#include "collision.h"
 #include "fps_camera.h"
 #include "game.h"
 #include "mesh_component.h"
@@ -21,6 +23,12 @@ FPSActor::FPSActor(Game* game) : Actor(game) {
     fpsModel->setScale(0.75f);
     meshComp = new MeshComponent(fpsModel);
     meshComp->setMesh(game->getRenderer()->getMesh("assets/Rifle.gpmesh"));
+
+    // Add a box component
+    boxComp = new BoxComponent(this);
+    AABB myBox(Vector3(-25.0f, -25.0f, -87.5f), Vector3(25.0f, 25.0f, 87.5f));
+    boxComp->setObjectBox(myBox);
+    boxComp->setShouldRotate(false);
 }
 
 void FPSActor::actorInput(const bool* keyState) {

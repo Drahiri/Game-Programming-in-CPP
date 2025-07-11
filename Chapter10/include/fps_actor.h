@@ -4,11 +4,12 @@
 #include "actor.h"
 #include "sound_event.h"
 
-class Game;
 class AudioComponent;
+class BoxComponent;
+class FPSCamera;
+class Game;
 class MeshComponent;
 class MoveComponent;
-class FPSCamera;
 
 class FPSActor : public Actor {
 public:
@@ -26,6 +27,7 @@ private:
     AudioComponent* audioComp;
     MeshComponent* meshComp;
     FPSCamera* cameraComp;
+    BoxComponent* boxComp;
 
     Actor* fpsModel;
 
