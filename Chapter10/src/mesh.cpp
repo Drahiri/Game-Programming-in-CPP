@@ -11,7 +11,11 @@
 #include <SDL3/SDL_log.h>
 #include <sstream>
 
-Mesh::Mesh() : vertexArray(nullptr), radius(0.0f), specPower(100.0f) {}
+Mesh::Mesh() :
+    vertexArray(nullptr),
+    radius(0.0f),
+    specPower(100.0f),
+    box(Vector3::Infinity, Vector3::NegInfinity) {}
 
 Mesh::~Mesh() {}
 
@@ -89,6 +93,8 @@ bool Mesh::load(const std::string& fileName, Renderer* renderer) {
         Vector3 pos(vert[0].GetDouble(), vert[1].GetDouble(), vert[2].GetDouble());
         radius = Math::Max(radius, pos.LengthSq());
 
+        box.updateMinMax(pos);
+
         // Add the floats
         for(rapidjson::SizeType i = 0; i < vert.Size(); i++) {
             vertices.emplace_back(static_cast<float>(vert[i].GetDouble()));
@@ -158,4 +164,8 @@ float Mesh::getRadius() const {
 
 float Mesh::getSpecPower() const {
     return specPower;
+}
+
+const AABB& Mesh::getBox() const {
+    return box;
 }

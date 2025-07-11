@@ -1,6 +1,8 @@
 #ifndef MESH_H
 #define MESH_H
 
+#include "collision.h"
+
 #include <string>
 #include <vector>
 
@@ -32,6 +34,8 @@ public:
     // Get object spec powere
     float getSpecPower() const;
 
+    const AABB& getBox() const;
+
 private:
     // Textures associated with this mesh
     std::vector<Texture*> textures;
@@ -47,6 +51,9 @@ private:
 
     // Spec power
     float specPower;
+
+    // AABB collision
+    AABB box;
 };
 
 #endif
