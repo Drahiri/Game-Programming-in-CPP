@@ -18,6 +18,8 @@ public:
     void actorInput(const bool* keyState) override;
     void updateActor(float deltaTime) override;
 
+    void shoot();
+
     void setFootstepSurface(float value);
 
     void setVisible(bool visible);
