@@ -4,6 +4,7 @@
 #include "collision.h"
 #include "math.h"
 
+#include <functional>
 #include <vector>
 
 class Actor;
@@ -31,6 +32,9 @@ public:
     void removeBox(BoxComponent* box);
 
     bool segmentCast(const LineSegment& l, CollisionInfo& outColl);
+
+    // Test collisions using naive pairwise
+    void testPairwise(std::function<void(Actor*, Actor*)> f);
 
 private:
     Game* game;

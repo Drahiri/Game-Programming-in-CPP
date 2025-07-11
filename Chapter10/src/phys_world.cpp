@@ -45,3 +45,16 @@ bool PhysWorld::segmentCast(const LineSegment& l, CollisionInfo& outColl) {
 
     return collided;
 }
+
+void PhysWorld::testPairwise(std::function<void(Actor*, Actor*)> f) {
+    // Naive implementation O(n^2)
+    for(size_t i = 0; i < boxes.size(); i++) {
+        // Don't need to test vs. itself and any previous
+        for(size_t j = i + 1; j < boxes.size(); j++) {
+            BoxComponent* a = boxes[i];
+            BoxComponent* b = boxes[j];
+            // Call supplied function to handle intersections
+            f(a->getOwner(), b->getOwner());
+        }
+    }
+}
