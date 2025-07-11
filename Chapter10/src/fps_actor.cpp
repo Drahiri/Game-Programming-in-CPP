@@ -8,6 +8,7 @@
 #include "game.h"
 #include "mesh_component.h"
 #include "move_component.h"
+#include "plane_actor.h"
 #include "renderer.h"
 
 FPSActor::FPSActor(Game* game) : Actor(game) {
@@ -118,4 +119,47 @@ void FPSActor::setFootstepSurface(float value) {
 
 void FPSActor::setVisible(bool visible) {
     meshComp->setVisible(visible);
+}
+
+void FPSActor::fixCollisions() {
+    // Need to recompute my world transform to update world box
+    computeWorldTransform();
+
+    const AABB& playerBox = boxComp->getWorldBox();
+    Vector3 pos = getPosition();
+
+    auto& planes = getGame()->getPlanes();
+    for(auto pa: planes) {
+        // Do we collide with this PlaneActor?
+        const AABB& planeBox = pa->getBox()->getWorldBox();
+        if(intersect(planeBox, planeBox)) {
+            // Calculate all our differences
+            float dx1 = planeBox.min.x - playerBox.max.x;
+            float dx2 = planeBox.max.x - playerBox.min.x;
+            float dy1 = planeBox.min.y - playerBox.max.y;
+            float dy2 = planeBox.max.y - playerBox.min.y;
+            float dz1 = planeBox.min.z - playerBox.max.z;
+            float dz2 = planeBox.max.z - playerBox.min.z;
+
+            // Set dx to whickever of dx1/dx2 have a lower abs
+            float dx = (Math::Abs(dx1) < Math::Abs(dx2) ? dx1 : dx2);
+            // Ditto for dy
+            float dy = (Math::Abs(dy1) < Math::Abs(dy2) ? dy1 : dy2);
+            // Ditto for dz
+            float dz = (Math::Abs(dz1) < Math::Abs(dz2) ? dz1 : dz2);
+
+            // Whickever is closes, adjust x/y position
+            if(Math::Abs(dx) <= Math::Abs(dy) && Math::Abs(dx) <= Math::Abs(dz)) {
+                pos.x += dx;
+            } else if(Math::Abs(dy) <= Math::Abs(dx) && Math::Abs(dy) <= Math::Abs(dz)) {
+                pos.y += dy;
+            } else {
+                pos.z += dz;
+            }
+
+            // Need to set positions and update box component
+            setPosition(pos);
+            boxComp->onUpdateWorldTransform();
+        }
+    }
 }
