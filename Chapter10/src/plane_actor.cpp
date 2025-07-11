@@ -11,14 +11,15 @@ PlaneActor::PlaneActor(Game* game) : Actor(game) {
     MeshComponent* mc = new MeshComponent(this);
     Mesh* mesh = getGame()->getRenderer()->getMesh("assets/Plane.gpmesh");
     mc->setMesh(mesh);
-    BoxComponent* bc = new BoxComponent(this);
-    bc->setObjectBox(mesh->getBox());
+    // Add collision box
+    box = new BoxComponent(this);
+    box->setObjectBox(mesh->getBox());
 
     game->addPlane(this);
 }
 
 PlaneActor::~PlaneActor() {
-    getGame()->removeActor(this);
+    getGame()->removePlane(this);
 }
 
 BoxComponent* PlaneActor::getBox() {
