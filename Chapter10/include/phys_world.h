@@ -35,6 +35,8 @@ public:
 
     // Test collisions using naive pairwise
     void testPairwise(std::function<void(Actor*, Actor*)> f);
+    // Test collisions using sweep and prune
+    void testSweepAndPrune(std::function<void(Actor*, Actor*)> f);
 
 private:
     Game* game;

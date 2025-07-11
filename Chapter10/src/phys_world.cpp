@@ -58,3 +58,28 @@ void PhysWorld::testPairwise(std::function<void(Actor*, Actor*)> f) {
         }
     }
 }
+
+void PhysWorld::testSweepAndPrune(std::function<void(Actor*, Actor*)> f) {
+    // Sort by min.x
+    std::sort(boxes.begin(), boxes.end(), [](BoxComponent* a, BoxComponent* b) {
+        return a->getWorldBox().min.x < b->getWorldBox().min.x;
+    });
+
+    for(size_t i = 0; i < boxes.size(); i++) {
+        // Get max.x for box[i]
+        BoxComponent* a = boxes[i];
+        float max = a->getWorldBox().max.x;
+
+        for(size_t j = i + 1; j < boxes.size(); j++) {
+            BoxComponent* b = boxes[j];
+            // If box[j] min.x is past the max.x bounds
+            // then there aren't any other possible itersection
+            // against box [i]
+            if(b->getWorldBox().min.x > max) {
+                break;
+            } else if(intersect(a->getWorldBox(), b->getWorldBox())) {
+                f(a->getOwner(), b->getOwner());
+            }
+        }
+    }
+}
