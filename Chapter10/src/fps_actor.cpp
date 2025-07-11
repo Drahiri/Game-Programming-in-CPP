@@ -87,6 +87,8 @@ void FPSActor::actorInput(const bool* keyState) {
 void FPSActor::updateActor(float deltaTime) {
     Actor::updateActor(deltaTime);
 
+    fixCollisions();
+
     // Play the footstep if we're moving and havent't recently
     lastFootstep -= deltaTime;
     if(!Math::NearZero(moveComp->getForwardSpeed()) && lastFootstep <= 0.0f) {
@@ -153,7 +155,7 @@ void FPSActor::fixCollisions() {
     for(auto pa: planes) {
         // Do we collide with this PlaneActor?
         const AABB& planeBox = pa->getBox()->getWorldBox();
-        if(intersect(planeBox, planeBox)) {
+        if(intersect(playerBox, planeBox)) {
             // Calculate all our differences
             float dx1 = planeBox.min.x - playerBox.max.x;
             float dx2 = planeBox.max.x - playerBox.min.x;
