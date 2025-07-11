@@ -19,3 +19,7 @@ void Component::update(float deltaTime) {}
 int Component::getUpdateOrder() const {
     return updateOrder;
 }
+
+Actor* Component::getOwner() {
+    return owner;
+}
