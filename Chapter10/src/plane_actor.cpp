@@ -20,3 +20,7 @@ PlaneActor::PlaneActor(Game* game) : Actor(game) {
 PlaneActor::~PlaneActor() {
     getGame()->removeActor(this);
 }
+
+BoxComponent* PlaneActor::getBox() {
+    return box;
+}
