@@ -2,13 +2,15 @@
 
 #include "actor.h"
 #include "game.h"
+#include "math.h"
 #include "renderer.h"
 
 MoveComponent::MoveComponent(Actor* owner, int updateOrder) :
     Component(owner, updateOrder),
     angularSpeed(0.0f),
     forwardSpeed(0.0f),
-    strafeSpeed(0.0f) {
+    strafeSpeed(0.0f),
+    upwardSpeed(0.0f) {
     screenSize.x = owner->getGame()->getRenderer()->getScreenWidth();
     screenSize.y = owner->getGame()->getRenderer()->getScreenHeight();
 }
@@ -25,12 +27,21 @@ void MoveComponent::update(float deltaTime) {
         owner->setRotation(rot);
     }
 
-    if(!Math::NearZero(forwardSpeed) || !Math::NearZero(strafeSpeed)) {
+    if(!Math::NearZero(forwardSpeed) || !Math::NearZero(strafeSpeed)
+          || !Math::NearZero(upwardSpeed)) {
         Vector3 pos = owner->getPosition();
         pos += owner->getForward() * forwardSpeed * deltaTime;
         // Update position based on strafe
         pos += owner->getRight() * strafeSpeed * deltaTime;
+        // Update posiwion based on upward speed
+        // We're rotating about Z axis so we can use UnitZ
+        pos += Vector3::UnitZ * upwardSpeed * deltaTime;
         owner->setPosition(pos);
+    }
+
+    // Update upward speed by gravity
+    if(!Math::NearZero(upwardSpeed)) {
+        upwardSpeed -= 9.81f;
     }
 }
 
@@ -56,4 +67,12 @@ float MoveComponent::getStrafeSpeed() const {
 
 void MoveComponent::setStrafeSpeed(float speed) {
     strafeSpeed = speed;
+}
+
+float MoveComponent::getUpwardSpeed() const {
+    return upwardSpeed;
+}
+
+void MoveComponent::setUpwardSpeed(float speed) {
+    upwardSpeed = speed;
 }

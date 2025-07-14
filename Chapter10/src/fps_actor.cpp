@@ -36,6 +36,7 @@ FPSActor::FPSActor(Game* game) : Actor(game) {
 void FPSActor::actorInput(const bool* keyState) {
     float forwardSpeed = 0.0f;
     float strafeSpeed = 0.0f;
+    float upwardSpeed = 0.0f;
     // wasd movement
     if(keyState[SDL_SCANCODE_W]) {
         forwardSpeed += 400.0f;
@@ -48,6 +49,10 @@ void FPSActor::actorInput(const bool* keyState) {
     }
     if(keyState[SDL_SCANCODE_D]) {
         strafeSpeed += 400.0f;
+    }
+    if(keyState[SDL_SCANCODE_SPACE] && Math::NearZero(moveComp->getUpwardSpeed())) {
+        upwardSpeed += 400.0f;
+        moveComp->setUpwardSpeed(upwardSpeed);
     }
 
     moveComp->setForwardSpeed(forwardSpeed);
@@ -111,6 +116,9 @@ void FPSActor::updateActor(float deltaTime) {
     // Rotate by pitch from camera
     q = Quaternion::Concatenate(q, Quaternion(getRight(), cameraComp->getPitch()));
     fpsModel->setRotation(q);
+
+    // Update camera again to remove model jump after intersections
+    cameraComp->update(deltaTime);
 }
 
 void FPSActor::setFootstepSurface(float value) {
@@ -178,6 +186,11 @@ void FPSActor::fixCollisions() {
                 pos.y += dy;
             } else {
                 pos.z += dz;
+            }
+
+            // Set upward speed to 0 if standing on platform
+            if(dz2 > 0.0f) {
+                moveComp->setUpwardSpeed(0.0f);
             }
 
             // Need to set positions and update box component

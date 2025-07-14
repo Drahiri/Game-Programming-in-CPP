@@ -20,6 +20,9 @@ public:
     float getStrafeSpeed() const;
     void setStrafeSpeed(float speed);
 
+    float getUpwardSpeed() const;
+    void setUpwardSpeed(float speed);
+
 private:
     // Controls rotation (radians/second)
     float angularSpeed;
@@ -27,6 +30,8 @@ private:
     float forwardSpeed;
     // Controls strafe speed
     float strafeSpeed;
+    // Controls upward speed
+    float upwardSpeed;
 
     // Screen size
     Vector2 screenSize;
