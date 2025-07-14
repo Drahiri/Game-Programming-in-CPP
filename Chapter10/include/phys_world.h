@@ -40,7 +40,9 @@ public:
 
 private:
     Game* game;
-    std::vector<BoxComponent*> boxes;
+    std::vector<BoxComponent*> boxesX;
+    std::vector<BoxComponent*> boxesY;
+    std::vector<BoxComponent*> boxesZ;
 };
 
 #endif
