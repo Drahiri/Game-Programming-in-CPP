@@ -6,10 +6,17 @@
 
 class MoveComponent : public Component {
 public:
+    enum class GroundState {
+        ON_GROUND,
+        FALLING
+    };
+
     // Lower update order to update first
     MoveComponent(Actor* owner, int updateOrder = 10);
 
     void update(float deltaTime) override;
+    void jump();
+    void landed();
 
     float getAngularSpeed() const;
     void setAngularSpeed(float speed);
@@ -23,6 +30,9 @@ public:
     float getUpwardSpeed() const;
     void setUpwardSpeed(float speed);
 
+    GroundState getGroundState() const;
+    void setGroundState(GroundState state);
+
 private:
     // Controls rotation (radians/second)
     float angularSpeed;
@@ -32,6 +42,8 @@ private:
     float strafeSpeed;
     // Controls upward speed
     float upwardSpeed;
+
+    GroundState groundState;
 
     // Screen size
     Vector2 screenSize;

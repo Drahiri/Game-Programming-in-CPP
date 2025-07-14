@@ -36,7 +36,6 @@ FPSActor::FPSActor(Game* game) : Actor(game) {
 void FPSActor::actorInput(const bool* keyState) {
     float forwardSpeed = 0.0f;
     float strafeSpeed = 0.0f;
-    float upwardSpeed = 0.0f;
     // wasd movement
     if(keyState[SDL_SCANCODE_W]) {
         forwardSpeed += 400.0f;
@@ -51,8 +50,7 @@ void FPSActor::actorInput(const bool* keyState) {
         strafeSpeed += 400.0f;
     }
     if(keyState[SDL_SCANCODE_SPACE] && Math::NearZero(moveComp->getUpwardSpeed())) {
-        upwardSpeed += 400.0f;
-        moveComp->setUpwardSpeed(upwardSpeed);
+        moveComp->jump();
     }
 
     moveComp->setForwardSpeed(forwardSpeed);
@@ -96,7 +94,8 @@ void FPSActor::updateActor(float deltaTime) {
 
     // Play the footstep if we're moving and havent't recently
     lastFootstep -= deltaTime;
-    if(!Math::NearZero(moveComp->getForwardSpeed()) && lastFootstep <= 0.0f) {
+    if(!Math::NearZero(moveComp->getForwardSpeed()) && lastFootstep <= 0.0f
+          && moveComp->getGroundState() == MoveComponent::GroundState::ON_GROUND) {
         footstep.setPaused(false);
         footstep.restart();
         lastFootstep = 0.5f;
@@ -190,7 +189,7 @@ void FPSActor::fixCollisions() {
 
             // Set upward speed to 0 if standing on platform
             if(dz2 > 0.0f) {
-                moveComp->setUpwardSpeed(0.0f);
+                moveComp->landed();
             }
 
             // Need to set positions and update box component

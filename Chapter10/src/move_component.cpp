@@ -10,7 +10,8 @@ MoveComponent::MoveComponent(Actor* owner, int updateOrder) :
     angularSpeed(0.0f),
     forwardSpeed(0.0f),
     strafeSpeed(0.0f),
-    upwardSpeed(0.0f) {
+    upwardSpeed(0.0f),
+    groundState(GroundState::ON_GROUND) {
     screenSize.x = owner->getGame()->getRenderer()->getScreenWidth();
     screenSize.y = owner->getGame()->getRenderer()->getScreenHeight();
 }
@@ -40,9 +41,19 @@ void MoveComponent::update(float deltaTime) {
     }
 
     // Update upward speed by gravity
-    if(!Math::NearZero(upwardSpeed)) {
+    if(groundState == GroundState::FALLING) {
         upwardSpeed -= 9.81f;
     }
+}
+
+void MoveComponent::jump() {
+    upwardSpeed += 400.0f;
+    groundState = GroundState::FALLING;
+}
+
+void MoveComponent::landed() {
+    upwardSpeed = 0.0f;
+    groundState = GroundState::ON_GROUND;
 }
 
 float MoveComponent::getAngularSpeed() const {
@@ -75,4 +86,12 @@ float MoveComponent::getUpwardSpeed() const {
 
 void MoveComponent::setUpwardSpeed(float speed) {
     upwardSpeed = speed;
+}
+
+MoveComponent::GroundState MoveComponent::getGroundState() const {
+    return groundState;
+}
+
+void MoveComponent::setGroundState(GroundState state) {
+    groundState = state;
 }
