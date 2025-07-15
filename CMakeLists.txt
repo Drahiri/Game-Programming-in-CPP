@@ -11,6 +11,7 @@ endif()
 
 find_package(SDL3 REQUIRED CONFIG)
 find_package(SDL3_image REQUIRED CONFIG)
+find_package(SDL3_ttf REQUIRED CONFIG)
 
 find_package(GLEW REQUIRED)
 
