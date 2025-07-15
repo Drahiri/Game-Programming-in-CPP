@@ -1,6 +1,7 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
+#include <SDL3/SDL_surface.h>
 #include <string>
 
 class Texture {
@@ -15,6 +16,8 @@ public:
 
     int getWidth() const;
     int getHeight() const;
+
+    void createFromSurface(SDL_Surface* surface);
 
 private:
     // OpenGL of this texture
