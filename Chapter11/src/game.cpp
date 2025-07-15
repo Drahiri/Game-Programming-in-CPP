@@ -12,6 +12,7 @@
 #include "target_actor.h"
 
 #include <algorithm>
+#include <SDL3_ttf/SDL_ttf.h>
 
 const int windowWidth = 1024;
 const int windowHeight = 768;
@@ -27,6 +28,12 @@ bool Game::initialize() {
     // Initialize SDL
     if(!SDL_Init(SDL_INIT_VIDEO)) {
         SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
+        return false;
+    }
+
+    // Initialize SDL_ttf
+    if(!TTF_Init()) {
+        SDL_Log("Unable to initialize SDL_ttf: %s", SDL_GetError());
         return false;
     }
 
@@ -75,6 +82,7 @@ void Game::shutdown() {
         audioSystem->shutdown();
     }
 
+    TTF_Quit();
     SDL_Quit();
 }
 
