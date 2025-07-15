@@ -3,6 +3,7 @@
 #include "actor.h"
 #include "audio_component.h"
 #include "audio_system.h"
+#include "font.h"
 #include "fps_actor.h"
 #include "mesh_component.h"
 #include "phys_world.h"
@@ -112,10 +113,6 @@ void Game::removeActor(Actor* actor) {
     }
 }
 
-Renderer* Game::getRenderer() {
-    return renderer;
-}
-
 void Game::processInput() {
     // Process SDL events
     SDL_Event event;
@@ -155,12 +152,33 @@ void Game::processInput() {
     updatingActors = false;
 }
 
+Renderer* Game::getRenderer() {
+    return renderer;
+}
+
 AudioSystem* Game::getAudioSystem() {
     return audioSystem;
 }
 
 PhysWorld* Game::getPhysWorld() {
     return physWorld;
+}
+
+Font* Game::getFont(const std::string& fileName) {
+    auto iter = fonts.find(fileName);
+    if(iter != fonts.end()) {
+        return iter->second;
+    } else {
+        Font* font = new Font(this);
+        if(font->load(fileName)) {
+            fonts.emplace(fileName, font);
+        } else {
+            font->unload();
+            delete font;
+            font = nullptr;
+        }
+        return font;
+    }
 }
 
 void Game::addPlane(PlaneActor* plane) {

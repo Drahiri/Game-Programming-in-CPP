@@ -6,10 +6,12 @@
 
 #include <SDL3/SDL.h>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 class Actor;
 class AudioSystem;
+class Font;
 class FPSActor;
 class PhysWorld;
 class PlaneActor;
@@ -30,6 +32,7 @@ public:
     Renderer* getRenderer();
     AudioSystem* getAudioSystem();
     PhysWorld* getPhysWorld();
+    Font* getFont(const std::string& fileName);
 
     // Game specific
     void addPlane(PlaneActor* plane);
@@ -51,6 +54,7 @@ private:
     Renderer* renderer;
     AudioSystem* audioSystem;
     PhysWorld* physWorld;
+    std::unordered_map<std::string, Font*> fonts;
 
     // Time keeping
     Uint32 ticksCount;
