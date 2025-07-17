@@ -6,6 +6,7 @@
 #include "shader.h"
 #include "sprite_component.h"
 #include "texture.h"
+#include "ui_screen.h"
 #include "vertex_array.h"
 
 #include <algorithm>
@@ -159,6 +160,10 @@ void Renderer::draw() {
         if(sprite->getVisible()) {
             sprite->draw(spriteShader);
         }
+    }
+
+    for(auto ui: game->getUIStack()) {
+        ui->draw(spriteShader);
     }
 
     // Swap the buffers, which also display the scene
