@@ -26,6 +26,7 @@ set(SOURCE_FILES
     "src/sprite_component.cpp"
     "src/target_actor.cpp"
     "src/texture.cpp"
+    "src/ui_screen.cpp"
     "src/vertex_array.cpp"
     "src/main.cpp"
 
@@ -57,6 +58,7 @@ set(HEADER_FILES
     "include/sprite_component.h"
     "include/target_actor.h"
     "include/texture.h"
+    "include/ui_screen.h"
     "include/vertex_array.h"
     
     "include/math.h"
