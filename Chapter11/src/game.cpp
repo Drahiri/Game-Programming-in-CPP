@@ -6,6 +6,7 @@
 #include "font.h"
 #include "fps_actor.h"
 #include "mesh_component.h"
+#include "pause_menu.h"
 #include "phys_world.h"
 #include "plane_actor.h"
 #include "renderer.h"
@@ -150,19 +151,15 @@ void Game::processInput() {
 
     // Process keyboard state
     const bool* state = SDL_GetKeyboardState(NULL);
-    if(state[SDL_SCANCODE_ESCAPE]) {
-        gameState = GameState::Quit;
-    }
-
-    updatingActors = true;
     if(gameState == GameState::Gameplay) {
+        updatingActors = true;
         for(auto actor: actors) {
             actor->processInput(state);
         }
+        updatingActors = false;
     } else if(!uiStack.empty()) {
         uiStack.back()->processInput(state);
     }
-    updatingActors = false;
 }
 
 Renderer* Game::getRenderer() {
@@ -225,6 +222,9 @@ std::vector<PlaneActor*>& Game::getPlanes() {
 
 void Game::handleKeyPress(int key) {
     switch(key) {
+    case SDLK_ESCAPE:
+        new PauseMenu(this);
+        break;
     case '-': { // Reduce master volume
         float volume = audioSystem->getBusVolume("bus:/");
         volume = Math::Max(0.0f, volume - 0.1f);
@@ -243,7 +243,6 @@ void Game::handleKeyPress(int key) {
         fpsActor->shoot();
         break;
     }
-
     default:
         break;
     }
