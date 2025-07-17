@@ -44,6 +44,9 @@ public:
     void pushUI(UIScreen* screen);
     const std::vector<UIScreen*>& getUIStack();
 
+    GameState getState() const;
+    void setState(GameState state);
+
     // Game specific
     void addPlane(PlaneActor* plane);
     void removePlane(PlaneActor* plane);

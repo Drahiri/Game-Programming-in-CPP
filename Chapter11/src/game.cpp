@@ -202,6 +202,14 @@ const std::vector<UIScreen*>& Game::getUIStack() {
     return uiStack;
 }
 
+Game::GameState Game::getState() const {
+    return gameState;
+}
+
+void Game::setState(GameState state) {
+    gameState = state;
+}
+
 void Game::addPlane(PlaneActor* plane) {
     planes.emplace_back(plane);
 }
