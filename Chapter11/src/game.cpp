@@ -11,6 +11,7 @@
 #include "renderer.h"
 #include "sprite_component.h"
 #include "target_actor.h"
+#include "ui_screen.h"
 
 #include <algorithm>
 #include <SDL3_ttf/SDL_ttf.h>
@@ -271,6 +272,23 @@ void Game::updateGame() {
     // Delete dead actors (whick remove them from actors or pendingActors)
     for(auto actor: deadActors) {
         delete actor;
+    }
+
+    // Update UIScreens
+    for(auto ui: uiStack) {
+        if(ui->getState() == UIScreen::UIState::Active) {
+            ui->update(deltaTime);
+        }
+    }
+    // Delete any UIScreens that are closed
+    auto iter = uiStack.begin();
+    while(iter != uiStack.end()) {
+        if((*iter)->getState() == UIScreen::UIState::Closing) {
+            delete *iter;
+            iter = uiStack.erase(iter);
+        } else {
+            ++iter;
+        }
     }
 
     // Update audio system
