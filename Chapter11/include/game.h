@@ -17,6 +17,7 @@ class PhysWorld;
 class PlaneActor;
 class Renderer;
 class SpriteComponent;
+class UIScreen;
 
 class Game {
 public:
@@ -33,6 +34,9 @@ public:
     AudioSystem* getAudioSystem();
     PhysWorld* getPhysWorld();
     Font* getFont(const std::string& fileName);
+
+    void pushUI(UIScreen* screen);
+    const std::vector<UIScreen*>& getUIStack();
 
     // Game specific
     void addPlane(PlaneActor* plane);
@@ -63,6 +67,8 @@ private:
     bool updatingActors;
     std::vector<Actor*> actors;
     std::vector<Actor*> pendingActors;
+
+    std::vector<UIScreen*> uiStack;
 
     // Game-specific code
     std::vector<PlaneActor*> planes;

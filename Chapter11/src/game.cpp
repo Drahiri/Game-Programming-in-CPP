@@ -181,6 +181,14 @@ Font* Game::getFont(const std::string& fileName) {
     }
 }
 
+void Game::pushUI(UIScreen* screen) {
+    uiStack.emplace_back(screen);
+}
+
+const std::vector<UIScreen*>& Game::getUIStack() {
+    return uiStack;
+}
+
 void Game::addPlane(PlaneActor* plane) {
     planes.emplace_back(plane);
 }
