@@ -23,6 +23,12 @@ class Game {
 public:
     Game();
 
+    enum class GameState {
+        Gameplay,
+        Paused,
+        Quit
+    };
+
     bool initialize();
     void runLoop();
     void shutdown();
@@ -53,7 +59,7 @@ private:
     void loadData();
     void unloadData();
 
-    bool isRunning;
+    GameState gameState;
 
     Renderer* renderer;
     AudioSystem* audioSystem;

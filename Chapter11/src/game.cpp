@@ -20,7 +20,7 @@ const int windowWidth = 1024;
 const int windowHeight = 768;
 
 Game::Game() :
-    isRunning(true),
+    gameState(GameState::Gameplay),
     ticksCount(0),
     updatingActors(true),
     renderer(nullptr),
@@ -66,7 +66,7 @@ bool Game::initialize() {
 }
 
 void Game::runLoop() {
-    while(isRunning) {
+    while(gameState != GameState::Quit) {
         processInput();
         updateGame();
         generateOutput();
@@ -121,18 +121,26 @@ void Game::processInput() {
     while(SDL_PollEvent(&event)) {
         switch(event.type) {
         case SDL_EVENT_QUIT:
-            isRunning = false;
+            gameState = GameState::Quit;
             break;
 
         // This fires when a key's initially pressed
         case SDL_EVENT_KEY_DOWN:
             if(!event.key.repeat) {
-                handleKeyPress(event.key.key);
+                if(gameState == GameState::Gameplay) {
+                    handleKeyPress(event.key.key);
+                } else if(!uiStack.empty()) {
+                    uiStack.back()->handleKeyPress(event.key.key);
+                }
             }
             break;
 
         case SDL_EVENT_MOUSE_BUTTON_DOWN:
-            handleKeyPress(event.button.button);
+            if(gameState == GameState::Gameplay) {
+                handleKeyPress(event.button.button);
+            } else if(!uiStack.empty()) {
+                uiStack.back()->handleKeyPress(event.button.button);
+            }
             break;
 
         default:
@@ -143,12 +151,16 @@ void Game::processInput() {
     // Process keyboard state
     const bool* state = SDL_GetKeyboardState(NULL);
     if(state[SDL_SCANCODE_ESCAPE]) {
-        isRunning = false;
+        gameState = GameState::Quit;
     }
 
     updatingActors = true;
-    for(auto actor: actors) {
-        actor->processInput(state);
+    if(gameState == GameState::Gameplay) {
+        for(auto actor: actors) {
+            actor->processInput(state);
+        }
+    } else if(!uiStack.empty()) {
+        uiStack.back()->processInput(state);
     }
     updatingActors = false;
 }
@@ -244,34 +256,35 @@ void Game::updateGame() {
         deltaTime = 0.05;
     }
 
-    // Update all actors
-    updatingActors = true;
+    if(gameState == GameState::Gameplay) {
+        // Update all actors
+        updatingActors = true;
 
-    for(auto actor: actors) {
-        actor->update(deltaTime);
-    }
-
-    updatingActors = false;
-
-    // Move pending actors to actors
-    for(auto pending: pendingActors) {
-        pending->computeWorldTransform();
-        actors.emplace_back(pending);
-    }
-
-    pendingActors.clear();
-
-    // Add any dead actors to a temp vector
-    std::vector<Actor*> deadActors;
-    for(auto actor: actors) {
-        if(actor->getState() == Actor::State::Dead) {
-            deadActors.emplace_back(actor);
+        for(auto actor: actors) {
+            actor->update(deltaTime);
         }
-    }
 
-    // Delete dead actors (whick remove them from actors or pendingActors)
-    for(auto actor: deadActors) {
-        delete actor;
+        updatingActors = false;
+
+        // Move pending actors to actors
+        for(auto pending: pendingActors) {
+            pending->computeWorldTransform();
+            actors.emplace_back(pending);
+        }
+        pendingActors.clear();
+
+        // Add any dead actors to a temp vector
+        std::vector<Actor*> deadActors;
+        for(auto actor: actors) {
+            if(actor->getState() == Actor::State::Dead) {
+                deadActors.emplace_back(actor);
+            }
+        }
+
+        // Delete dead actors (whick remove them from actors or pendingActors)
+        for(auto actor: deadActors) {
+            delete actor;
+        }
     }
 
     // Update UIScreens
