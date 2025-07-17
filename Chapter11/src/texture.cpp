@@ -77,11 +77,24 @@ void Texture::createFromSurface(SDL_Surface* surface) {
     width = surface->w;
     height = surface->h;
 
+    // Have to copy content to new surface. Otherwise pixels are mixed up
+    SDL_Surface* newSurface = SDL_CreateSurface(width, height, SDL_PIXELFORMAT_RGBA32);
+    SDL_BlitSurface(surface, 0, newSurface, 0);
+
     // Generate a GL texture
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_2D, textureID);
-    glTexImage2D(
-          GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);
+    glTexImage2D(GL_TEXTURE_2D,
+          0,
+          GL_RGBA,
+          width,
+          height,
+          0,
+          GL_RGBA,
+          GL_UNSIGNED_BYTE,
+          newSurface->pixels);
+
+    SDL_DestroySurface(surface);
 
     // Use linear filtering
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
