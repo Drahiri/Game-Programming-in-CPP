@@ -5,6 +5,7 @@
 #include "mesh.h"
 #include "mesh_component.h"
 #include "renderer.h"
+#include "target_component.h"
 
 TargetActor::TargetActor(Game* game) : Actor(game) {
     setRotation(Quaternion(Vector3::UnitZ, Math::Pi));
@@ -14,4 +15,5 @@ TargetActor::TargetActor(Game* game) : Actor(game) {
     // Add collision box
     BoxComponent* bc = new BoxComponent(this);
     bc->setObjectBox(mesh->getBox());
+    TargetComponent* tc = new TargetComponent(this);
 }
