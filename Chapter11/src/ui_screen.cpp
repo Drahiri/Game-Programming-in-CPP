@@ -3,6 +3,7 @@
 #include "button.h"
 #include "font.h"
 #include "game.h"
+#include "renderer.h"
 #include "shader.h"
 #include "texture.h"
 
@@ -36,9 +37,44 @@ void UIScreen::draw(Shader* shader) {
     }
 }
 
-void UIScreen::processInput(const bool* keys) {}
+void UIScreen::processInput(const bool* keys) {
+    // Are there buttons?
+    if(!buttons.empty()) {
+        // Get position of mouse
+        float x, y;
+        SDL_GetMouseState(&x, &y);
+        // Convert to (0,0) center coordinates (assume 1024x768)
+        Vector2 mousePos(x, y);
+        mousePos.x -= game->getRenderer()->getScreenWidth() * 0.5f;
+        mousePos.y = game->getRenderer()->getScreenHeight() * 0.5f - mousePos.y;
 
-void UIScreen::handleKeyPress(int key) {}
+        // Highlight any buttons
+        for(auto b: buttons) {
+            if(b->containsPoint(mousePos)) {
+                b->setHighlighted(true);
+            } else {
+                b->setHighlighted(false);
+            }
+        }
+    }
+}
+
+void UIScreen::handleKeyPress(int key) {
+    switch(key) {
+    case SDL_BUTTON_LEFT:
+        if(!buttons.empty()) {
+            for(auto b: buttons) {
+                if(b->getHighlighted()) {
+                    b->onClick();
+                    break;
+                }
+            }
+        }
+        break;
+    default:
+        break;
+    }
+}
 
 void UIScreen::close() {
     state = UIState::Closing;
