@@ -43,6 +43,8 @@ void HUD::updateCrosshair() {
     const float cAimDist = 5000.0f;
     Vector3 start, dir;
     game->getRenderer()->getScreenDirection(start, dir);
+    // Move start point by 4 unit in dir to avoid collisions with player
+    start += dir * 4;
     LineSegment l(start, start + dir * cAimDist);
     // Segment cast
     PhysWorld::CollisionInfo info;
