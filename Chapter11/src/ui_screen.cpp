@@ -1,5 +1,6 @@
 #include "ui_screen.h"
 
+#include "button.h"
 #include "font.h"
 #include "game.h"
 #include "shader.h"
@@ -9,6 +10,7 @@ UIScreen::UIScreen(Game* game) :
     game(game),
     title(nullptr),
     titlePos(0.0f, 300.0f),
+    nextButtonPos(0.0f, 200.0f),
     state(UIState::Active) {
     game->pushUI(this);
     font = game->getFont("assets/Carlito-Regular.ttf");
@@ -22,6 +24,15 @@ void UIScreen::draw(Shader* shader) {
     // Draw title if exists
     if(title) {
         drawTexture(shader, title, titlePos);
+    }
+
+    for(auto b: buttons) {
+        // Draw background of button
+        Texture* tex = b->getHighlighted() ? buttonOn : buttonOff;
+        drawTexture(shader, tex, b->getPosition());
+
+        // Draw text of button
+        drawTexture(shader, b->getNameTex(), b->getPosition());
     }
 }
 
@@ -45,6 +56,16 @@ void UIScreen::setTitle(const std::string& text, const Vector3& color, int point
         title = nullptr;
     }
     title = font->renderText(text, color, pointSize);
+}
+
+void UIScreen::addButton(const std::string& name, std::function<void()> onClick) {
+    Vector2 dims(
+          static_cast<float>(buttonOn->getWidth()), static_cast<float>(buttonOn->getHeight()));
+    Button* b = new Button(name, font, onClick, nextButtonPos, dims);
+    buttons.emplace_back(b);
+    // Update position of next button
+    // Move down, by height on button plus padding
+    nextButtonPos.y -= buttonOff->getHeight() + 20.0f;
 }
 
 void UIScreen::drawTexture(Shader* shader, Texture* texture, const Vector2& offset, float scale) {

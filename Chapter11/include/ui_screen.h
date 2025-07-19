@@ -3,8 +3,11 @@
 
 #include "math.h"
 
+#include <functional>
 #include <string>
+#include <vector>
 
+class Button;
 class Font;
 class Game;
 class Shader;
@@ -34,6 +37,9 @@ public:
     // Change the title text
     void setTitle(const std::string& text, const Vector3& color = Color::White, int pointSize = 40);
 
+    // Add a button to this screen
+    void addButton(const std::string& name, std::function<void()> onClick);
+
 protected:
     // Helper to draw a texture
     void drawTexture(Shader* shader,
@@ -46,6 +52,12 @@ protected:
     Font* font;
     Texture* title;
     Vector2 titlePos;
+
+    // Buttons
+    std::vector<Button*> buttons;
+    Texture* buttonOn;
+    Texture* buttonOff;
+    Vector2 nextButtonPos;
 
     // State
     UIState state;
