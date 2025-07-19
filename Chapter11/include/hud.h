@@ -1,0 +1,37 @@
+#ifndef HUD_H
+#define HUD_H
+
+#include "ui_screen.h"
+
+#include <vector>
+
+class Game;
+class Shader;
+class Texture;
+class TargetComponent;
+
+class HUD : public UIScreen {
+public:
+    // (Lower draw order corresponds with further back)
+    HUD(Game* game);
+    ~HUD();
+
+    void update(float deltaTime) override;
+    void draw(Shader* shader) override;
+
+    void addTarget(TargetComponent* tc);
+    void removeTarget(TargetComponent* tc);
+
+protected:
+    void updateCrosshair();
+
+    // Textures for crosshair
+    Texture* crosshair;
+    Texture* crosshairEnemy;
+    // Whether crosshair targets an enemy
+    bool targetEnemy;
+    // TargetComponents
+    std::vector<TargetComponent*> targetComps;
+};
+
+#endif
