@@ -81,9 +81,7 @@ bool Renderer::initialize(float windowWidth, float windowHeight) {
         return false;
     }
 
-    SDL_SetWindowRelativeMouseMode(window, true);
-    // Make an initial call to get relative to clear out
-    SDL_GetRelativeMouseState(nullptr, nullptr);
+    setRelativeMouse(true);
 
     // Create quad for drawing sprites
     createSpriteVerts();
@@ -294,6 +292,14 @@ void Renderer::getScreenDirection(Vector3& outStart, Vector3& outDir) const {
     // Get direction vector
     outDir = end - outStart;
     outDir.Normalize();
+}
+
+void Renderer::setRelativeMouse(bool relative) {
+    SDL_SetWindowRelativeMouseMode(window, relative);
+    // Make an initial call to get relative to clear out
+    if(relative) {
+        SDL_GetRelativeMouseState(nullptr, nullptr);
+    }
 }
 
 bool Renderer::loadShaders() {

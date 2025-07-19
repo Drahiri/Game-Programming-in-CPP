@@ -66,6 +66,8 @@ public:
     // For picking
     void getScreenDirection(Vector3& outStart, Vector3& outDir) const;
 
+    void setRelativeMouse(bool relative);
+
 private:
     bool loadShaders();
     void createSpriteVerts();
