@@ -15,6 +15,8 @@ UIScreen::UIScreen(Game* game) :
     state(UIState::Active) {
     game->pushUI(this);
     font = game->getFont("assets/Carlito-Regular.ttf");
+    buttonOn = game->getRenderer()->getTexture("assets/ButtonYellow.png");
+    buttonOff = game->getRenderer()->getTexture("assets/ButtonBlue.png");
 }
 
 UIScreen::~UIScreen() {}
