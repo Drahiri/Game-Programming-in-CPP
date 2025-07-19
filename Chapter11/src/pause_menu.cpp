@@ -1,5 +1,6 @@
 #include "pause_menu.h"
 
+#include "dialog_box.h"
 #include "game.h"
 #include "renderer.h"
 
@@ -9,7 +10,11 @@ PauseMenu::PauseMenu(Game* game) : UIScreen(game) {
     game->setState(Game::GameState::Paused);
     setTitle("PAUSED");
     addButton("Resume", [this]() { close(); });
-    addButton("Quit", [this]() { this->game->setState(Game::GameState::Quit); });
+    addButton("Quit", [this]() {
+        new DialogBox(this->game, "Do you want to quit?", [this]() {
+            this->game->setState(Game::GameState::Quit);
+        });
+    });
 
     game->getRenderer()->setRelativeMouse(false);
 }
