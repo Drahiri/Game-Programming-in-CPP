@@ -1,5 +1,13 @@
 #include "target_component.h"
 
-TargetComponent::TargetComponent(Actor* owner) : Component(owner) {}
+#include "actor.h"
+#include "game.h"
+#include "hud.h"
 
-TargetComponent::~TargetComponent() {}
+TargetComponent::TargetComponent(Actor* owner) : Component(owner) {
+    owner->getGame()->getHUD()->addTarget(this);
+}
+
+TargetComponent::~TargetComponent() {
+    owner->getGame()->getHUD()->removeTarget(this);
+}
