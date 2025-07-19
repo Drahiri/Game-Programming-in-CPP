@@ -59,6 +59,10 @@ protected:
     Texture* buttonOff;
     Vector2 nextButtonPos;
 
+    // Dialog box
+    Texture* background;
+    Vector2 bgPos;
+
     // State
     UIState state;
 };

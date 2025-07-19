@@ -12,6 +12,8 @@ UIScreen::UIScreen(Game* game) :
     title(nullptr),
     titlePos(0.0f, 300.0f),
     nextButtonPos(0.0f, 200.0f),
+    background(nullptr),
+    bgPos(Vector2::Zero),
     state(UIState::Active) {
     game->pushUI(this);
     font = game->getFont("assets/Carlito-Regular.ttf");
