@@ -8,6 +8,8 @@
 PauseMenu::PauseMenu(Game* game) : UIScreen(game) {
     game->setState(Game::GameState::Paused);
     setTitle("PAUSED");
+    addButton("Resume", [this]() { close(); });
+    addButton("Quit", [this]() { this->game->setState(Game::GameState::Quit); });
 
     game->getRenderer()->setRelativeMouse(false);
 }
