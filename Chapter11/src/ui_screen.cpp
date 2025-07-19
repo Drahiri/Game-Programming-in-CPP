@@ -26,6 +26,11 @@ UIScreen::~UIScreen() {}
 void UIScreen::update(float deltaTime) {}
 
 void UIScreen::draw(Shader* shader) {
+    // Draw background if exists
+    if(background) {
+        drawTexture(shader, background, bgPos);
+    }
+
     // Draw title if exists
     if(title) {
         drawTexture(shader, title, titlePos);
