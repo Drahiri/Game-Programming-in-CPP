@@ -13,6 +13,7 @@ class Actor;
 class AudioSystem;
 class Font;
 class FPSActor;
+class HUD;
 class PhysWorld;
 class PlaneActor;
 class Renderer;
@@ -40,6 +41,7 @@ public:
     AudioSystem* getAudioSystem();
     PhysWorld* getPhysWorld();
     Font* getFont(const std::string& fileName);
+    HUD* getHUD() const;
 
     void pushUI(UIScreen* screen);
     const std::vector<UIScreen*>& getUIStack();
@@ -68,6 +70,7 @@ private:
     AudioSystem* audioSystem;
     PhysWorld* physWorld;
     std::unordered_map<std::string, Font*> fonts;
+    HUD* hud;
 
     // Time keeping
     Uint32 ticksCount;

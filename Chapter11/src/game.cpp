@@ -5,6 +5,7 @@
 #include "audio_system.h"
 #include "font.h"
 #include "fps_actor.h"
+#include "hud.h"
 #include "mesh_component.h"
 #include "pause_menu.h"
 #include "phys_world.h"
@@ -25,7 +26,8 @@ Game::Game() :
     ticksCount(0),
     updatingActors(true),
     renderer(nullptr),
-    physWorld(nullptr) {}
+    physWorld(nullptr),
+    hud(nullptr) {}
 
 bool Game::initialize() {
     // Initialize SDL
@@ -189,6 +191,10 @@ Font* Game::getFont(const std::string& fileName) {
         }
         return font;
     }
+}
+
+HUD* Game::getHUD() const {
+    return hud;
 }
 
 void Game::pushUI(UIScreen* screen) {
@@ -365,22 +371,8 @@ void Game::loadData() {
     dir.diffuseColor = Vector3(0.78f, 0.88f, 1.0f);
     dir.specColor = Vector3(0.8f, 0.8f, 0.8f);
 
-    // // UI elements
-    a = new Actor(this);
-    a->setPosition(Vector3(-350.0f, -350.0f, 0.0f));
-    SpriteComponent* sc = new SpriteComponent(a);
-    sc->setTexture(renderer->getTexture("assets/HealthBar.png"));
-
-    a = new Actor(this);
-    a->setPosition(Vector3(-390.0f, 275.0f, 0.0f));
-    a->setScale(0.75f);
-    sc = new SpriteComponent(a);
-    sc->setTexture(renderer->getTexture("assets/Radar.png"));
-
-    a = new Actor(this);
-    a->setScale(2.0f);
-    crosshair = new SpriteComponent(a);
-    crosshair->setTexture(renderer->getTexture("assets/Crosshair.png"));
+    // UI elements
+    hud = new HUD(this);
 
     // Start music
     musicEvent = audioSystem->playEvent("event:/Music");
