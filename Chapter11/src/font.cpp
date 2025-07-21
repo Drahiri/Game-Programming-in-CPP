@@ -1,5 +1,6 @@
 #include "font.h"
 
+#include "game.h"
 #include "texture.h"
 
 #include <vector>
@@ -39,6 +40,7 @@ void Font::unload() {
 
 Texture* Font::renderText(const std::string& text, const Vector3& color, int pointSize) {
     Texture* texture = nullptr;
+    const std::string& actualText = game->getText(text);
 
     // Convert to SDL_Color
     SDL_Color sdlColor;
@@ -53,7 +55,8 @@ Texture* Font::renderText(const std::string& text, const Vector3& color, int poi
         TTF_Font* font = iter->second;
 
         // Draw this to a surface (blended for alpha)
-        SDL_Surface* surf = TTF_RenderText_Blended(font, text.c_str(), text.size(), sdlColor);
+        SDL_Surface* surf =
+              TTF_RenderText_Blended(font, actualText.c_str(), actualText.size(), sdlColor);
 
         if(surf != nullptr) {
             // Convert from surface to texture

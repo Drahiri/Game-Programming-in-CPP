@@ -8,12 +8,11 @@
 
 PauseMenu::PauseMenu(Game* game) : UIScreen(game) {
     game->setState(Game::GameState::Paused);
-    setTitle("PAUSED");
-    addButton("Resume", [this]() { close(); });
-    addButton("Quit", [this]() {
-        new DialogBox(this->game, "Do you want to quit?", [this]() {
-            this->game->setState(Game::GameState::Quit);
-        });
+    setTitle("PauseTitle");
+    addButton("ResumeButton", [this]() { close(); });
+    addButton("QuitButton", [this]() {
+        new DialogBox(
+              this->game, "QuitText", [this]() { this->game->setState(Game::GameState::Quit); });
     });
 
     game->getRenderer()->setRelativeMouse(false);

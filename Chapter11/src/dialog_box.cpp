@@ -14,6 +14,6 @@ DialogBox::DialogBox(Game* game, const std::string& text, std::function<void()> 
     background = game->getRenderer()->getTexture("assets/DialogBG.png");
     setTitle(text, Vector3::Zero, 30);
     // Setup buttons
-    addButton("OK", [onOK]() { onOK(); });
-    addButton("Cancel", [this]() { close(); });
+    addButton("OKButton", [onOK]() { onOK(); });
+    addButton("CancelButton", [this]() { close(); });
 }
