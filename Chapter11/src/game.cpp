@@ -300,6 +300,15 @@ void Game::handleKeyPress(int key) {
         fpsActor->shoot();
         break;
     }
+
+    case '1':
+        loadText("assets/English.gptext");
+        break;
+
+    case '2':
+        loadText("assets/Russian.gptext");
+        break;
+
     default:
         break;
     }
