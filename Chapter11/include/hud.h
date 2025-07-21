@@ -24,6 +24,7 @@ public:
 
 protected:
     void updateCrosshair();
+    void updateRadar();
 
     // Textures for crosshair
     Texture* crosshair;
@@ -32,6 +33,16 @@ protected:
     bool targetEnemy;
     // TargetComponents
     std::vector<TargetComponent*> targetComps;
+
+    // Radar
+    Texture* radar;
+    Texture* blipTex;
+    Texture* radarArrow;
+    // 2D offsets of blips relative to radar
+    std::vector<Vector2> blips;
+    // Adjust range of radar and radius
+    float radarRange;
+    float radarRadius;
 };
 
 #endif
