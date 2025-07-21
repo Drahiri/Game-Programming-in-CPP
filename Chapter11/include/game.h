@@ -54,6 +54,8 @@ public:
     void removePlane(PlaneActor* plane);
     std::vector<PlaneActor*>& getPlanes();
 
+    FPSActor* getPlayer() const;
+
 private:
     // Helper functions for the game loop
     void processInput();

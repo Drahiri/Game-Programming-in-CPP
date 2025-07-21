@@ -117,6 +117,10 @@ void Game::removeActor(Actor* actor) {
     }
 }
 
+FPSActor* Game::getPlayer() const {
+    return fpsActor;
+}
+
 void Game::processInput() {
     // Process SDL events
     SDL_Event event;
