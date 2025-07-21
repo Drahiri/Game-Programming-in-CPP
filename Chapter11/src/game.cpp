@@ -16,7 +16,10 @@
 #include "ui_screen.h"
 
 #include <algorithm>
+#include <fstream>
+#include <rapidjson/document.h>
 #include <SDL3_ttf/SDL_ttf.h>
+#include <sstream>
 
 const int windowWidth = 1024;
 const int windowHeight = 768;
@@ -217,6 +220,50 @@ void Game::setState(GameState state) {
     gameState = state;
 }
 
+void Game::loadText(const std::string& fileName) {
+    // Clear the existing map if already loaded
+    textMap.clear();
+    // Try to open the file
+    std::ifstream file(fileName);
+    if(!file.is_open()) {
+        SDL_Log("Text file %s not found", fileName.c_str());
+        return;
+    }
+
+    // Read the entire file to a string stream
+    std::stringstream fileStream;
+    fileStream << file.rdbuf();
+    std::string content = fileStream.str();
+    // Open this file in rapidJSON
+    rapidjson::StringStream jsonStr(content.c_str());
+    rapidjson::Document doc;
+    doc.ParseStream(jsonStr);
+    if(!doc.IsObject()) {
+        SDL_Log("Text file %s is not valid JSON", fileName.c_str());
+        return;
+    }
+    // Parse the text map
+    const rapidjson::Value& actions = doc["TextMap"];
+    for(rapidjson::Value::ConstMemberIterator itr = actions.MemberBegin();
+          itr != actions.MemberEnd();
+          ++itr) {
+        if(itr->name.IsString() && itr->value.IsString()) {
+            textMap.emplace(itr->name.GetString(), itr->value.GetString());
+        }
+    }
+}
+
+const std::string& Game::getText(const std::string& key) {
+    static std::string errorMsg("** KEY NOT FOUND**");
+    // Find this text in the map, if it exists
+    auto iter = textMap.find(key);
+    if(iter != textMap.end()) {
+        return iter->second;
+    } else {
+        return errorMsg;
+    }
+}
+
 void Game::addPlane(PlaneActor* plane) {
     planes.emplace_back(plane);
 }
@@ -330,6 +377,8 @@ void Game::generateOutput() {
 }
 
 void Game::loadData() {
+    loadText("assets/English.gptext");
+
     // Create actors
     Actor* a = nullptr;
     Quaternion q;

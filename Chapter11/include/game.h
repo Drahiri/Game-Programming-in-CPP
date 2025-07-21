@@ -49,6 +49,9 @@ public:
     GameState getState() const;
     void setState(GameState state);
 
+    void loadText(const std::string& fileName);
+    const std::string& getText(const std::string& text);
+
     // Game specific
     void addPlane(PlaneActor* plane);
     void removePlane(PlaneActor* plane);
@@ -83,6 +86,9 @@ private:
     std::vector<Actor*> pendingActors;
 
     std::vector<UIScreen*> uiStack;
+
+    // Localization
+    std::unordered_map<std::string, std::string> textMap;
 
     // Game-specific code
     std::vector<PlaneActor*> planes;
