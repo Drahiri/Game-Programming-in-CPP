@@ -450,6 +450,12 @@ void Game::loadData() {
     a->setPosition(Vector3(1450.0f, -500.0f, 200.0f));
     a = new TargetActor(this);
     a->setPosition(Vector3(1450.0f, 500.0f, 200.0f));
+    a = new TargetActor(this);
+    a->setPosition(Vector3(0.0f, -1450.0f, 200.0f));
+    a->setRotation(Quaternion(Vector3::UnitZ, Math::PiOver2));
+    a = new TargetActor(this);
+    a->setPosition(Vector3(0.0f, 1450.0f, 200.0f));
+    a->setRotation(Quaternion(Vector3::UnitZ, -Math::PiOver2));
 }
 
 void Game::unloadData() {
