@@ -60,6 +60,7 @@ public:
     std::vector<PlaneActor*>& getPlanes();
 
     FPSActor* getPlayer() const;
+    ArrowTarget* getArrowTarget() const;
 
     void createMainMenu();
     void startGame();

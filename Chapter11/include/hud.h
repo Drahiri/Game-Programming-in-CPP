@@ -25,6 +25,7 @@ public:
 protected:
     void updateCrosshair();
     void updateRadar();
+    void updateArrow();
 
     // Textures for crosshair
     Texture* crosshair;
@@ -47,6 +48,7 @@ protected:
 
     // Arrow for target arrow
     Texture* arrowTex;
+    float arrowRot;
 };
 
 #endif

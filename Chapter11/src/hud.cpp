@@ -1,5 +1,6 @@
 #include "hud.h"
 
+#include "arrow_target.h"
 #include "collision.h"
 #include "fps_actor.h"
 #include "game.h"
@@ -9,7 +10,12 @@
 
 #include <algorithm>
 
-HUD::HUD(Game* game) : UIScreen(game), targetEnemy(false), radarRange(2000.0f), radarRadius(92.0f) {
+HUD::HUD(Game* game) :
+    UIScreen(game),
+    targetEnemy(false),
+    radarRange(2000.0f),
+    radarRadius(92.0f),
+    arrowRot(0.0f) {
     Renderer* r = game->getRenderer();
     crosshair = r->getTexture("assets/Crosshair.png");
     crosshairEnemy = r->getTexture("assets/CrosshairRed.png");
@@ -25,6 +31,7 @@ HUD::~HUD() {}
 void HUD::update(float deltaTime) {
     updateCrosshair();
     updateRadar();
+    updateArrow();
 }
 
 void HUD::draw(Shader* shader) {
@@ -49,7 +56,7 @@ void HUD::draw(Shader* shader) {
     drawTexture(shader, radarArrow, cRadarPos);
 
     const Vector2 cArrowPos(0.0f, 325.0f);
-    drawTexture(shader, arrowTex, cArrowPos, 0.4f);
+    drawTexture(shader, arrowTex, cArrowPos, 0.4f, arrowRot);
 }
 
 void HUD::addTarget(TargetComponent* tc) {
@@ -123,4 +130,29 @@ void HUD::updateRadar() {
             blips.emplace_back(Vector3(blipPos.x, blipPos.y, elevation));
         }
     }
+}
+
+// playerRot is calculated same way in UpdateRadar
+// Could try to move it to its own function
+
+void HUD::updateArrow() {
+    // Convert player position to x-y plane
+    Vector3 playerPos = game->getPlayer()->getPosition();
+    Vector2 playerPos2D(playerPos.y, playerPos.x);
+    // Ditto for player forward
+    Vector3 playerForward = game->getPlayer()->getForward();
+    Vector2 playerForward2D(playerForward.y, playerForward.x);
+
+    float playerRot = Math::Atan2(playerForward2D.y, playerForward2D.x);
+
+    // Convert arrowTarget position to x-y plane
+    Vector3 arrowTargetPos = game->getArrowTarget()->getPosition();
+    Vector2 arrowTargetPos2D(arrowTargetPos.y, arrowTargetPos.x);
+
+    Vector2 playerToTarget = arrowTargetPos2D - playerPos2D;
+    playerToTarget.Normalize();
+
+    float playerToTargetRot = Math::Atan2(playerToTarget.y, playerToTarget.x);
+
+    arrowRot = playerToTargetRot - playerRot;
 }

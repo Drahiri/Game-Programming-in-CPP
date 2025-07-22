@@ -113,7 +113,8 @@ void UIScreen::addButton(const std::string& name, std::function<void()> onClick)
     nextButtonPos.y -= buttonOff->getHeight() + 20.0f;
 }
 
-void UIScreen::drawTexture(Shader* shader, Texture* texture, const Vector2& offset, float scale) {
+void UIScreen::drawTexture(
+      Shader* shader, Texture* texture, const Vector2& offset, float scale, float angle) {
     // Scale the quad by the width/height of texture
     Matrix4 scaleMat = Matrix4::CreateScale(static_cast<float>(texture->getWidth()) * scale,
           static_cast<float>(texture->getHeight()) * scale,
@@ -121,7 +122,9 @@ void UIScreen::drawTexture(Shader* shader, Texture* texture, const Vector2& offs
     // Translate to position on screen
     Matrix4 transMat = Matrix4::CreateTranslation(Vector3(offset.x, offset.y, 0.0f));
     // Set world transform
-    Matrix4 world = scaleMat * transMat;
+    Matrix4 rotMat = Matrix4::CreateRotationZ(angle);
+
+    Matrix4 world = scaleMat * rotMat * transMat;
     shader->setMatrixUniform("uWorldTransform", world);
     // Set current texture
     texture->setActive();

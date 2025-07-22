@@ -137,6 +137,10 @@ FPSActor* Game::getPlayer() const {
     return fpsActor;
 }
 
+ArrowTarget* Game::getArrowTarget() const {
+    return arrowTarget;
+}
+
 void Game::createMainMenu() {
     unloadData();
     setState(GameState::MainMenu);
