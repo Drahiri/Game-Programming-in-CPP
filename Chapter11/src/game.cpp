@@ -1,6 +1,7 @@
 #include "game.h"
 
 #include "actor.h"
+#include "arrow_target.h"
 #include "audio_component.h"
 #include "audio_system.h"
 #include "font.h"
@@ -476,6 +477,10 @@ void Game::loadData() {
     a = new TargetActor(this);
     a->setPosition(Vector3(0.0f, 1450.0f, 0.0f));
     a->setRotation(Quaternion(Vector3::UnitZ, -Math::PiOver2));
+
+    arrowTarget = new ArrowTarget(this);
+    arrowTarget->setPosition(Vector3(-1000.0f, -500.0f, 30.0f));
+    arrowTarget->setScale(50.0f);
 }
 
 void Game::unloadData() {

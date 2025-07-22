@@ -3,6 +3,7 @@ project(Chapter11 VERSION 1.0 LANGUAGES CXX)
 
 set(SOURCE_FILES
     "src/actor.cpp"
+    "src/arrow_target.cpp"
     "src/audio_component.cpp"
     "src/audio_system.cpp"
     "src/ball_actor.cpp"
@@ -41,6 +42,7 @@ set(SOURCE_FILES
 
 set(HEADER_FILES
     "include/actor.h"
+    "include/arrow_target.h"
     "include/audio_component.h"
     "include/audio_system.h"
     "include/ball_actor.h"

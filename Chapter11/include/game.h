@@ -10,6 +10,7 @@
 #include <vector>
 
 class Actor;
+class ArrowTarget;
 class AudioSystem;
 class Font;
 class FPSActor;
@@ -97,6 +98,7 @@ private:
     // Game-specific code
     std::vector<PlaneActor*> planes;
     FPSActor* fpsActor;
+    ArrowTarget* arrowTarget;
     SoundEvent musicEvent;
 };
 
