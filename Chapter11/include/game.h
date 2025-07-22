@@ -27,6 +27,7 @@ public:
     enum class GameState {
         Gameplay,
         Paused,
+        MainMenu,
         Quit
     };
 
