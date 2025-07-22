@@ -90,6 +90,16 @@ void Game::shutdown() {
         audioSystem->shutdown();
     }
 
+    if(physWorld) {
+        delete physWorld;
+    }
+
+    while(!fonts.empty()) {
+        auto iter = fonts.begin();
+        delete iter->second;
+        fonts.erase(iter);
+    }
+
     TTF_Quit();
     SDL_Quit();
 }
@@ -463,4 +473,12 @@ void Game::unloadData() {
     while(!actors.empty()) {
         delete actors.back();
     }
+
+    // Delete ui
+    while(!uiStack.empty()) {
+        delete uiStack.back();
+        uiStack.pop_back();
+    }
+
+    delete crosshair;
 }
