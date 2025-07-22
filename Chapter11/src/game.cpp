@@ -479,6 +479,4 @@ void Game::unloadData() {
         delete uiStack.back();
         uiStack.pop_back();
     }
-
-    delete crosshair;
 }
