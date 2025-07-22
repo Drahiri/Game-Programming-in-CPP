@@ -44,6 +44,9 @@ protected:
     // Adjust range of radar and radius
     float radarRange;
     float radarRadius;
+
+    // Arrow for target arrow
+    Texture* arrowTex;
 };
 
 #endif

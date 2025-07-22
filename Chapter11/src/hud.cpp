@@ -17,6 +17,7 @@ HUD::HUD(Game* game) : UIScreen(game), targetEnemy(false), radarRange(2000.0f), 
     blipUpTex = r->getTexture("assets/BlipUp.png");
     blipDownTex = r->getTexture("assets/BlipDown.png");
     radarArrow = r->getTexture("assets/RadarArrow.png");
+    arrowTex = r->getTexture("assets/Arrow.png");
 }
 
 HUD::~HUD() {}
@@ -46,6 +47,9 @@ void HUD::draw(Shader* shader) {
         drawTexture(shader, blipTex, cRadarPos + Vector2(blip.x, blip.y), 1.0f);
     }
     drawTexture(shader, radarArrow, cRadarPos);
+
+    const Vector2 cArrowPos(0.0f, 325.0f);
+    drawTexture(shader, arrowTex, cArrowPos, 0.4f);
 }
 
 void HUD::addTarget(TargetComponent* tc) {
