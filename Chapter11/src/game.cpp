@@ -6,6 +6,7 @@
 #include "font.h"
 #include "fps_actor.h"
 #include "hud.h"
+#include "main_menu.h"
 #include "mesh_component.h"
 #include "pause_menu.h"
 #include "phys_world.h"
@@ -25,7 +26,7 @@ const int windowWidth = 1024;
 const int windowHeight = 768;
 
 Game::Game() :
-    gameState(GameState::Gameplay),
+    gameState(GameState::MainMenu),
     ticksCount(0),
     updatingActors(true),
     renderer(nullptr),
@@ -66,7 +67,8 @@ bool Game::initialize() {
     // Create the physics world
     physWorld = new PhysWorld(this);
 
-    loadData();
+    loadText("assets/English.gptext");
+    createMainMenu();
 
     return true;
 }
@@ -132,6 +134,16 @@ void Game::removeActor(Actor* actor) {
 
 FPSActor* Game::getPlayer() const {
     return fpsActor;
+}
+
+void Game::createMainMenu() {
+    unloadData();
+    setState(GameState::MainMenu);
+    new MainMenu(this);
+}
+
+void Game::startGame() {
+    loadData();
 }
 
 void Game::processInput() {
@@ -396,8 +408,6 @@ void Game::generateOutput() {
 }
 
 void Game::loadData() {
-    loadText("assets/English.gptext");
-
     // Create actors
     Actor* a = nullptr;
     Quaternion q;

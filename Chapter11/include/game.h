@@ -60,6 +60,9 @@ public:
 
     FPSActor* getPlayer() const;
 
+    void createMainMenu();
+    void startGame();
+
 private:
     // Helper functions for the game loop
     void processInput();

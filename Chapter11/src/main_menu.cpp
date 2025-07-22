@@ -7,7 +7,10 @@
 MainMenu::MainMenu(Game* game) : UIScreen(game) {
     game->setState(Game::GameState::MainMenu);
     setTitle("MainTitle");
-    addButton("PlayButton", [this]() { close(); });
+    addButton("PlayButton", [this]() {
+        this->game->startGame();
+        close();
+    });
     addButton("QuitButton", [this]() {
         new DialogBox(
               this->game, "QuitText", [this]() { this->game->setState(Game::GameState::Quit); });
