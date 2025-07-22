@@ -36,10 +36,11 @@ protected:
 
     // Radar
     Texture* radar;
-    Texture* blipTex;
+    Texture* blipUpTex;
+    Texture* blipDownTex;
     Texture* radarArrow;
     // 2D offsets of blips relative to radar
-    std::vector<Vector2> blips;
+    std::vector<Vector3> blips;
     // Adjust range of radar and radius
     float radarRange;
     float radarRadius;

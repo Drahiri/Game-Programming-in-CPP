@@ -14,7 +14,8 @@ HUD::HUD(Game* game) : UIScreen(game), targetEnemy(false), radarRange(2000.0f), 
     crosshair = r->getTexture("assets/Crosshair.png");
     crosshairEnemy = r->getTexture("assets/CrosshairRed.png");
     radar = r->getTexture("assets/Radar.png");
-    blipTex = r->getTexture("assets/Blip.png");
+    blipUpTex = r->getTexture("assets/BlipUp.png");
+    blipDownTex = r->getTexture("assets/BlipDown.png");
     radarArrow = r->getTexture("assets/RadarArrow.png");
 }
 
@@ -29,12 +30,20 @@ void HUD::draw(Shader* shader) {
     Texture* cross = targetEnemy ? crosshairEnemy : crosshair;
     drawTexture(shader, cross, Vector2::Zero, 2.0f);
 
+    Texture* blipTex = nullptr;
+
     // Drawing radar
     const Vector2 cRadarPos(-350.0f, 250.0f);
     drawTexture(shader, radar, cRadarPos, 1.0f);
     // Blips
-    for(const Vector2& blip: blips) {
-        drawTexture(shader, blipTex, cRadarPos + blip, 1.0f);
+    for(const Vector3& blip: blips) {
+        if(blip.z > 0.0) {
+            blipTex = blipUpTex;
+        } else {
+            blipTex = blipDownTex;
+        }
+
+        drawTexture(shader, blipTex, cRadarPos + Vector2(blip.x, blip.y), 1.0f);
     }
     drawTexture(shader, radarArrow, cRadarPos);
 }
@@ -97,6 +106,8 @@ void HUD::updateRadar() {
         // Calculate vector between player and target
         Vector2 playerToTarget = actorPos2D - playerPos2D;
 
+        float elevation = targetPos.z - playerPos.z;
+
         // See if within range
         if(playerToTarget.LengthSq() <= (radarRange * radarRange)) {
             // Convert playerToTarget into an offset from
@@ -105,7 +116,7 @@ void HUD::updateRadar() {
             blipPos *= radarRadius / radarRange;
             // Rotate blipPos
             blipPos = Vector2::Transform(blipPos, rotMat);
-            blips.emplace_back(blipPos);
+            blips.emplace_back(Vector3(blipPos.x, blipPos.y, elevation));
         }
     }
 }
