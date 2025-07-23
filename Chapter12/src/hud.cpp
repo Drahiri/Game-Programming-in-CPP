@@ -1,7 +1,7 @@
 #include "hud.h"
 
 #include "collision.h"
-#include "fps_actor.h"
+#include "follow_actor.h"
 #include "game.h"
 #include "phys_world.h"
 #include "renderer.h"
@@ -26,8 +26,8 @@ void HUD::update(float deltaTime) {
 }
 
 void HUD::draw(Shader* shader) {
-    Texture* cross = targetEnemy ? crosshairEnemy : crosshair;
-    drawTexture(shader, cross, Vector2::Zero, 2.0f);
+    // Texture* cross = targetEnemy ? crosshairEnemy : crosshair;
+    // drawTexture(shader, cross, Vector2::Zero, 2.0f);
 
     // Drawing radar
     const Vector2 cRadarPos(-350.0f, 250.0f);

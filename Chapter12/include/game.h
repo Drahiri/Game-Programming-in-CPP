@@ -12,7 +12,7 @@
 class Actor;
 class AudioSystem;
 class Font;
-class FPSActor;
+class FollowActor;
 class HUD;
 class PhysWorld;
 class PlaneActor;
@@ -57,7 +57,7 @@ public:
     void removePlane(PlaneActor* plane);
     std::vector<PlaneActor*>& getPlanes();
 
-    FPSActor* getPlayer() const;
+    FollowActor* getPlayer() const;
 
 private:
     // Helper functions for the game loop
@@ -92,7 +92,7 @@ private:
 
     // Game-specific code
     std::vector<PlaneActor*> planes;
-    FPSActor* fpsActor;
+    FollowActor* followActor;
     SoundEvent musicEvent;
 };
 

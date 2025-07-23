@@ -3,8 +3,8 @@
 #include "actor.h"
 #include "audio_component.h"
 #include "audio_system.h"
+#include "follow_actor.h"
 #include "font.h"
-#include "fps_actor.h"
 #include "hud.h"
 #include "mesh_component.h"
 #include "pause_menu.h"
@@ -130,8 +130,8 @@ void Game::removeActor(Actor* actor) {
     }
 }
 
-FPSActor* Game::getPlayer() const {
-    return fpsActor;
+FollowActor* Game::getPlayer() const {
+    return followActor;
 }
 
 void Game::processInput() {
@@ -305,11 +305,6 @@ void Game::handleKeyPress(int key) {
         audioSystem->setBusVolume("bus:/", volume);
         break;
     }
-    case SDL_BUTTON_LEFT: {
-        // Fire weapon
-        fpsActor->shoot();
-        break;
-    }
 
     case '1':
         loadText("assets/English.gptext");
@@ -318,6 +313,9 @@ void Game::handleKeyPress(int key) {
     case '2':
         loadText("assets/Russian.gptext");
         break;
+    case SDL_BUTTON_LEFT: {
+        break;
+    }
 
     default:
         break;
@@ -449,7 +447,7 @@ void Game::loadData() {
     // Start music
     musicEvent = audioSystem->playEvent("event:/Music");
 
-    fpsActor = new FPSActor(this);
+    followActor = new FollowActor(this);
 
     // Create target actors
     a = new TargetActor(this);
