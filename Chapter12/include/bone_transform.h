@@ -8,6 +8,8 @@ struct BoneTransform {
     Vector3 translation;
 
     Matrix4 toMatrix() const;
+
+    static BoneTransform interpolate(const BoneTransform& a, const BoneTransform& b, float f);
 };
 
 #endif
