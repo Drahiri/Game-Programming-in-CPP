@@ -46,9 +46,14 @@ bool Mesh::load(const std::string& fileName, Renderer* renderer) {
 
     shaderName = doc["shader"].GetString();
 
-    // Skip the vertex format/shader for now
-
+    VertexArray::Layout vertexLayout = VertexArray::Layout::PosNormTex;
     size_t vertSize = 8;
+    std::string vertexFormat = doc["vertexFormat"].GetString();
+
+    if(vertexFormat == "PosNormSkinTex") {
+        vertexLayout = VertexArray::Layout::PosNormSkinTex;
+        vertSize = 10;
+    }
 
     // Load textures
     const rapidjson::Value& texJson = doc["textures"];
@@ -125,7 +130,8 @@ bool Mesh::load(const std::string& fileName, Renderer* renderer) {
     }
 
     // Now create a vertex array
-    vertexArray = new VertexArray(vertices.data(),
+    vertexArray = new VertexArray(vertexLayout,
+          vertices.data(),
           static_cast<unsigned>(vertices.size()) / vertSize,
           indices.data(),
           static_cast<unsigned>(indices.size()));

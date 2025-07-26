@@ -352,5 +352,5 @@ void Renderer::createSpriteVerts() {
     };
     /* clang-format on */
 
-    spriteVerts = new VertexArray(vertices, 4, indices, 6);
+    spriteVerts = new VertexArray(VertexArray::Layout::PosNormTex, vertices, 4, indices, 6);
 }
