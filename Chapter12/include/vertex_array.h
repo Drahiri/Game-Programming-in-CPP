@@ -3,7 +3,13 @@
 
 class VertexArray {
 public:
-    VertexArray(const float* verts,
+    enum class Layout {
+        PosNormTex,
+        PosNormSkinTex
+    };
+
+    VertexArray(Layout layout,
+          const float* verts,
           unsigned int numVerts,
           const unsigned int* indices,
           unsigned int numIndices);
