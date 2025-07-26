@@ -3,7 +3,7 @@
 #include <GL/glew.h>
 
 VertexArray::VertexArray(Layout layout,
-      const float* verts,
+      const void* verts,
       unsigned int numVerts,
       const unsigned int* indices,
       unsigned int numIndices) :
@@ -83,7 +83,7 @@ VertexArray::VertexArray(Layout layout,
 
         // UV
         glEnableVertexAttribArray(4);
-        glVertexAttribPointer(2,
+        glVertexAttribPointer(4,
               2,
               GL_FLOAT,
               GL_FALSE,
