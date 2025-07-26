@@ -4,6 +4,7 @@
 #include "mesh.h"
 #include "mesh_component.h"
 #include "shader.h"
+#include "skeletal_mesh_component.h"
 #include "sprite_component.h"
 #include "texture.h"
 #include "ui_screen.h"
@@ -189,13 +190,26 @@ void Renderer::removeSprite(SpriteComponent* sprite) {
 }
 
 void Renderer::addMeshComp(MeshComponent* meshComp) {
-    meshComps.emplace_back(meshComp);
+    if(meshComp->getIsSkeletal()) {
+        SkeletalMeshComponent* sk = static_cast<SkeletalMeshComponent*>(meshComp);
+        skeletalMeshes.emplace_back(sk);
+    } else {
+        meshComps.emplace_back(meshComp);
+    }
 }
 
 void Renderer::removeMeshComp(MeshComponent* meshComp) {
-    auto iter = std::find(meshComps.begin(), meshComps.end(), meshComp);
-    if(iter != meshComps.end()) {
-        meshComps.erase(iter);
+    if(meshComp->getIsSkeletal()) {
+        SkeletalMeshComponent* sk = static_cast<SkeletalMeshComponent*>(meshComp);
+        auto iter = std::find(skeletalMeshes.begin(), skeletalMeshes.end(), sk);
+        if(iter != skeletalMeshes.end()) {
+            skeletalMeshes.erase(iter);
+        }
+    } else {
+        auto iter = std::find(meshComps.begin(), meshComps.end(), meshComp);
+        if(iter != meshComps.end()) {
+            meshComps.erase(iter);
+        }
     }
 }
 

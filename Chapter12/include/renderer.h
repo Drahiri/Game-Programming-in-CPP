@@ -12,6 +12,7 @@ class Game;
 class Mesh;
 class MeshComponent;
 class Shader;
+class SkeletalMeshComponent;
 class SpriteComponent;
 class Texture;
 class VertexArray;
@@ -90,6 +91,9 @@ private:
     std::unordered_map<std::string, Mesh*> meshes;
     Shader* meshShader;
     std::vector<MeshComponent*> meshComps;
+
+    // Skeletal stuff
+    std::vector<SkeletalMeshComponent*> skeletalMeshes;
 
     Game* game;
     SDL_Window* window;
