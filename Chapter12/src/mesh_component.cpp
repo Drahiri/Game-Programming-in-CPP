@@ -8,12 +8,12 @@
 #include "texture.h"
 #include "vertex_array.h"
 
-MeshComponent::MeshComponent(Actor* owner) :
+MeshComponent::MeshComponent(Actor* owner, bool skeletal) :
     Component(owner),
     mesh(nullptr),
     textureIndex(0),
     isVisible(true),
-    isSkeletal(false) {
+    isSkeletal(skeletal) {
     owner->getGame()->getRenderer()->addMeshComp(this);
 }
 

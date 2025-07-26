@@ -11,7 +11,7 @@ class Mesh;
 
 class MeshComponent : public Component {
 public:
-    MeshComponent(Actor* owner);
+    MeshComponent(Actor* owner, bool skeletal = false);
     ~MeshComponent();
 
     // Draw this mesh component with provided shader
