@@ -94,6 +94,7 @@ private:
 
     // Skeletal stuff
     std::vector<SkeletalMeshComponent*> skeletalMeshes;
+    Shader* skinnedShader;
 
     Game* game;
     SDL_Window* window;

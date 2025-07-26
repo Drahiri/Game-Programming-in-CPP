@@ -332,7 +332,6 @@ bool Renderer::loadShaders() {
     if(!meshShader->load("shaders/phong.vert", "shaders/phong.frag")) {
         return false;
     }
-
     meshShader->setActive();
     // Set the view-projection matrix
     viewMatrix = Matrix4::CreateLookAt(Vector3::Zero, // Camera position
@@ -347,6 +346,14 @@ bool Renderer::loadShaders() {
           10000.0f                                                           // Far plane distance
     );
     meshShader->setMatrixUniform("uViewProj", viewMatrix * projectionMatrix);
+
+    // Load skeletal shader
+    skinnedShader = new Shader();
+    if(!skinnedShader->load("shaders/skinned.vert", "shaders/phong.frag")) {
+        return false;
+    }
+    skinnedShader->setActive();
+    skinnedShader->setMatrixUniform("uViewProj", viewMatrix * projectionMatrix);
 
     return true;
 }
