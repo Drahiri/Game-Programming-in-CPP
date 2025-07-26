@@ -5,7 +5,7 @@
 
 class FollowCamera;
 class Game;
-class MeshComponent;
+class SkeletalMeshComponent;
 class MoveComponent;
 
 class FollowActor : public Actor {
@@ -19,7 +19,7 @@ public:
 private:
     MoveComponent* moveComp;
     FollowCamera* cameraComp;
-    MeshComponent* meshComp;
+    SkeletalMeshComponent* meshComp;
 };
 
 #endif

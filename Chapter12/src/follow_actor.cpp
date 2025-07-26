@@ -2,12 +2,12 @@
 
 #include "follow_camera.h"
 #include "game.h"
-#include "mesh_component.h"
 #include "move_component.h"
 #include "renderer.h"
+#include "skeletal_mesh_component.h"
 
 FollowActor::FollowActor(Game* game) : Actor(game) {
-    meshComp = new MeshComponent(this);
+    meshComp = new SkeletalMeshComponent(this);
     meshComp->setMesh(game->getRenderer()->getMesh("assets/CatWarrior.gpmesh"));
     setPosition(Vector3(0.0f, 0.0f, -100.0f));
 
