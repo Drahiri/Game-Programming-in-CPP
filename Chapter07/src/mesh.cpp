@@ -90,8 +90,8 @@ bool Mesh::load(const std::string& fileName, Renderer* renderer) {
         radius = Math::Max(radius, pos.LengthSq());
 
         // Add the floats
-        for(rapidjson::SizeType i = 0; i < vert.Size(); i++) {
-            vertices.emplace_back(static_cast<float>(vert[i].GetDouble()));
+        for(rapidjson::SizeType j = 0; j < vert.Size(); j++) {
+            vertices.emplace_back(static_cast<float>(vert[j].GetDouble()));
         }
     }
 
