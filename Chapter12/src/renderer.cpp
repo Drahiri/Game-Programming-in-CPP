@@ -144,6 +144,19 @@ void Renderer::draw() {
         }
     }
 
+    // Draw any skinned meshes now
+    skinnedShader->setActive();
+    // Update view-projection matrix
+    skinnedShader->setMatrixUniform("uViewProj", viewMatrix * projectionMatrix);
+    // Update lighting uniform
+    setLightUniforms(skinnedShader);
+
+    for(auto sk: skeletalMeshes) {
+        if(sk->getVisible()) {
+            sk->draw(skinnedShader);
+        }
+    }
+
     // Draw all sprite components
     // Disable depth buffering
     glDisable(GL_DEPTH_TEST);
