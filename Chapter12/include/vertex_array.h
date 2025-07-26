@@ -9,7 +9,7 @@ public:
     };
 
     VertexArray(Layout layout,
-          const float* verts,
+          const void* verts,
           unsigned int numVerts,
           const unsigned int* indices,
           unsigned int numIndices);

@@ -11,6 +11,13 @@
 #include <SDL3/SDL_log.h>
 #include <sstream>
 
+namespace {
+union Vertex {
+    float f;
+    uint8_t b[4];
+};
+} // namespace
+
 Mesh::Mesh() :
     vertexArray(nullptr),
     radius(0.0f),
@@ -48,7 +55,7 @@ bool Mesh::load(const std::string& fileName, Renderer* renderer) {
 
     VertexArray::Layout vertexLayout = VertexArray::Layout::PosNormTex;
     size_t vertSize = 8;
-    std::string vertexFormat = doc["vertexFormat"].GetString();
+    std::string vertexFormat = doc["vertexformat"].GetString();
 
     if(vertexFormat == "PosNormSkinTex") {
         vertexLayout = VertexArray::Layout::PosNormSkinTex;
@@ -84,25 +91,49 @@ bool Mesh::load(const std::string& fileName, Renderer* renderer) {
         return false;
     }
 
-    std::vector<float> vertices;
+    std::vector<Vertex> vertices;
     vertices.reserve(vertsJson.Size() * vertSize);
     radius = 0.0f;
     for(rapidjson::SizeType i = 0; i < vertsJson.Size(); i++) {
-        // For now, just assume we have 8 elements
         const rapidjson::Value& vert = vertsJson[i];
-        if(!vert.IsArray() || vert.Size() != 8) {
+        if(!vert.IsArray()) {
             SDL_Log("Unexpected vertex format for %s", fileName.c_str());
             return false;
         }
 
         Vector3 pos(vert[0].GetDouble(), vert[1].GetDouble(), vert[2].GetDouble());
         radius = Math::Max(radius, pos.LengthSq());
-
         box.updateMinMax(pos);
 
-        // Add the floats
-        for(rapidjson::SizeType i = 0; i < vert.Size(); i++) {
-            vertices.emplace_back(static_cast<float>(vert[i].GetDouble()));
+        if(vertexLayout == VertexArray::Layout::PosNormTex) {
+            Vertex v;
+            // Add the floats
+            for(rapidjson::SizeType j = 0; j < vert.Size(); j++) {
+                v.f = static_cast<float>(vert[j].GetDouble());
+                vertices.emplace_back(v);
+            }
+        } else {
+            Vertex v;
+            // Add pos/normal
+            for(rapidjson::SizeType j = 0; j < 6; j++) {
+                v.f = static_cast<float>(vert[j].GetDouble());
+                vertices.emplace_back(v);
+            }
+
+            // Add skin information
+            for(rapidjson::SizeType j = 6; j < 14; j += 4) {
+                v.b[0] = vert[j].GetUint();
+                v.b[1] = vert[j + 1].GetUint();
+                v.b[2] = vert[j + 2].GetUint();
+                v.b[3] = vert[j + 3].GetUint();
+                vertices.emplace_back(v);
+            }
+
+            // Add tex oords
+            for(rapidjson::SizeType j = 14; j < vert.Size(); j++) {
+                v.f = vert[j].GetDouble();
+                vertices.emplace_back(v);
+            }
         }
     }
 
