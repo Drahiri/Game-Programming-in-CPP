@@ -25,10 +25,13 @@ public:
     void setVisible(bool visible);
     bool getVisible() const;
 
+    bool getIsSkeletal() const;
+
 protected:
     Mesh* mesh;
     size_t textureIndex;
     bool isVisible;
+    bool isSkeletal;
 };
 
 #endif

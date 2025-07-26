@@ -12,7 +12,8 @@ MeshComponent::MeshComponent(Actor* owner) :
     Component(owner),
     mesh(nullptr),
     textureIndex(0),
-    isVisible(true) {
+    isVisible(true),
+    isSkeletal(false) {
     owner->getGame()->getRenderer()->addMeshComp(this);
 }
 
@@ -57,4 +58,8 @@ void MeshComponent::setVisible(bool visible) {
 
 bool MeshComponent::getVisible() const {
     return isVisible;
+}
+
+bool MeshComponent::getIsSkeletal() const {
+    return isSkeletal;
 }
