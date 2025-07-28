@@ -19,6 +19,20 @@ void SkeletalMeshComponent::draw(Shader* shader) {
     shader->setMatrixUniforms("uMatrixPalette", &palette.entry[0], MAX_SKELETON_BONES);
 }
 
+void SkeletalMeshComponent::update(float deltaTime) {
+    if(animation && skeleton) {
+        animTime += deltaTime * animPlayRate;
+
+        // Wrap around anim time if past duration
+        while(animTime > animation->getDuration()) {
+            animTime -= animation->getDuration();
+        }
+
+        // Recompute matrix palette
+        computeMatrixPalette();
+    }
+}
+
 void SkeletalMeshComponent::computeMatrixPalette() {
     const std::vector<Matrix4>& globalInvBindPoses = skeleton->getGlobalInvBindPoses();
     std::vector<Matrix4> currentPoses;

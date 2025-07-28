@@ -16,6 +16,8 @@ public:
     // Draw this mesh component
     void draw(Shader* shader) override;
 
+    void update(float deltaTime) override;
+
     void computeMatrixPalette();
     float playAnimation(const Animation* anim, float playRate = 1.0f);
 
