@@ -17,6 +17,7 @@ public:
     void setVisible(bool visible);
 
 private:
+    bool moving;
     MoveComponent* moveComp;
     FollowCamera* cameraComp;
     SkeletalMeshComponent* meshComp;

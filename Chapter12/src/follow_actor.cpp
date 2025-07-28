@@ -6,7 +6,7 @@
 #include "renderer.h"
 #include "skeletal_mesh_component.h"
 
-FollowActor::FollowActor(Game* game) : Actor(game) {
+FollowActor::FollowActor(Game* game) : Actor(game), moving(false) {
     meshComp = new SkeletalMeshComponent(this);
     meshComp->setMesh(game->getRenderer()->getMesh("assets/CatWarrior.gpmesh"));
     meshComp->setSkeleton(game->getSkeleton("assets/CatWarrior.gpskel"));
@@ -38,11 +38,13 @@ void FollowActor::actorInput(const bool* keys) {
     moveComp->setForwardSpeed(forwardSpeed);
     moveComp->setAngularSpeed(angularSpeed);
 
-    // Adjst horizontal distance of camera based on speed
-    if(!Math::NearZero(forwardSpeed)) {
-        cameraComp->setHorzDist(500.0f);
-    } else {
-        cameraComp->setHorzDist(350.0f);
+    // Did we start moving?
+    if(!moving && !Math::NearZero(forwardSpeed)) {
+        moving = true;
+        meshComp->playAnimation(getGame()->getAnimation("assets/CatRunSprint.gpanim"), 1.25f);
+    } else if(moving && Math::NearZero(forwardSpeed)) {
+        moving = false;
+        meshComp->playAnimation(getGame()->getAnimation("assets/CatActionIdle.gpanim"));
     }
 }
 
