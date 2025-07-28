@@ -133,23 +133,32 @@ void Animation::getGlobalPoseAtTime(
         outPoses.resize(numBones);
     }
 
-    // For now, just compute the pose for every bone at frame 0
-    const int frame = 0;
-    // Set the pose for the root
+    // Figure out the current frame index and next frame
+    // (This assumes inTime is bounded by [0, AnimDuration])
+    size_t frame = static_cast<size_t>(inTime / frameDuration);
+    size_t nextFrame = frame + 1;
+    // Calculate fractional value between frame and next frame
+    float pct = inTime / frameDuration - frame;
+
+    // Setup the pose for the root
     // Does the root have a track?
     if(tracks[0].size() > 0) {
-        // The global pose for the root is just its local pose
-        outPoses[0] = tracks[0][frame].toMatrix();
+        // Interpolate between the current frame's pose and the next frame
+        BoneTransform interp =
+              BoneTransform::interpolate(tracks[0][frame], tracks[0][nextFrame], pct);
+        outPoses[0] = interp.toMatrix();
     } else {
         outPoses[0] = Matrix4::Identity;
     }
 
     const std::vector<Skeleton::Bone>& bones = inSkeleton->getBones();
-    // Now compute the global pose matrices for every other bone
+    // Now setup the poses for the rest
     for(size_t bone = 1; bone < numBones; bone++) {
         Matrix4 localMat; // Defaults to identity
         if(tracks[bone].size() > 0) {
-            localMat = tracks[bone][frame].toMatrix();
+            BoneTransform interp =
+                  BoneTransform::interpolate(tracks[bone][frame], tracks[bone][nextFrame], pct);
+            localMat = interp.toMatrix();
         }
         outPoses[bone] = localMat * outPoses[bones[bone].parent];
     }
