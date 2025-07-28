@@ -17,6 +17,8 @@ public:
     void draw(Shader* shader) override;
 
     void computeMatrixPalette();
+    float playAnimation(const Animation* anim, float playRate = 1.0f);
+
     void setSkeleton(const Skeleton* sk);
 
 private:

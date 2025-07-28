@@ -28,6 +28,19 @@ void SkeletalMeshComponent::computeMatrixPalette() {
     }
 }
 
+float SkeletalMeshComponent::playAnimation(const Animation* anim, float playRate) {
+    animation = anim;
+    animTime = 0.0f;
+    animPlayRate = playRate;
+
+    if(!animation) {
+        return 0.0f;
+    }
+    computeMatrixPalette();
+
+    return animation->getDuration();
+}
+
 void SkeletalMeshComponent::setSkeleton(const Skeleton* sk) {
     skeleton = sk;
 }
