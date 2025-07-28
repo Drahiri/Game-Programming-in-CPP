@@ -10,6 +10,7 @@
 #include <vector>
 
 class Actor;
+class Animation;
 class AudioSystem;
 class Font;
 class FollowActor;
@@ -54,6 +55,7 @@ public:
     const std::string& getText(const std::string& text);
 
     Skeleton* getSkeleton(const std::string& fileName);
+    Animation* getAnimation(const std::string& fileName);
 
     // Game specific
     void addPlane(PlaneActor* plane);
@@ -93,8 +95,9 @@ private:
     // Localization
     std::unordered_map<std::string, std::string> textMap;
 
-    // Skeleton
+    // Skeleton and animations
     std::unordered_map<std::string, Skeleton*> skeletons;
+    std::unordered_map<std::string, Animation*> animations;
 
     // Game-specific code
     std::vector<PlaneActor*> planes;

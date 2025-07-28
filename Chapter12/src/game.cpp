@@ -1,6 +1,7 @@
 #include "game.h"
 
 #include "actor.h"
+#include "animation.h"
 #include "audio_component.h"
 #include "audio_system.h"
 #include "follow_actor.h"
@@ -274,6 +275,22 @@ Skeleton* Game::getSkeleton(const std::string& fileName) {
     }
 }
 
+Animation* Game::getAnimation(const std::string& fileName) {
+    auto iter = animations.find(fileName);
+    if(iter != animations.end()) {
+        return iter->second;
+    } else {
+        Animation* anim = new Animation();
+        if(anim->load(fileName)) {
+            animations.emplace(fileName, anim);
+        } else {
+            delete anim;
+            anim = nullptr;
+        }
+        return anim;
+    }
+}
+
 void Game::addPlane(PlaneActor* plane) {
     planes.emplace_back(plane);
 }
@@ -498,5 +515,10 @@ void Game::unloadData() {
     // Unload skeletons
     for(auto s: skeletons) {
         delete s.second;
+    }
+
+    // Unload animations
+    for(auto a: animations) {
+        delete a.second;
     }
 }
