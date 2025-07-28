@@ -1,5 +1,7 @@
 #include "skeleton.h"
 
+#include "matrix_palette.h"
+
 #include <fstream>
 #include <rapidjson/document.h>
 #include <SDL3/SDL_log.h>
@@ -39,8 +41,7 @@ bool Skeleton::load(const std::string& fileName) {
     }
 
     size_t count = bonecount.GetUint();
-    // TODO: Change to MAX_SKELETON_BONES
-    if(count > 96) {
+    if(count > MAX_SKELETON_BONES) {
         SDL_Log("Skeleton %s exceeds maximum bone count", fileName.c_str());
         return false;
     }
