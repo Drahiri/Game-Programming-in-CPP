@@ -127,7 +127,7 @@ float Animation::getFrameDuration() const {
 }
 
 void Animation::getGlobalPoseAtTime(
-      std::vector<Matrix4>& outPoses, Skeleton* inSkeleton, float inTime) const {
+      std::vector<Matrix4>& outPoses, const Skeleton* inSkeleton, float inTime) const {
     // Resize the outPoses vector if needed
     if(outPoses.size() != numBones) {
         outPoses.resize(numBones);

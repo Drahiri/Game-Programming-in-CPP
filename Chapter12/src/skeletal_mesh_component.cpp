@@ -28,6 +28,6 @@ void SkeletalMeshComponent::computeMatrixPalette() {
     }
 }
 
-void SkeletalMeshComponent::setSkeleton(Skeleton* sk) {
+void SkeletalMeshComponent::setSkeleton(const Skeleton* sk) {
     skeleton = sk;
 }

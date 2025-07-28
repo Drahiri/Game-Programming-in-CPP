@@ -16,17 +16,16 @@ public:
     // Draw this mesh component
     void draw(Shader* shader) override;
 
-    void setSkeleton(Skeleton* sk);
-
     void computeMatrixPalette();
+    void setSkeleton(const Skeleton* sk);
 
 private:
-    Skeleton* skeleton;
+    const Skeleton* skeleton;
 
     // Matrix palette
     MatrixPalette palette;
     // Animation currently playing
-    Animation* animation;
+    const Animation* animation;
     // Play rate of animation (1.0 is normal speed)
     float animPlayRate;
     // Current time in the animation

@@ -22,7 +22,7 @@ public:
     // Fills the provided vector with the global (current) pose matrices
     // for each bones at the specific time in the animation.
     void getGlobalPoseAtTime(
-          std::vector<Matrix4>& outPoses, Skeleton* inSkeleton, float inTime) const;
+          std::vector<Matrix4>& outPoses, const Skeleton* inSkeleton, float inTime) const;
 
 private:
     // Number of bones for the animation
