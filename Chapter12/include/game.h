@@ -17,6 +17,7 @@ class HUD;
 class PhysWorld;
 class PlaneActor;
 class Renderer;
+class Skeleton;
 class SpriteComponent;
 class UIScreen;
 
@@ -51,6 +52,8 @@ public:
 
     void loadText(const std::string& fileName);
     const std::string& getText(const std::string& text);
+
+    Skeleton* getSkeleton(const std::string& fileName);
 
     // Game specific
     void addPlane(PlaneActor* plane);
@@ -89,6 +92,9 @@ private:
 
     // Localization
     std::unordered_map<std::string, std::string> textMap;
+
+    // Skeleton
+    std::unordered_map<std::string, Skeleton*> skeletons;
 
     // Game-specific code
     std::vector<PlaneActor*> planes;

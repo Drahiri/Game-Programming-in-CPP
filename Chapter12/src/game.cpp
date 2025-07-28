@@ -11,6 +11,7 @@
 #include "phys_world.h"
 #include "plane_actor.h"
 #include "renderer.h"
+#include "skeleton.h"
 #include "sprite_component.h"
 #include "target_actor.h"
 #include "ui_screen.h"
@@ -271,6 +272,22 @@ const std::string& Game::getText(const std::string& key) {
         return iter->second;
     } else {
         return errorMsg;
+    }
+}
+
+Skeleton* Game::getSkeleton(const std::string& fileName) {
+    auto iter = skeletons.find(fileName);
+    if(iter != skeletons.end()) {
+        return iter->second;
+    } else {
+        Skeleton* sk = new Skeleton();
+        if(sk->load(fileName)) {
+            skeletons.emplace(fileName, sk);
+        } else {
+            delete sk;
+            sk = nullptr;
+        }
+        return sk;
     }
 }
 
