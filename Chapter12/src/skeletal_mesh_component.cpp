@@ -3,6 +3,7 @@
 #include "actor.h"
 #include "animation.h"
 #include "game.h"
+#include "shader.h"
 #include "skeleton.h"
 
 SkeletalMeshComponent::SkeletalMeshComponent(Actor* owner) :
@@ -14,6 +15,8 @@ SkeletalMeshComponent::SkeletalMeshComponent(Actor* owner) :
 
 void SkeletalMeshComponent::draw(Shader* shader) {
     MeshComponent::draw(shader);
+
+    shader->setMatrixUniforms("uMatrixPalette", &palette.entry[0], MAX_SKELETON_BONES);
 }
 
 void SkeletalMeshComponent::computeMatrixPalette() {
