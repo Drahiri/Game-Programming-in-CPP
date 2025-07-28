@@ -6,6 +6,99 @@
 #include <sstream>
 
 bool Skeleton::load(const std::string& fileName) {
+    std::ifstream file(fileName);
+    if(!file.is_open()) {
+        SDL_Log("File not found: Skeleton %s", fileName.c_str());
+        return false;
+    }
+
+    std::stringstream fileStream;
+    fileStream << file.rdbuf();
+    std::string contents = fileStream.str();
+    rapidjson::StringStream jsonStr(contents.c_str());
+    rapidjson::Document doc;
+    doc.ParseStream(jsonStr);
+
+    if(!doc.IsObject()) {
+        SDL_Log("Skeleton %s is not valid json", fileName.c_str());
+        return false;
+    }
+
+    int ver = doc["version"].GetInt();
+
+    // Check the metadata
+    if(ver != 1) {
+        SDL_Log("Skeleton %s unknown format", fileName.c_str());
+        return false;
+    }
+
+    const rapidjson::Value& bonecount = doc["bonecount"];
+    if(!bonecount.IsUint()) {
+        SDL_Log("Skeleton %s doesn't have a bone count", fileName.c_str());
+        return false;
+    }
+
+    size_t count = bonecount.GetUint();
+    // TODO: Change to MAX_SKELETON_BONES
+    if(count > 96) {
+        SDL_Log("Skeleton %s exceeds maximum bone count", fileName.c_str());
+        return false;
+    }
+
+    bones.reserve(count);
+
+    const rapidjson::Value& jsonBones = doc["bones"];
+    if(!jsonBones.IsArray()) {
+        SDL_Log("Skeleton %s doesn't have a bone array?", fileName.c_str());
+        return false;
+    }
+    if(jsonBones.Size() != count) {
+        SDL_Log("Skeleton %s has a mismatch between the bone count and number of bones",
+              fileName.c_str());
+        return false;
+    }
+
+    Bone temp;
+    for(rapidjson::SizeType i = 0; i < count; i++) {
+        if(!jsonBones[i].IsObject()) {
+            SDL_Log("Skeleton %s: Bone %d is invalid", fileName.c_str(), i);
+            return false;
+        }
+
+        const rapidjson::Value& name = jsonBones[i]["name"];
+        temp.name = name.GetString();
+
+        const rapidjson::Value& parent = jsonBones[i]["parent"];
+        temp.parent = parent.GetInt();
+
+        const rapidjson::Value& bindpose = jsonBones[i]["bindpose"];
+        if(!bindpose.IsObject()) {
+            SDL_Log("Skeleton %s: Bone %d is invalid", fileName.c_str(), i);
+            return false;
+        }
+
+        const rapidjson::Value& rot = bindpose["rot"];
+        const rapidjson::Value& trans = bindpose["trans"];
+
+        if(!rot.IsArray() || !trans.IsArray()) {
+            SDL_Log("Skeleton %s: Bone %d is invalid", fileName.c_str(), i);
+            return false;
+        }
+
+        temp.localBindPose.rotation.x = rot[0].GetDouble();
+        temp.localBindPose.rotation.y = rot[1].GetDouble();
+        temp.localBindPose.rotation.z = rot[2].GetDouble();
+        temp.localBindPose.rotation.w = rot[3].GetDouble();
+
+        temp.localBindPose.translation.x = trans[0].GetDouble();
+        temp.localBindPose.translation.y = trans[1].GetDouble();
+        temp.localBindPose.translation.z = trans[2].GetDouble();
+
+        bones.emplace_back(temp);
+    }
+
+    computeGlobalInvBindPose();
+
     return true;
 }
 
