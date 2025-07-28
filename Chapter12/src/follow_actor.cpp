@@ -9,6 +9,8 @@
 FollowActor::FollowActor(Game* game) : Actor(game) {
     meshComp = new SkeletalMeshComponent(this);
     meshComp->setMesh(game->getRenderer()->getMesh("assets/CatWarrior.gpmesh"));
+    meshComp->setSkeleton(game->getSkeleton("assets/CatWarrior.gpskel"));
+
     setPosition(Vector3(0.0f, 0.0f, -100.0f));
 
     moveComp = new MoveComponent(this);
