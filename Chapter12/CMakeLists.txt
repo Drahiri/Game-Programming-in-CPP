@@ -61,6 +61,7 @@ set(HEADER_FILES
     "include/follow_camera.h"
     "include/hud.h"
     "include/game.h"
+    "include/matrix_palette.h"
     "include/mesh_component.h"
     "include/mesh.h"
     "include/move_component.h"
