@@ -84,23 +84,6 @@ void Game::shutdown() {
     // Because ~Actor calls RemoveActor, use a different style loop
     unloadData();
 
-    if(renderer) {
-        renderer->shutdown();
-    }
-    if(audioSystem) {
-        audioSystem->shutdown();
-    }
-
-    if(physWorld) {
-        delete physWorld;
-    }
-
-    while(!fonts.empty()) {
-        auto iter = fonts.begin();
-        delete iter->second;
-        fonts.erase(iter);
-    }
-
     TTF_Quit();
     SDL_Quit();
 }
@@ -493,5 +476,27 @@ void Game::unloadData() {
     while(!uiStack.empty()) {
         delete uiStack.back();
         uiStack.pop_back();
+    }
+
+    if(renderer) {
+        renderer->shutdown();
+    }
+    if(audioSystem) {
+        audioSystem->shutdown();
+    }
+
+    if(physWorld) {
+        delete physWorld;
+    }
+
+    while(!fonts.empty()) {
+        auto iter = fonts.begin();
+        delete iter->second;
+        fonts.erase(iter);
+    }
+
+    // Unload skeletons
+    for(auto s: skeletons) {
+        delete s.second;
     }
 }
