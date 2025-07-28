@@ -127,4 +127,30 @@ float Animation::getFrameDuration() const {
 }
 
 void Animation::getGlobalPoseAtTime(
-      std::vector<Matrix4>& outPose, Skeleton* inSkeleton, float inTime) const {}
+      std::vector<Matrix4>& outPoses, Skeleton* inSkeleton, float inTime) const {
+    // Resize the outPoses vector if needed
+    if(outPoses.size() != numBones) {
+        outPoses.resize(numBones);
+    }
+
+    // For now, just compute the pose for every bone at frame 0
+    const int frame = 0;
+    // Set the pose for the root
+    // Does the root have a track?
+    if(tracks[0].size() > 0) {
+        // The global pose for the root is just its local pose
+        outPoses[0] = tracks[0][frame].toMatrix();
+    } else {
+        outPoses[0] = Matrix4::Identity;
+    }
+
+    const std::vector<Skeleton::Bone>& bones = inSkeleton->getBones();
+    // Now compute the global pose matrices for every other bone
+    for(size_t bone = 1; bone < numBones; bone++) {
+        Matrix4 localMat; // Defaults to identity
+        if(tracks[bone].size() > 0) {
+            localMat = tracks[bone][frame].toMatrix();
+        }
+        outPoses[bone] = localMat * outPoses[bones[bone].parent];
+    }
+}
