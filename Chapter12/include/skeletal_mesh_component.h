@@ -1,9 +1,11 @@
 #ifndef SKELETAL_MESH_COMPONENT_H
 #define SKELETAL_MESH_COMPONENT_H
 
+#include "matrix_palette.h"
 #include "mesh_component.h"
 
 class Actor;
+class Animation;
 class Skeleton;
 class Shader;
 
@@ -16,8 +18,19 @@ public:
 
     void setSkeleton(Skeleton* sk);
 
+    void computeMatrixPalette();
+
 private:
     Skeleton* skeleton;
+
+    // Matrix palette
+    MatrixPalette palette;
+    // Animation currently playing
+    Animation* animation;
+    // Play rate of animation (1.0 is normal speed)
+    float animPlayRate;
+    // Current time in the animation
+    float animTime;
 };
 
 #endif
