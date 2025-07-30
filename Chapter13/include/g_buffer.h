@@ -8,10 +8,10 @@ class Texture;
 class GBuffer {
 public:
     // Different types of data stored in the G-buffer
-    enum class Type {
-        Diffuse = 0,
-        Normal,
-        WorldPos,
+    enum Type {
+        EDiffuse = 0,
+        ENormal,
+        EWorldPos,
         NUM_GBUFFER_TEXTURES
     };
 
