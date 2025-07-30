@@ -54,7 +54,7 @@ public:
     float getScreenHeight() const;
 
     void setViewMatrix(const Matrix4& view);
-
+    void setMirrorView(const Matrix4& view);
     void setAmbientLight(const Vector3& light);
 
     DirectionalLight& getDirectionalLight();
@@ -111,6 +111,8 @@ private:
     unsigned int mirrorBuffer;
     // Texture for the mirror
     Texture* mirrorTexture;
+    // Mirror view
+    Matrix4 mirrorView;
 };
 
 #endif

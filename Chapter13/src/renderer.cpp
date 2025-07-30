@@ -285,6 +285,10 @@ void Renderer::setViewMatrix(const Matrix4& view) {
     viewMatrix = view;
 }
 
+void Renderer::setMirrorView(const Matrix4& view) {
+    mirrorView = view;
+}
+
 void Renderer::setAmbientLight(const Vector3& light) {
     ambientLight = light;
 }
