@@ -69,6 +69,9 @@ public:
 
     void setRelativeMouse(bool relative);
 
+    // Creating the mirror framebuffer
+    bool createMirrorTarget();
+
 private:
     bool loadShaders();
     void createSpriteVerts();
@@ -103,6 +106,11 @@ private:
     // Lights
     Vector3 ambientLight;
     DirectionalLight dirLight;
+
+    // Framebuffer object for the mirror
+    unsigned int mirrorBuffer;
+    // Texture for the mirror
+    Texture* mirrorTexture;
 };
 
 #endif

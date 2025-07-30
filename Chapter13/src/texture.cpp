@@ -128,3 +128,7 @@ void Texture::createForRendering(int width, int height, unsigned int format) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 }
+
+unsigned int Texture::getTextureID() const {
+    return textureID;
+}

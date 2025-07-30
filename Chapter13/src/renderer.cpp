@@ -87,6 +87,12 @@ bool Renderer::initialize(float windowWidth, float windowHeight) {
     // Create quad for drawing sprites
     createSpriteVerts();
 
+    // Create mirror framebuffer
+    if(!createMirrorTarget()) {
+        SDL_Log("Failed to create mirror framebuffer");
+        return false;
+    }
+
     return true;
 }
 
@@ -97,6 +103,11 @@ void Renderer::shutdown() {
 
     meshShader->unload();
     delete meshShader;
+
+    glDeleteFramebuffers(1, &mirrorBuffer);
+    mirrorTexture->unload();
+    delete mirrorTexture;
+    mirrorTexture = nullptr;
 
     SDL_GL_DestroyContext(context);
     SDL_DestroyWindow(window);
@@ -327,6 +338,46 @@ void Renderer::setRelativeMouse(bool relative) {
     if(relative) {
         SDL_GetRelativeMouseState(nullptr, nullptr);
     }
+}
+
+bool Renderer::createMirrorTarget() {
+    int width = static_cast<int>(screenWidth) / 4;
+    int height = static_cast<int>(screenHeight) / 4;
+
+    // Generate a framebufer for the mirror texture
+    glGenFramebuffers(1, &mirrorBuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, mirrorBuffer);
+
+    // Crreate the texture we'll use for rendering
+    mirrorTexture = new Texture();
+    mirrorTexture->createForRendering(width, height, GL_RGB);
+
+    // Add a depth buffer to this target
+    GLuint depthBuffer;
+    glGenRenderbuffers(1, &depthBuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
+
+    // Attach mirror texture as the output target for this framebuffer
+    glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, mirrorTexture->getTextureID(), 0);
+
+    // Set the list of buffer to draw for this framebuffer
+    GLenum drawBuffers[] = { GL_COLOR_ATTACHMENT0 };
+    glDrawBuffers(1, drawBuffers);
+
+    // Make sure everything worked
+    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+        // If it didn't work, delete the framebuffer,
+        // unload/delete the texture and return false
+        glDeleteFramebuffers(1, &mirrorBuffer);
+        mirrorTexture->unload();
+        delete mirrorTexture;
+        mirrorTexture = nullptr;
+        return false;
+    }
+
+    return true;
 }
 
 bool Renderer::loadShaders() {
