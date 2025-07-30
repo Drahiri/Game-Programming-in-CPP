@@ -9,6 +9,7 @@
 #include <vector>
 
 class Game;
+class GBuffer;
 class Mesh;
 class MeshComponent;
 class Shader;
@@ -116,6 +117,9 @@ private:
     Texture* mirrorTexture;
     // Mirror view
     Matrix4 mirrorView;
+
+    // G-buffer
+    GBuffer* gBuffer;
 };
 
 #endif

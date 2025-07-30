@@ -1,5 +1,6 @@
 #include "renderer.h"
 
+#include "g_buffer.h"
 #include "game.h"
 #include "mesh.h"
 #include "mesh_component.h"
@@ -93,6 +94,15 @@ bool Renderer::initialize(float windowWidth, float windowHeight) {
         return false;
     }
 
+    // Create GBuffer
+    gBuffer = new GBuffer();
+    int width = static_cast<int>(screenWidth);
+    int height = static_cast<int>(screenHeight);
+    if(!gBuffer->create(width, height)) {
+        SDL_Log("Failed to create G-buffer");
+        return false;
+    }
+
     return true;
 }
 
@@ -108,6 +118,11 @@ void Renderer::shutdown() {
         glDeleteFramebuffers(1, &mirrorBuffer);
         mirrorTexture->unload();
         delete mirrorTexture;
+    }
+
+    if(gBuffer != nullptr) {
+        gBuffer->destroy();
+        delete gBuffer;
     }
 
     SDL_GL_DestroyContext(context);
