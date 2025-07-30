@@ -53,6 +53,14 @@ bool Texture::load(const std::string& fileName) {
     // Enable mipmapping
     glGenerateMipmap(GL_TEXTURE_2D);
 
+    if(GLEW_EXT_texture_filter_anisotropic) {
+        // Get the maximum anisotropy value
+        GLfloat largest;
+        glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &largest);
+        // Enable it
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, largest);
+    }
+
     // Enable trilinear filtering when minimizing
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     // Enable bilinear filtering when magnifying
