@@ -265,6 +265,10 @@ Texture* Renderer::getTexture(const std::string& filename) {
     return tex;
 }
 
+Texture* Renderer::getMirrorTexture() {
+    return mirrorTexture;
+}
+
 Mesh* Renderer::getMesh(const std::string& fileName) {
     Mesh* m = nullptr;
 

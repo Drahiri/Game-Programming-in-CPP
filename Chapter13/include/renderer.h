@@ -50,6 +50,7 @@ public:
     void removeMeshComp(MeshComponent* meshComp);
 
     Texture* getTexture(const std::string& fileName);
+    Texture* getMirrorTexture();
     Mesh* getMesh(const std::string& fileName);
 
     float getScreenWidth() const;
