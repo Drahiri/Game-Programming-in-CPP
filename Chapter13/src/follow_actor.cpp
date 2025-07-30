@@ -2,6 +2,7 @@
 
 #include "follow_camera.h"
 #include "game.h"
+#include "mirror_camera.h"
 #include "move_component.h"
 #include "renderer.h"
 #include "skeletal_mesh_component.h"
@@ -17,6 +18,10 @@ FollowActor::FollowActor(Game* game) : Actor(game), moving(false) {
     moveComp = new MoveComponent(this);
     cameraComp = new FollowCamera(this);
     cameraComp->snapToIdeal();
+
+    // Add a component for mirror camera
+    MirrorCamera* mirror = new MirrorCamera(this);
+    mirror->snapToIdeal();
 }
 
 void FollowActor::actorInput(const bool* keys) {
