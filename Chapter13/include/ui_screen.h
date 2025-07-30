@@ -45,7 +45,8 @@ protected:
     void drawTexture(Shader* shader,
           Texture* texture,
           const Vector2& offset = Vector2::Zero,
-          float scale = 1.0f);
+          float scale = 1.0f,
+          bool flipY = false);
 
     Game* game;
     // For the UI screen's title text
