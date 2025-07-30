@@ -170,7 +170,7 @@ void Renderer::draw3DScene(
     glViewport(0,
           0,
           static_cast<int>(screenWidth) * viewportScale,
-          static_cast<int>(screenWidth) * viewportScale);
+          static_cast<int>(screenHeight) * viewportScale);
 
     // Clear color buffer/depth buffer
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
