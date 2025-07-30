@@ -1,0 +1,91 @@
+project(Chapter13 VERSION 1.0 LANGUAGES CXX)
+
+
+set(SOURCE_FILES
+    "src/actor.cpp"
+    "src/animation.cpp"
+    "src/audio_component.cpp"
+    "src/audio_system.cpp"
+    "src/ball_actor.cpp"
+    "src/ball_move.cpp"
+    "src/bone_transform.cpp"
+    "src/box_component.cpp"
+    "src/button.cpp"
+    "src/camera_component.cpp"
+    "src/collision.cpp"
+    "src/component.cpp"
+    "src/dialog_box.cpp"
+    "src/font.cpp"
+    "src/follow_actor.cpp"
+    "src/follow_camera.cpp"
+    "src/hud.cpp"
+    "src/game.cpp"
+    "src/mesh_component.cpp"
+    "src/mesh.cpp"
+    "src/move_component.cpp"
+    "src/pause_menu.cpp"
+    "src/phys_world.cpp"
+    "src/plane_actor.cpp"
+    "src/renderer.cpp"
+    "src/shader.cpp"
+    "src/skeletal_mesh_component.cpp"
+    "src/skeleton.cpp"
+    "src/sound_event.cpp"
+    "src/sprite_component.cpp"
+    "src/target_actor.cpp"
+    "src/target_component.cpp"
+    "src/texture.cpp"
+    "src/ui_screen.cpp"
+    "src/vertex_array.cpp"
+    "src/main.cpp"
+
+    "src/math.cpp"
+)
+
+set(HEADER_FILES
+    "include/actor.h"
+    "include/animation.h"
+    "include/audio_component.h"
+    "include/audio_system.h"
+    "include/ball_actor.h"
+    "include/ball_move.h"
+    "include/bone_transform.h"
+    "include/box_component.h"
+    "include/button.h"
+    "include/camera_component.h"
+    "include/collision.h"
+    "include/component.h"
+    "include/dialog_box.h"
+    "include/font.h"
+    "include/follow_actor.h"
+    "include/follow_camera.h"
+    "include/hud.h"
+    "include/game.h"
+    "include/matrix_palette.h"
+    "include/mesh_component.h"
+    "include/mesh.h"
+    "include/move_component.h"
+    "include/pause_menu.h"
+    "include/phys_world.h"
+    "include/plane_actor.h"
+    "include/renderer.h"
+    "include/shader.h"
+    "include/skeletal_mesh_component.h"
+    "include/skeleton.h"
+    "include/sound_event.h"
+    "include/sprite_component.h"
+    "include/target_actor.h"
+    "include/target_component.h"
+    "include/texture.h"
+    "include/ui_screen.h"
+    "include/vertex_array.h"
+    
+    "include/math.h"
+)
+
+add_executable(Chapter13 ${SOURCE_FILES} ${HEADER_FILES})
+target_include_directories(Chapter13 PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include" "${RAPIDJSON_INCLUDE_DIRS}")
+target_link_libraries(Chapter13 PRIVATE SDL3::SDL3 SDL3_image::SDL3_image SDL3_ttf::SDL3_ttf GLEW::GLEW SOIL fmod fmodstudio)
+
+file(CREATE_LINK "${CMAKE_CURRENT_SOURCE_DIR}/assets" "${CMAKE_CURRENT_BINARY_DIR}/assets" SYMBOLIC)
+file(CREATE_LINK "${CMAKE_CURRENT_SOURCE_DIR}/shaders" "${CMAKE_CURRENT_BINARY_DIR}/shaders" SYMBOLIC)
