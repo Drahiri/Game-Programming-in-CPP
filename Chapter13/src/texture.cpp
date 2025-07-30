@@ -112,3 +112,19 @@ void Texture::createFromSurface(SDL_Surface* surface) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
+
+void Texture::createForRendering(int width, int height, unsigned int format) {
+    this->width = width;
+    this->height = height;
+
+    // Create the texture id
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+
+    // Set the image width/height with null initial data
+    glTexImage2D(GL_TEXTURE_2D, 0, format, this->width, this->height, 0, GL_RGB, GL_FLOAT, nullptr);
+
+    // For a texture we'll render to, just use nearest neighbor
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+}

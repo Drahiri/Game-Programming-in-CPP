@@ -18,6 +18,7 @@ public:
     int getHeight() const;
 
     void createFromSurface(SDL_Surface* surface);
+    void createForRendering(int width, int height, unsigned int format);
 
 private:
     // OpenGL of this texture
