@@ -104,10 +104,11 @@ void Renderer::shutdown() {
     meshShader->unload();
     delete meshShader;
 
-    glDeleteFramebuffers(1, &mirrorBuffer);
-    mirrorTexture->unload();
-    delete mirrorTexture;
-    mirrorTexture = nullptr;
+    if(mirrorTexture != nullptr) {
+        glDeleteFramebuffers(1, &mirrorBuffer);
+        mirrorTexture->unload();
+        delete mirrorTexture;
+    }
 
     SDL_GL_DestroyContext(context);
     SDL_DestroyWindow(window);
