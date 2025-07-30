@@ -130,43 +130,10 @@ void Renderer::unloadData() {
 }
 
 void Renderer::draw() {
-    // Set the clear color to gray
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
-    // Clear the color buffer
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    // Draw meshes
-    // Enable depth buffering/disable alpha blend
-    glEnable(GL_DEPTH_TEST);
-    glDisable(GL_BLEND);
-
-    // Set the basic mesh shader active
-    meshShader->setActive();
-
-    // Update view-projection matrix
-    meshShader->setMatrixUniform("uViewProj", viewMatrix * projectionMatrix);
-    // Update lighting uniform
-    setLightUniforms(meshShader);
-
-    for(auto mc: meshComps) {
-        if(mc->getVisible()) {
-            mc->draw(meshShader);
-        }
-    }
-
-    // Draw any skinned meshes now
-    skinnedShader->setActive();
-    // Update view-projection matrix
-    skinnedShader->setMatrixUniform("uViewProj", viewMatrix * projectionMatrix);
-    // Update lighting uniform
-    setLightUniforms(skinnedShader);
-
-    for(auto sk: skeletalMeshes) {
-        if(sk->getVisible()) {
-            sk->draw(skinnedShader);
-        }
-    }
+    // Draw to the mirror texture first
+    draw3DScene(mirrorBuffer, mirrorView, projectionMatrix, 0.25f);
+    // Draw to normal buffer
+    draw3DScene(0, viewMatrix, projectionMatrix, 1.0f);
 
     // Draw all sprite components
     // Disable depth buffering
@@ -191,6 +158,48 @@ void Renderer::draw() {
 
     // Swap the buffers, which also display the scene
     SDL_GL_SwapWindow(window);
+}
+
+void Renderer::draw3DScene(
+      unsigned int framebuffer, const Matrix4& view, const Matrix4& proj, float viewportScale) {
+    // Set the current framebuffer
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+
+    // Set viewport size based on scale
+    glViewport(0,
+          0,
+          static_cast<int>(screenWidth) * viewportScale,
+          static_cast<int>(screenWidth) * viewportScale);
+
+    // Clear color buffer/depth buffer
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // Draw meshes
+    // Enable depth buffering/disable alpha blend
+    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_BLEND);
+
+    meshShader->setActive();
+    meshShader->setMatrixUniform("uViewProj", view * proj);
+    setLightUniforms(meshShader);
+
+    for(auto mc: meshComps) {
+        if(mc->getVisible()) {
+            mc->draw(meshShader);
+        }
+    }
+
+    // Draw any skinned meshes now
+    skinnedShader->setActive();
+    skinnedShader->setMatrixUniform("uViewProj", view * proj);
+    setLightUniforms(skinnedShader);
+
+    for(auto sk: skeletalMeshes) {
+        if(sk->getVisible()) {
+            sk->draw(skinnedShader);
+        }
+    }
 }
 
 void Renderer::addSprite(SpriteComponent* sprite) {
