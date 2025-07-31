@@ -75,8 +75,11 @@ public:
     bool createMirrorTarget();
 
 private:
-    void draw3DScene(
-          unsigned int framebuffer, const Matrix4& view, const Matrix4& proj, float viewportScale);
+    void draw3DScene(unsigned int framebuffer,
+          const Matrix4& view,
+          const Matrix4& proj,
+          float viewportScale,
+          bool lit = true);
 
     bool loadShaders();
     void createSpriteVerts();

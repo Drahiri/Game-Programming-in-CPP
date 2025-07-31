@@ -148,8 +148,8 @@ void Renderer::unloadData() {
 void Renderer::draw() {
     // Draw to the mirror texture first
     draw3DScene(mirrorBuffer, mirrorView, projectionMatrix, 0.25f);
-    // Draw to normal buffer
-    draw3DScene(0, viewMatrix, projectionMatrix, 1.0f);
+    // Draw to g-buffer
+    draw3DScene(gBuffer->getBufferID(), viewMatrix, projectionMatrix, 1.0f, false);
 
     // Draw all sprite components
     // Disable depth buffering
@@ -176,8 +176,11 @@ void Renderer::draw() {
     SDL_GL_SwapWindow(window);
 }
 
-void Renderer::draw3DScene(
-      unsigned int framebuffer, const Matrix4& view, const Matrix4& proj, float viewportScale) {
+void Renderer::draw3DScene(unsigned int framebuffer,
+      const Matrix4& view,
+      const Matrix4& proj,
+      float viewportScale,
+      bool lit) {
     // Set the current framebuffer
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
@@ -198,7 +201,9 @@ void Renderer::draw3DScene(
 
     meshShader->setActive();
     meshShader->setMatrixUniform("uViewProj", view * proj);
-    setLightUniforms(meshShader);
+    if(lit) {
+        setLightUniforms(meshShader);
+    }
 
     for(auto mc: meshComps) {
         if(mc->getVisible()) {
@@ -209,7 +214,9 @@ void Renderer::draw3DScene(
     // Draw any skinned meshes now
     skinnedShader->setActive();
     skinnedShader->setMatrixUniform("uViewProj", view * proj);
-    setLightUniforms(skinnedShader);
+    if(lit) {
+        setLightUniforms(skinnedShader);
+    }
 
     for(auto sk: skeletalMeshes) {
         if(sk->getVisible()) {
@@ -426,7 +433,7 @@ bool Renderer::loadShaders() {
 
     // Load mesh shader
     meshShader = new Shader();
-    if(!meshShader->load("shaders/phong.vert", "shaders/phong.frag")) {
+    if(!meshShader->load("shaders/phong.vert", "shaders/gbuffer_write.frag")) {
         return false;
     }
     meshShader->setActive();
@@ -446,7 +453,7 @@ bool Renderer::loadShaders() {
 
     // Load skeletal shader
     skinnedShader = new Shader();
-    if(!skinnedShader->load("shaders/skinned.vert", "shaders/phong.frag")) {
+    if(!skinnedShader->load("shaders/skinned.vert", "shaders/gbuffer_write.frag")) {
         return false;
     }
     skinnedShader->setActive();
