@@ -81,6 +81,8 @@ private:
           float viewportScale,
           bool lit = true);
 
+    void drawFromGBuffer();
+
     bool loadShaders();
     void createSpriteVerts();
 

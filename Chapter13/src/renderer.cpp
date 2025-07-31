@@ -225,6 +225,22 @@ void Renderer::draw3DScene(unsigned int framebuffer,
     }
 }
 
+void Renderer::drawFromGBuffer() {
+    // Disable depth testing for the global ligthing pass
+    glDisable(GL_DEPTH_TEST);
+    // Activate global G-buffer shader
+    gGlobalShader->setActive();
+    // activate sprite verts quad
+    spriteVerts->setActive();
+    // Set the G-buffer textures to sample
+    gBuffer->setTexturesActive();
+    // Set the lighting uniforms
+    setLightUniforms(gGlobalShader, viewMatrix);
+
+    // Draw the triangles for the quad
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+}
+
 void Renderer::addSprite(SpriteComponent* sprite) {
     // Find the insertion point in the sorted vector
     // (The first element with a higher draw order than me)
