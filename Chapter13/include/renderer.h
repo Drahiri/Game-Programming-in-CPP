@@ -134,6 +134,8 @@ private:
 
     // Point lights
     std::vector<PointLightComponent*> pointLights;
+    Shader* gPointLightShader;
+    Mesh* pointLightMesh;
 };
 
 #endif

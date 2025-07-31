@@ -104,6 +104,8 @@ bool Renderer::initialize(float windowWidth, float windowHeight) {
         return false;
     }
 
+    pointLightMesh = getMesh("assets/PointLight.gpmesh");
+
     return true;
 }
 
@@ -510,6 +512,18 @@ bool Renderer::loadShaders() {
     // The world transform scales to the screen and flips y
     Matrix4 gbufferWorld = Matrix4::CreateScale(screenWidth, -screenHeight, 1.0f);
     gGlobalShader->setMatrixUniform("uWorldTransform", gbufferWorld);
+
+    // Load point light shader
+    gPointLightShader = new Shader();
+    if(!gPointLightShader->load("shaders/basic_mesh.vert", "shaders/gbuffer_point_light.frag")) {
+        return false;
+    }
+    // Set uniforms
+    gPointLightShader->setActive();
+    gPointLightShader->setIntUniform("uGDiffuse", 0);
+    gPointLightShader->setIntUniform("uGNormal", 1);
+    gPointLightShader->setIntUniform("uGWorldPos", 2);
+    gPointLightShader->setVec2Uniform("uScreenDimentions", Vector2(screenWidth, screenHeight));
 
     return true;
 }
