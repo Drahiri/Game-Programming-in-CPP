@@ -23,6 +23,7 @@ public:
     void setMatrixUniforms(const char* name, Matrix4* matrices, unsigned int count);
     void setVec3Uniform(const char* name, const Vector3& vec);
     void setFloatUniform(const char* name, const float value);
+    void setIntUniform(const char* name, const int value);
 
 private:
     // Tries to compile the specified shader
