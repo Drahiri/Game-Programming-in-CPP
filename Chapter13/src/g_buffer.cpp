@@ -59,6 +59,14 @@ void GBuffer::destroy() {
     glDeleteFramebuffers(1, &bufferID);
 }
 
+Texture* GBuffer::getTexture(Type type) {
+    if(textures.size() > 0) {
+        return textures[type];
+    } else {
+        return nullptr;
+    }
+}
+
 unsigned int GBuffer::getBufferID() const {
     return bufferID;
 }
