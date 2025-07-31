@@ -60,6 +60,11 @@ void Shader::setVec3Uniform(const char* name, const Vector3& vec) {
     glUniform3fv(loc, 1, vec.GetAsFloatPtr());
 }
 
+void Shader::setVec2Uniform(const char* name, const Vector2& vec) {
+    GLuint loc = glGetUniformLocation(shaderProgram, name);
+    glUniform2fv(loc, 1, vec.GetAsFloatPtr());
+}
+
 void Shader::setFloatUniform(const char* name, const float value) {
     GLuint loc = glGetUniformLocation(shaderProgram, name);
     glUniform1f(loc, value);
