@@ -53,6 +53,9 @@ void main() {
         Phong += Diffuse; // + Specular;
     }
 
+    // Clamp light between 0-1 RGB value
+    Phong = clamp(Phong, 0.0f, 1.0f);
+
     // Final color is diffuse color times phong lighting
     outColor = vec4(gbufferDiffuse * Phong, 1.0);
 }
