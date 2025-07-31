@@ -12,7 +12,7 @@ public:
     bool load(const std::string& fileName);
     void unload();
 
-    void setActive();
+    void setActive(int index = 0);
 
     int getWidth() const;
     int getHeight() const;

@@ -73,7 +73,8 @@ void Texture::unload() {
     glDeleteTextures(1, &textureID);
 }
 
-void Texture::setActive() {
+void Texture::setActive(int index) {
+    glActiveTexture(GL_TEXTURE0 + index);
     glBindTexture(GL_TEXTURE_2D, textureID);
 }
 
