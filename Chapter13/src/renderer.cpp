@@ -202,7 +202,7 @@ void Renderer::draw3DScene(unsigned int framebuffer,
     meshShader->setActive();
     meshShader->setMatrixUniform("uViewProj", view * proj);
     if(lit) {
-        setLightUniforms(meshShader);
+        setLightUniforms(meshShader, view);
     }
 
     for(auto mc: meshComps) {
@@ -215,7 +215,7 @@ void Renderer::draw3DScene(unsigned int framebuffer,
     skinnedShader->setActive();
     skinnedShader->setMatrixUniform("uViewProj", view * proj);
     if(lit) {
-        setLightUniforms(skinnedShader);
+        setLightUniforms(skinnedShader, view);
     }
 
     for(auto sk: skeletalMeshes) {
@@ -333,9 +333,9 @@ DirectionalLight& Renderer::getDirectionalLight() {
     return dirLight;
 }
 
-void Renderer::setLightUniforms(Shader* shader) {
+void Renderer::setLightUniforms(Shader* shader, const Matrix4& view) {
     // Camera position is from inverted view
-    Matrix4 invView = viewMatrix;
+    Matrix4 invView = view;
     invView.Invert();
     shader->setVec3Uniform("uCameraPos", invView.GetTranslation());
     // Ambient light

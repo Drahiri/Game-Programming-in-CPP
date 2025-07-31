@@ -62,7 +62,7 @@ public:
     DirectionalLight& getDirectionalLight();
 
     // Setting light uniforms
-    void setLightUniforms(Shader* shader);
+    void setLightUniforms(Shader* shader, const Matrix4& view);
 
     // Unprojection
     Vector3 unproject(const Vector3& screenPoint) const;
