@@ -11,6 +11,7 @@
 #include "pause_menu.h"
 #include "phys_world.h"
 #include "plane_actor.h"
+#include "point_light_component.h"
 #include "renderer.h"
 #include "skeleton.h"
 #include "sprite_component.h"
@@ -423,7 +424,37 @@ void Game::loadData() {
     for(int i = 0; i < 10; i++) {
         for(int j = 0; j < 10; j++) {
             a = new PlaneActor(this);
-            a->setPosition(Vector3(start + i * size, start + j * size, -100.0f));
+            Vector3 pos = Vector3(start + i * size, start + j * size, -100.0f);
+            a->setPosition(pos);
+            // Create some point lights
+            a = new Actor(this);
+            pos.z += 100.0f;
+            a->setPosition(pos);
+            PointLightComponent* p = new PointLightComponent(a);
+            Vector3 color;
+            switch((i + j) % 5) {
+            case 0:
+                color = Color::Green;
+                break;
+            case 1:
+                color = Color::Blue;
+                break;
+            case 2:
+                color = Color::Red;
+                break;
+            case 3:
+                color = Color::Yellow;
+                break;
+            case 4:
+                color = Color::LightPink;
+                break;
+
+            default:
+                break;
+            }
+            p->diffuseColor = color;
+            p->innerRadius = 100.0f;
+            p->outerRadius = 200.0f;
         }
     }
 
