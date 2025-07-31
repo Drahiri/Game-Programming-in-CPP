@@ -62,3 +62,9 @@ void GBuffer::destroy() {
 unsigned int GBuffer::getBufferID() const {
     return bufferID;
 }
+
+void GBuffer::setTexturesActive() {
+    for(int i = 0; i < NUM_GBUFFER_TEXTURES; i++) {
+        textures[i]->setActive(i);
+    }
+}
