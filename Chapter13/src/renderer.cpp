@@ -204,6 +204,7 @@ void Renderer::draw3DScene(unsigned int framebuffer,
 
     // Clear color buffer/depth buffer
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glDepthMask(GL_TRUE);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Draw meshes
@@ -251,6 +252,34 @@ void Renderer::drawFromGBuffer() {
 
     // Draw the triangles for the quad
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+    // Copy depth buffer from G-buffer to default framebuffer
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer->getBufferID());
+    int width = static_cast<int>(screenWidth);
+    int height = static_cast<int>(screenHeight);
+    glBlitFramebuffer(0, 0, width, height, 0, 0, width, height, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+
+    // Enable depth text, but disable writes to depth buffer
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_FALSE);
+
+    // Set the point light shader and mesh as active
+    gPointLightShader->setActive();
+    pointLightMesh->getVertexArray()->setActive();
+    // Set the view-projection matrix
+    gPointLightShader->setMatrixUniform("uViewProj", viewMatrix * projectionMatrix);
+
+    // Set the G-buffer textures for sampling
+    gBuffer->setTexturesActive();
+
+    // The point light color should add to existing color
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_ONE, GL_ONE);
+
+    // Draw the point lights
+    for(PointLightComponent* p: pointLights) {
+        p->draw(gPointLightShader, pointLightMesh);
+    }
 }
 
 void Renderer::addSprite(SpriteComponent* sprite) {
