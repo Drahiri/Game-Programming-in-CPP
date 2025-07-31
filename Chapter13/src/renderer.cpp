@@ -428,8 +428,8 @@ bool Renderer::loadShaders() {
     }
 
     spriteShader->setActive();
-    Matrix4 viewProj = Matrix4::CreateSimpleViewProj(screenWidth, screenHeight);
-    spriteShader->setMatrixUniform("uViewProj", viewProj);
+    Matrix4 spriteViewProj = Matrix4::CreateSimpleViewProj(screenWidth, screenHeight);
+    spriteShader->setMatrixUniform("uViewProj", spriteViewProj);
 
     // Load mesh shader
     meshShader = new Shader();
@@ -458,6 +458,23 @@ bool Renderer::loadShaders() {
     }
     skinnedShader->setActive();
     skinnedShader->setMatrixUniform("uViewProj", viewMatrix * projectionMatrix);
+
+    // Load gbuffer_global
+    gGlobalShader = new Shader();
+    if(!gGlobalShader->load("shaders/gbuffer_global.vert", "shaders/gbuffer_global.frag")) {
+        return false;
+    }
+    // For the GBuffer, we need to associate each sampler with an index
+    gGlobalShader->setActive();
+    gGlobalShader->setIntUniform("uGDiffuse", 0);
+    gGlobalShader->setIntUniform("uGNormal", 1);
+    gGlobalShader->setIntUniform("uGWorldPos", 2);
+
+    // The view projection is just the sprite one
+    gGlobalShader->setMatrixUniform("uViewProj", spriteViewProj);
+    // The world transform scales to the screen and flips y
+    Matrix4 gbufferWorld = Matrix4::CreateScale(screenWidth, -screenHeight, 1.0f);
+    gGlobalShader->setMatrixUniform("uWorldTransform", gbufferWorld);
 
     return true;
 }

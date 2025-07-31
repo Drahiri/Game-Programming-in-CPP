@@ -124,6 +124,7 @@ private:
 
     // G-buffer
     GBuffer* gBuffer;
+    Shader* gGlobalShader;
 };
 
 #endif
