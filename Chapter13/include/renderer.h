@@ -41,8 +41,6 @@ public:
 
     // Draw the frame
     void draw();
-    void draw3DScene(
-          unsigned int framebuffer, const Matrix4& view, const Matrix4& proj, float viewportScale);
 
     void addSprite(SpriteComponent* sprite);
     void removeSprite(SpriteComponent* sprite);
@@ -77,6 +75,9 @@ public:
     bool createMirrorTarget();
 
 private:
+    void draw3DScene(
+          unsigned int framebuffer, const Matrix4& view, const Matrix4& proj, float viewportScale);
+
     bool loadShaders();
     void createSpriteVerts();
 
