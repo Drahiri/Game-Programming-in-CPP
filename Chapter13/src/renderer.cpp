@@ -552,7 +552,7 @@ bool Renderer::loadShaders() {
     gPointLightShader->setIntUniform("uGDiffuse", 0);
     gPointLightShader->setIntUniform("uGNormal", 1);
     gPointLightShader->setIntUniform("uGWorldPos", 2);
-    gPointLightShader->setVec2Uniform("uScreenDimentions", Vector2(screenWidth, screenHeight));
+    gPointLightShader->setVec2Uniform("uScreenDimensions", Vector2(screenWidth, screenHeight));
 
     return true;
 }
