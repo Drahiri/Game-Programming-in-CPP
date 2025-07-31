@@ -12,6 +12,7 @@ class Game;
 class GBuffer;
 class Mesh;
 class MeshComponent;
+class PointLightComponent;
 class Shader;
 class SkeletalMeshComponent;
 class SpriteComponent;
@@ -47,6 +48,9 @@ public:
 
     void addMeshComp(MeshComponent* meshComp);
     void removeMeshComp(MeshComponent* meshComp);
+
+    void addPointLight(PointLightComponent* lightComp);
+    void removePointLight(PointLightComponent* lightComp);
 
     Texture* getTexture(const std::string& fileName);
     Texture* getMirrorTexture();
@@ -127,6 +131,9 @@ private:
     // G-buffer
     GBuffer* gBuffer;
     Shader* gGlobalShader;
+
+    // Point lights
+    std::vector<PointLightComponent*> pointLights;
 };
 
 #endif

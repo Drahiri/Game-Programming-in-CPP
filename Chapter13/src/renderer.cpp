@@ -4,6 +4,7 @@
 #include "game.h"
 #include "mesh.h"
 #include "mesh_component.h"
+#include "point_light_component.h"
 #include "shader.h"
 #include "skeletal_mesh_component.h"
 #include "sprite_component.h"
@@ -123,6 +124,11 @@ void Renderer::shutdown() {
     if(gBuffer != nullptr) {
         gBuffer->destroy();
         delete gBuffer;
+    }
+
+    // Delete point lights
+    while(!pointLights.empty()) {
+        delete pointLights.back();
     }
 
     SDL_GL_DestroyContext(context);
@@ -272,6 +278,15 @@ void Renderer::addMeshComp(MeshComponent* meshComp) {
     } else {
         meshComps.emplace_back(meshComp);
     }
+}
+
+void Renderer::addPointLight(PointLightComponent* lightComp) {
+    pointLights.emplace_back(lightComp);
+}
+
+void Renderer::removePointLight(PointLightComponent* lightComp) {
+    auto iter = std::find(pointLights.begin(), pointLights.end(), lightComp);
+    pointLights.erase(iter);
 }
 
 void Renderer::removeMeshComp(MeshComponent* meshComp) {
