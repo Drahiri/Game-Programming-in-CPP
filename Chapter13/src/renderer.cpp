@@ -150,6 +150,10 @@ void Renderer::draw() {
     draw3DScene(mirrorBuffer, mirrorView, projectionMatrix, 0.25f);
     // Draw to g-buffer
     draw3DScene(gBuffer->getBufferID(), viewMatrix, projectionMatrix, 1.0f, false);
+    // Set the framebuffer back to 0 (screen's framebuffer)
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    // Draw from the GBuffer
+    drawFromGBuffer();
 
     // Draw all sprite components
     // Disable depth buffering
