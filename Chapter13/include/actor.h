@@ -35,8 +35,9 @@ public:
     const Vector3& getPosition() const;
     void setPosition(const Vector3& newPosition);
 
-    float getScale() const;
+    const Vector3& getScale() const;
     void setScale(float newScale);
+    void setScale(const Vector3& newScale);
 
     const Quaternion& getRotation() const;
     void setRotation(const Quaternion& newRotation);
@@ -68,7 +69,7 @@ private:
 
     // Transform
     Vector3 position;    // Center position of actor
-    float scale;         // Uniforms scale of actor (1.0f)
+    Vector3 scale;       // Uniforms scale of actor (1.0f)
     Quaternion rotation; // Rotation quaternion
 
     Matrix4 worldTransform;

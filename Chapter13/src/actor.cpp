@@ -8,7 +8,7 @@
 Actor::Actor(Game* game) :
     state(State::Active),
     position(Vector3::Zero),
-    scale(1.0f),
+    scale(Vector3(1.0f, 1.0f, 1.0f)),
     rotation(Quaternion::Identity),
     recomputeWorldTransform(true),
     game(game) {
@@ -59,11 +59,15 @@ void Actor::setPosition(const Vector3& newPosition) {
     recomputeWorldTransform = true;
 }
 
-float Actor::getScale() const {
+const Vector3& Actor::getScale() const {
     return scale;
 }
 
 void Actor::setScale(float newScale) {
+    setScale(scale * newScale);
+}
+
+void Actor::setScale(const Vector3& newScale) {
     scale = newScale;
     recomputeWorldTransform = true;
 }

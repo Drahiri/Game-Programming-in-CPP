@@ -20,8 +20,8 @@ void BoxComponent::onUpdateWorldTransform() {
     // Reset to object space box
     worldBox = objectBox;
     // Scale
-    worldBox.min *= owner->getScale();
-    worldBox.max *= owner->getScale();
+    worldBox.min *= owner->getScale().x;
+    worldBox.max *= owner->getScale().x;
     // Roteta (if we want to)
     if(shouldRotate) {
         worldBox.rotate(owner->getRotation());
