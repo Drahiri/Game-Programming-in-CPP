@@ -133,6 +133,10 @@ void Renderer::shutdown() {
         delete pointLights.back();
     }
 
+    while(!spotlights.empty()) {
+        delete spotlights.back();
+    }
+
     SDL_GL_DestroyContext(context);
     SDL_DestroyWindow(window);
 }
@@ -318,6 +322,15 @@ void Renderer::addPointLight(PointLightComponent* lightComp) {
 void Renderer::removePointLight(PointLightComponent* lightComp) {
     auto iter = std::find(pointLights.begin(), pointLights.end(), lightComp);
     pointLights.erase(iter);
+}
+
+void Renderer::addSpotlight(SpotlightComponent* lightComp) {
+    spotlights.emplace_back(lightComp);
+}
+
+void Renderer::removeSpotlight(SpotlightComponent* lightComp) {
+    auto iter = std::find(spotlights.begin(), spotlights.end(), lightComp);
+    spotlights.erase(iter);
 }
 
 void Renderer::removeMeshComp(MeshComponent* meshComp) {

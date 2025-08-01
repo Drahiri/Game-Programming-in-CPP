@@ -15,6 +15,7 @@ class MeshComponent;
 class PointLightComponent;
 class Shader;
 class SkeletalMeshComponent;
+class SpotlightComponent;
 class SpriteComponent;
 class Texture;
 class VertexArray;
@@ -51,6 +52,9 @@ public:
 
     void addPointLight(PointLightComponent* lightComp);
     void removePointLight(PointLightComponent* lightComp);
+
+    void addSpotlight(SpotlightComponent* lightComp);
+    void removeSpotlight(SpotlightComponent* lightComp);
 
     Texture* getTexture(const std::string& fileName);
     Texture* getMirrorTexture();
@@ -138,6 +142,8 @@ private:
     std::vector<PointLightComponent*> pointLights;
     Shader* gPointLightShader;
     Mesh* pointLightMesh;
+
+    std::vector<SpotlightComponent*> spotlights;
 };
 
 #endif
