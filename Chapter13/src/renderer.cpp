@@ -105,6 +105,7 @@ bool Renderer::initialize(float windowWidth, float windowHeight) {
     }
 
     pointLightMesh = getMesh("assets/PointLight.gpmesh");
+    spotlightMesh = getMesh("assets/SpotLight.gpmesh");
 
     return true;
 }

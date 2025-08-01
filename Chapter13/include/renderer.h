@@ -144,6 +144,7 @@ private:
     Mesh* pointLightMesh;
 
     std::vector<SpotlightComponent*> spotlights;
+    Mesh* spotlightMesh;
 };
 
 #endif
