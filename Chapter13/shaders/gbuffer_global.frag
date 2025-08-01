@@ -9,6 +9,7 @@ layout(location = 0) out vec4 outColor;
 uniform sampler2D uGDiffuse;
 uniform sampler2D uGNormal;
 uniform sampler2D uGWorldPos;
+uniform sampler2D uSpecPower;
 
 // Lighting uniforms
 // Struct for directional light
@@ -33,6 +34,7 @@ void main() {
     vec3 gbufferDiffuse = texture(uGDiffuse, fragTexCoord).xyz;
     vec3 gbufferNormal = texture(uGNormal, fragTexCoord).xyz;
     vec3 gbufferWorldPos = texture(uGWorldPos, fragTexCoord).xyz;
+    float gbufferSpecPow = texture(uSpecPower, fragTexCoord).x;
 
     // Calculate Phong lighting
     // Surface normal
@@ -49,8 +51,8 @@ void main() {
     float NdotL = dot(N, L);
     if(NdotL > 0) {
         vec3 Diffuse = uDirLight.diffuseColor * NdotL;
-        // vec3 Specular = uDirLight.specColor * pow(max(0.0, dot(R, V)), uSpecPower);
-        Phong += Diffuse; // + Specular;
+        vec3 Specular = uDirLight.specColor * pow(max(0.0, dot(R, V)), gbufferSpecPow);
+        Phong += Diffuse + Specular;
     }
 
     // Clamp light between 0-1 RGB value

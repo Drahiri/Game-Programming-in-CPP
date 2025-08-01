@@ -27,6 +27,13 @@ void PointLightComponent::draw(Shader* shader, Mesh* mesh) {
     shader->setVec3Uniform("uPointLight.diffuseColor", diffuseColor);
     shader->setFloatUniform("uPointLight.innerRadius", innerRadius);
     shader->setFloatUniform("uPointLight.outerRadius", outerRadius);
+    shader->setVec3Uniform(
+          "uPointLight.specColor", diffuseColor * 1.5); // 1.5 time brighter than diffuse color
+
+    Matrix4 invView = owner->getGame()->getRenderer()->getView();
+    invView.Invert();
+
+    shader->setVec3Uniform("uCameraPos", invView.GetTranslation());
 
     // Draw the sphere
     glDrawElements(GL_TRIANGLES, mesh->getVertexArray()->getNumIndices(), GL_UNSIGNED_INT, nullptr);
