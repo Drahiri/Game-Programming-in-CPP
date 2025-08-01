@@ -78,6 +78,8 @@ public:
     // Creating the mirror framebuffer
     bool createMirrorTarget();
 
+    const Matrix4& getView() const;
+
 private:
     void draw3DScene(unsigned int framebuffer,
           const Matrix4& view,

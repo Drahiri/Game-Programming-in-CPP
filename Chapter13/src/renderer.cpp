@@ -574,3 +574,7 @@ void Renderer::createSpriteVerts() {
 
     spriteVerts = new VertexArray(VertexArray::Layout::PosNormTex, vertices, 4, indices, 6);
 }
+
+const Matrix4& Renderer::getView() const {
+    return viewMatrix;
+}
