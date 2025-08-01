@@ -9,9 +9,11 @@ in vec3 fragWorldPos; // Position (in world space)
 layout(location = 0) out vec3 outDiffuse;
 layout(location = 1) out vec3 outNormal;
 layout(location = 2) out vec3 outWorldPos;
+layout(location = 3) out vec3 outSpecPower;
 
 // Diffuse texture sampler
 uniform sampler2D uTexture;
+uniform float uSpecPower;
 
 void main() {
     // Diffuse color is from texture
@@ -19,4 +21,5 @@ void main() {
     // Pass normal/world position directly along
     outNormal = fragNormal;
     outWorldPos = fragWorldPos;
+    outSpecPower = vec3(uSpecPower, uSpecPower, uSpecPower);
 }
