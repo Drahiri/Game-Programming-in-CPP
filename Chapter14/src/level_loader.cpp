@@ -1,12 +1,25 @@
 #include "level_loader.h"
 
 #include "actor.h"
+#include "audio_component.h"
 #include "ball_actor.h"
+#include "ball_move.h"
+#include "box_component.h"
+#include "camera_component.h"
+#include "component.h"
 #include "follow_actor.h"
+#include "follow_camera.h"
 #include "game.h"
+#include "mesh_component.h"
+#include "mirror_camera.h"
+#include "move_component.h"
 #include "plane_actor.h"
+#include "point_light_component.h"
 #include "renderer.h"
+#include "skeletal_mesh_component.h"
+#include "sprite_component.h"
 #include "target_actor.h"
+#include "target_component.h"
 
 #include <fstream>
 #include <SDL3/SDL_log.h>
@@ -22,6 +35,24 @@ std::unordered_map<std::string, ActorFunc> LevelLoader::actorFactoryMap{
     { "PlaneActor", &Actor::create<PlaneActor> }, 
     { "TargetActor", &Actor::create<TargetActor> }
     // clang-format on
+};
+
+std::unordered_map<std::string, std::pair<Component::TypeID, ComponentFunc>>
+      LevelLoader::componentFactoryMap{
+          // clang-format off
+    { "AudioComponent", { Component::TypeID::AudioComponent, &Component::create<AudioComponent> } },
+    { "BallMove", { Component::TypeID::BallMove, &Component::create<BallMove> } },
+    { "BoxComponent", { Component::TypeID::BoxComponent, &Component::create<BoxComponent> } },
+    { "CameraComponent", { Component::TypeID::CameraComponent, &Component::create<CameraComponent> } },
+    { "FollowCamera", { Component::TypeID::FollowCamera, &Component::create<FollowCamera> } },
+    { "MeshComponent>", { Component::TypeID::MeshComponent, &Component::create<MeshComponent> } },
+    { "MoveComponent>", { Component::TypeID::MoveComponent, &Component::create<MoveComponent> } },
+    { "SkeletalMeshComponent>", { Component::TypeID::SkeletalMeshComponent, &Component::create<SkeletalMeshComponent> } },
+    { "SpriteComponent>", { Component::TypeID::SpriteComponent, &Component::create<SpriteComponent> } },
+    { "MirrorCamera>", { Component::TypeID::MirrorCamera, &Component::create<MirrorCamera> } },
+    { "PointLightComponent>", { Component::TypeID::PointLightComponent, &Component::create<PointLightComponent> } },
+    { "TargetComponent>", { Component::TypeID::TargetComponent, &Component::create<TargetComponent> } }
+          // clang-format on
 };
 
 bool LevelLoader::loadLevel(Game* game, const std::string& fileName) {

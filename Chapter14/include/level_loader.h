@@ -1,6 +1,7 @@
 #ifndef LEVEL_LOADER_H
 #define LEVEL_LOADER_H
 
+#include "component.h"
 #include "math.h"
 
 #include <functional>
@@ -12,6 +13,7 @@ class Actor;
 class Game;
 
 using ActorFunc = std::function<Actor*(Game*, const rapidjson::Value&)>;
+using ComponentFunc = std::function<Component*(Actor*, const rapidjson::Value&)>;
 
 class LevelLoader {
 public:
@@ -26,6 +28,8 @@ protected:
     static void loadActors(Game* game, const rapidjson::Value& inObject);
     // Maps for data
     static std::unordered_map<std::string, ActorFunc> actorFactoryMap;
+    static std::unordered_map<std::string, std::pair<Component::TypeID, ComponentFunc>>
+          componentFactoryMap;
 };
 
 class JsonHelper {
