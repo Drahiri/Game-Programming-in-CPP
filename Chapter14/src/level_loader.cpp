@@ -41,3 +41,22 @@ bool LevelLoader::loadJSON(const std::string& fileName, rapidjson::Document& out
 
     return true;
 }
+
+bool JsonHelper::getInt(const rapidjson::Value& inObject, const char* inProperty, int& outInt) {
+    // Check if this property exists
+    auto itr = inObject.FindMember(inProperty);
+    if(itr == inObject.MemberEnd()) {
+        return false;
+    }
+
+    // Get the value type, and check it's an integer
+    auto& property = itr->value;
+    if(!property.IsInt()) {
+        return false;
+    }
+
+    // We have the property
+    outInt = property.GetInt();
+
+    return true;
+}
