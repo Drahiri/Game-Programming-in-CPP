@@ -17,6 +17,8 @@ public:
     void setVertDist(float dist);
     void setTargetDist(float dist);
 
+    Component::TypeID getType() const override;
+
 private:
     Vector3 computeCameraPos() const;
 

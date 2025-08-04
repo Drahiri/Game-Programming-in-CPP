@@ -20,6 +20,8 @@ public:
     float getStrafeSpeed() const;
     void setStrafeSpeed(float speed);
 
+    Component::TypeID getType() const override;
+
 private:
     // Controls rotation (radians/second)
     float angularSpeed;

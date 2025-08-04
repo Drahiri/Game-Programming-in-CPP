@@ -9,6 +9,8 @@ class TargetComponent : public Component {
 public:
     TargetComponent(Actor* owner);
     ~TargetComponent();
+
+    Component::TypeID getType() const override;
 };
 
 #endif

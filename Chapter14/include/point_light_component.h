@@ -16,6 +16,8 @@ public:
     // Draw this point light as geometry
     void draw(Shader* shader, Mesh* mesh);
 
+    Component::TypeID getType() const;
+
     // Diffuse color
     Vector3 diffuseColor;
     // Radius of light

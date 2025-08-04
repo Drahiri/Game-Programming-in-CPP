@@ -16,6 +16,8 @@ public:
     const AABB& getWorldBox() const;
     void setShouldRotate(bool value);
 
+    Component::TypeID getType() const override;
+
 private:
     AABB objectBox;
     AABB worldBox;

@@ -20,6 +20,8 @@ public:
     SoundEvent playEvent(const std::string& name);
     void stopAllEvents();
 
+    Component::TypeID getType() const override;
+
 private:
     std::vector<SoundEvent> events2D;
     std::vector<SoundEvent> events3D;

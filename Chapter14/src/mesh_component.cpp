@@ -63,3 +63,7 @@ bool MeshComponent::getVisible() const {
 bool MeshComponent::getIsSkeletal() const {
     return isSkeletal;
 }
+
+Component::TypeID MeshComponent::getType() const {
+    return Component::TypeID::MeshComponent;
+}

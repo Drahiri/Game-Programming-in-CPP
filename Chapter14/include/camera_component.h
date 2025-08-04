@@ -11,6 +11,8 @@ class CameraComponent : public Component {
 public:
     CameraComponent(Actor* owner);
 
+    Component::TypeID getType() const override;
+
 protected:
     void setViewMatrix(const Matrix4& view);
 };

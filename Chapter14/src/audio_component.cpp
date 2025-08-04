@@ -73,3 +73,7 @@ void AudioComponent::stopAllEvents() {
     events2D.clear();
     events3D.clear();
 }
+
+Component::TypeID AudioComponent::getType() const {
+    return Component::TypeID::AudioComponent;
+}

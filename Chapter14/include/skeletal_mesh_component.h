@@ -23,6 +23,8 @@ public:
 
     void setSkeleton(const Skeleton* sk);
 
+    Component::TypeID getType() const override;
+
 private:
     const Skeleton* skeleton;
 

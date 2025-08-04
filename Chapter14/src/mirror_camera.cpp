@@ -54,3 +54,7 @@ void MirrorCamera::setVertDist(float dist) {
 void MirrorCamera::setTargetDist(float dist) {
     targetDist = dist;
 }
+
+Component::TypeID MirrorCamera::getType() const {
+    return Component::TypeID::MirrorCamera;
+}

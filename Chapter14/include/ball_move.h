@@ -12,6 +12,8 @@ public:
     void setPlayer(Actor* player);
     void update(float deltaTime) override;
 
+    Component::TypeID getType() const override;
+
 private:
     Actor* player;
 };

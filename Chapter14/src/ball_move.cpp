@@ -39,3 +39,7 @@ void BallMove::update(float deltaTime) {
     // Base class update moves based on forward speed
     MoveComponent::update(deltaTime);
 }
+
+Component::TypeID BallMove::getType() const {
+    return Component::TypeID::BallMove;
+}

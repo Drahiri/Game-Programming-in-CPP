@@ -42,3 +42,7 @@ const AABB& BoxComponent::getWorldBox() const {
 void BoxComponent::setShouldRotate(bool value) {
     shouldRotate = value;
 }
+
+Component::TypeID BoxComponent::getType() const {
+    return Component::TypeID::BoxComponent;
+}

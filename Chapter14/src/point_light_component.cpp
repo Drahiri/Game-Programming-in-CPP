@@ -31,3 +31,7 @@ void PointLightComponent::draw(Shader* shader, Mesh* mesh) {
     // Draw the sphere
     glDrawElements(GL_TRIANGLES, mesh->getVertexArray()->getNumIndices(), GL_UNSIGNED_INT, nullptr);
 }
+
+Component::TypeID PointLightComponent::getType() const {
+    return Component::TypeID::PointLightComponent;
+}

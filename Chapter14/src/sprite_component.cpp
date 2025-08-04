@@ -68,3 +68,7 @@ void SpriteComponent::setVisible(bool visible) {
 bool SpriteComponent::getVisible() const {
     return isVisible;
 }
+
+Component::TypeID SpriteComponent::getType() const {
+    return Component::TypeID::SpriteComponent;
+}

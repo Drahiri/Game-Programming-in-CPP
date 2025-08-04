@@ -13,3 +13,7 @@ void CameraComponent::setViewMatrix(const Matrix4& view) {
     game->getRenderer()->setViewMatrix(view);
     game->getAudioSystem()->setListener(view);
 }
+
+Component::TypeID CameraComponent::getType() const {
+    return Component::TypeID::CameraComponent;
+}

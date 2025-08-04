@@ -27,6 +27,8 @@ public:
 
     bool getIsSkeletal() const;
 
+    Component::TypeID getType() const override;
+
 protected:
     Mesh* mesh;
     size_t textureIndex;

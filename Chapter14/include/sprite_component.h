@@ -25,6 +25,8 @@ public:
     void setVisible(bool visible);
     bool getVisible() const;
 
+    Component::TypeID getType() const override;
+
 protected:
     // Texture to draw
     Texture* texture;

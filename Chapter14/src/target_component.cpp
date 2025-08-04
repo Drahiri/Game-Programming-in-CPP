@@ -11,3 +11,7 @@ TargetComponent::TargetComponent(Actor* owner) : Component(owner) {
 TargetComponent::~TargetComponent() {
     owner->getGame()->getHUD()->removeTarget(this);
 }
+
+Component::TypeID TargetComponent::getType() const {
+    return Component::TypeID::TargetComponent;
+}

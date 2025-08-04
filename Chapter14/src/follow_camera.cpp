@@ -72,3 +72,7 @@ void FollowCamera::setTargetDist(float dist) {
 void FollowCamera::setSpringConstant(float spring) {
     springConstant = spring;
 }
+
+Component::TypeID FollowCamera::getType() const {
+    return Component::TypeID::FollowCamera;
+}

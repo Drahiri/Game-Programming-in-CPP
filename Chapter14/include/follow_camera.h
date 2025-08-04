@@ -20,6 +20,8 @@ public:
     void setTargetDist(float dist);
     void setSpringConstant(float spring);
 
+    Component::TypeID getType() const override;
+
 private:
     // Horizontal follow distance
     float horzDist;

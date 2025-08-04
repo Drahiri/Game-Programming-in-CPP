@@ -57,3 +57,7 @@ float MoveComponent::getStrafeSpeed() const {
 void MoveComponent::setStrafeSpeed(float speed) {
     strafeSpeed = speed;
 }
+
+Component::TypeID MoveComponent::getType() const {
+    return Component::TypeID::MoveComponent;
+}

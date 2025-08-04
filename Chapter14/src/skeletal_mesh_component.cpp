@@ -61,3 +61,7 @@ float SkeletalMeshComponent::playAnimation(const Animation* anim, float playRate
 void SkeletalMeshComponent::setSkeleton(const Skeleton* sk) {
     skeleton = sk;
 }
+
+Component::TypeID SkeletalMeshComponent::getType() const {
+    return Component::TypeID::SkeletalMeshComponent;
+}
