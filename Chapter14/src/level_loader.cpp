@@ -102,3 +102,20 @@ bool JsonHelper::getBool(const rapidjson::Value& inObject, const char* inPropert
 
     return true;
 }
+
+bool JsonHelper::getString(
+      const rapidjson::Value& inObject, const char* inProperty, std::string& outString) {
+    auto itr = inObject.FindMember(inProperty);
+    if(itr == inObject.MemberEnd()) {
+        return false;
+    }
+
+    auto& property = itr->value;
+    if(!property.IsString()) {
+        return false;
+    }
+
+    outString = property.GetString();
+
+    return true;
+}
