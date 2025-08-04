@@ -7,6 +7,7 @@
 #include "follow_actor.h"
 #include "font.h"
 #include "hud.h"
+#include "level_loader.h"
 #include "mesh_component.h"
 #include "pause_menu.h"
 #include "phys_world.h"
@@ -483,11 +484,7 @@ void Game::loadData() {
     }
 
     // Setup lights
-    renderer->setAmbientLight(Vector3(0.2, 0.2, 0.2));
-    DirectionalLight& dir = renderer->getDirectionalLight();
-    dir.direction = Vector3(0, -0.707, -0.707);
-    dir.diffuseColor = Vector3(0.78f, 0.88f, 1.0f);
-    dir.specColor = Vector3(0.8f, 0.8f, 0.8f);
+    LevelLoader::loadLevel(this, "assets/Level0.gplevel");
 
     // UI elements
     hud = new HUD(this);
