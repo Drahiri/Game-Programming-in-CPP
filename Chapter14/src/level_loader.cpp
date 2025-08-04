@@ -4,12 +4,21 @@
 #include <SDL3/SDL_log.h>
 #include <vector>
 
+const int levelVersion = 1;
+
 bool LevelLoader::loadLevel(Game* game, const std::string& fileName) {
     rapidjson::Document doc;
     if(!loadJSON(fileName, doc)) {
         SDL_Log("Failed to load level %s", fileName.c_str());
         return false;
     }
+
+    int version = 0;
+    if(!JsonHelper::getInt(doc, "version", version) || version != levelVersion) {
+        SDL_Log("Incorrect level file version for %s", fileName.c_str());
+        return false;
+    }
+
     return true;
 }
 
