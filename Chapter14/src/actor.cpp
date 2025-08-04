@@ -183,3 +183,16 @@ void Actor::loadProperties(const rapidjson::Value& inObj) {
     JsonHelper::getFloat(inObj, "scale", scale);
     computeWorldTransform();
 }
+
+Component* Actor::getComponentOfType(Component::TypeID type) {
+    Component* comp = nullptr;
+
+    for(Component* c: components) {
+        if(c->getType() == type) {
+            comp = c;
+            break;
+        }
+    }
+
+    return comp;
+}

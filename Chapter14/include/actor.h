@@ -1,12 +1,12 @@
 #ifndef ACTOR_H
 #define ACTOR_H
 
+#include "component.h"
 #include "math.h"
 
 #include <rapidjson/document.h>
 #include <vector>
 
-class Component;
 class Game;
 
 class Actor {
@@ -74,6 +74,9 @@ public:
         t->loadProperties(inObject);
         return t;
     };
+
+    // Get component by type
+    Component* getComponentOfType(Component::TypeID type);
 
 private:
     // Actor's state
