@@ -2,6 +2,7 @@
 
 #include "actor.h"
 #include "game.h"
+#include "level_loader.h"
 #include "phys_world.h"
 
 BoxComponent::BoxComponent(Actor* owner) :
@@ -45,4 +46,14 @@ void BoxComponent::setShouldRotate(bool value) {
 
 Component::TypeID BoxComponent::getType() const {
     return Component::TypeID::BoxComponent;
+}
+
+void BoxComponent::loadProperties(const rapidjson::Value& inObj) {
+    Component::loadProperties(inObj);
+
+    JsonHelper::getVector3(inObj, "objectMin", objectBox.min);
+    JsonHelper::getVector3(inObj, "objectMax", objectBox.max);
+    JsonHelper::getVector3(inObj, "worldMin", worldBox.min);
+    JsonHelper::getVector3(inObj, "worldMax", worldBox.max);
+    JsonHelper::getBool(inObj, "shouldRotate", shouldRotate);
 }

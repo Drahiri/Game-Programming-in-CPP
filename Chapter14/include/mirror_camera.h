@@ -19,6 +19,8 @@ public:
 
     Component::TypeID getType() const override;
 
+    void loadProperties(const rapidjson::Value& inObject) override;
+
 private:
     Vector3 computeCameraPos() const;
 

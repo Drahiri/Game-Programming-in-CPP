@@ -1,6 +1,8 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
+#include <rapidjson/document.h>
+
 class Actor;
 
 class Component {
@@ -39,6 +41,8 @@ public:
     Actor* getOwner();
 
     virtual TypeID getType() const = 0;
+
+    virtual void loadProperties(const rapidjson::Value& inObject);
 
 protected:
     // Owning Actor

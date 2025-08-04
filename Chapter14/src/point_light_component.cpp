@@ -2,6 +2,7 @@
 
 #include "actor.h"
 #include "game.h"
+#include "level_loader.h"
 #include "mesh.h"
 #include "renderer.h"
 #include "shader.h"
@@ -34,4 +35,12 @@ void PointLightComponent::draw(Shader* shader, Mesh* mesh) {
 
 Component::TypeID PointLightComponent::getType() const {
     return Component::TypeID::PointLightComponent;
+}
+
+void PointLightComponent::loadProperties(const rapidjson::Value& inObject) {
+    Component::loadProperties(inObject);
+
+    JsonHelper::getVector3(inObject, "color", diffuseColor);
+    JsonHelper::getFloat(inObject, "innerRadius", innerRadius);
+    JsonHelper::getFloat(inObject, "outerRadius", outerRadius);
 }

@@ -4,6 +4,8 @@
 #include "collision.h"
 #include "component.h"
 
+#include <rapidjson/document.h>
+
 class Actor;
 
 class BoxComponent : public Component {
@@ -17,6 +19,8 @@ public:
     void setShouldRotate(bool value);
 
     Component::TypeID getType() const override;
+
+    void loadProperties(const rapidjson::Value& inObject) override;
 
 private:
     AABB objectBox;

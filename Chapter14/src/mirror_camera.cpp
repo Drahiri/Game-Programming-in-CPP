@@ -2,6 +2,7 @@
 
 #include "actor.h"
 #include "game.h"
+#include "level_loader.h"
 #include "renderer.h"
 
 MirrorCamera::MirrorCamera(Actor* owner) :
@@ -57,4 +58,12 @@ void MirrorCamera::setTargetDist(float dist) {
 
 Component::TypeID MirrorCamera::getType() const {
     return Component::TypeID::MirrorCamera;
+}
+
+void MirrorCamera::loadProperties(const rapidjson::Value& inObject) {
+    CameraComponent::loadProperties(inObject);
+
+    JsonHelper::getFloat(inObject, "horzDist", horzDist);
+    JsonHelper::getFloat(inObject, "vertDist", vertDist);
+    JsonHelper::getFloat(inObject, "targetDist", targetDist);
 }

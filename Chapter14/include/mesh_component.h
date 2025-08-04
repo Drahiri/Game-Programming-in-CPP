@@ -29,6 +29,8 @@ public:
 
     Component::TypeID getType() const override;
 
+    void loadProperties(const rapidjson::Value& inObject) override;
+
 protected:
     Mesh* mesh;
     size_t textureIndex;

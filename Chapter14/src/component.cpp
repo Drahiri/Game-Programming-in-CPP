@@ -1,6 +1,7 @@
 #include "component.h"
 
 #include "actor.h"
+#include "level_loader.h"
 
 Component::Component(Actor* owner, int updateOrder) : owner(owner), updateOrder(updateOrder) {
     owner->addComponent(this);
@@ -22,4 +23,8 @@ int Component::getUpdateOrder() const {
 
 Actor* Component::getOwner() {
     return owner;
+}
+
+void Component::loadProperties(const rapidjson::Value& inObject) {
+    JsonHelper::getInt(inObject, "updateOrder", updateOrder);
 }

@@ -2,6 +2,7 @@
 
 #include "actor.h"
 #include "game.h"
+#include "level_loader.h"
 #include "renderer.h"
 
 MoveComponent::MoveComponent(Actor* owner, int updateOrder) :
@@ -60,4 +61,12 @@ void MoveComponent::setStrafeSpeed(float speed) {
 
 Component::TypeID MoveComponent::getType() const {
     return Component::TypeID::MoveComponent;
+}
+
+void MoveComponent::loadProperties(const rapidjson::Value& inObject) {
+    Component::loadProperties(inObject);
+
+    JsonHelper::getFloat(inObject, "angularSpeed", angularSpeed);
+    JsonHelper::getFloat(inObject, "forwardSpeed", forwardSpeed);
+    JsonHelper::getFloat(inObject, "strafeSpeed", strafeSpeed);
 }

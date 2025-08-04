@@ -18,6 +18,8 @@ public:
 
     Component::TypeID getType() const;
 
+    void loadProperties(const rapidjson::Value& inObject) override;
+
     // Diffuse color
     Vector3 diffuseColor;
     // Radius of light

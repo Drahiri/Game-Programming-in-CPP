@@ -27,6 +27,8 @@ public:
 
     Component::TypeID getType() const override;
 
+    void loadProperties(const rapidjson::Value& inObject) override;
+
 protected:
     // Texture to draw
     Texture* texture;

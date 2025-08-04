@@ -2,6 +2,7 @@
 
 #include "actor.h"
 #include "game.h"
+#include "level_loader.h"
 #include "renderer.h"
 #include "shader.h"
 #include "texture.h"
@@ -71,4 +72,16 @@ bool SpriteComponent::getVisible() const {
 
 Component::TypeID SpriteComponent::getType() const {
     return Component::TypeID::SpriteComponent;
+}
+
+void SpriteComponent::loadProperties(const rapidjson::Value& inObject) {
+    Component::loadProperties(inObject);
+
+    std::string texFile;
+    if(JsonHelper::getString(inObject, "textureFile", texFile)) {
+        setTexture(owner->getGame()->getRenderer()->getTexture(texFile));
+    }
+
+    JsonHelper::getInt(inObject, "drawOrder", drawOrder);
+    JsonHelper::getBool(inObject, "visible", isVisible);
 }

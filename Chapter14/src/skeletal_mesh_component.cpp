@@ -3,6 +3,7 @@
 #include "actor.h"
 #include "animation.h"
 #include "game.h"
+#include "level_loader.h"
 #include "shader.h"
 #include "skeleton.h"
 
@@ -64,4 +65,21 @@ void SkeletalMeshComponent::setSkeleton(const Skeleton* sk) {
 
 Component::TypeID SkeletalMeshComponent::getType() const {
     return Component::TypeID::SkeletalMeshComponent;
+}
+
+void SkeletalMeshComponent::loadProperties(const rapidjson::Value& inObject) {
+    MeshComponent::loadProperties(inObject);
+
+    std::string skelFile;
+    if(JsonHelper::getString(inObject, "skelFile", skelFile)) {
+        setSkeleton(owner->getGame()->getSkeleton(skelFile));
+    }
+
+    std::string animFile;
+    if(JsonHelper::getString(inObject, "animFile", animFile)) {
+        playAnimation(owner->getGame()->getAnimation(animFile));
+    }
+
+    JsonHelper::getFloat(inObject, "animPlayRate", animPlayRate);
+    JsonHelper::getFloat(inObject, "animTime", animTime);
 }

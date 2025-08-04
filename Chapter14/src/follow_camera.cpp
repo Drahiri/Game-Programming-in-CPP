@@ -1,6 +1,7 @@
 #include "follow_camera.h"
 
 #include "actor.h"
+#include "level_loader.h"
 
 FollowCamera::FollowCamera(Actor* owner) :
     CameraComponent(owner),
@@ -75,4 +76,15 @@ void FollowCamera::setSpringConstant(float spring) {
 
 Component::TypeID FollowCamera::getType() const {
     return Component::TypeID::FollowCamera;
+}
+
+void FollowCamera::loadProperties(const rapidjson::Value& inObject) {
+    CameraComponent::loadProperties(inObject);
+
+    JsonHelper::getVector3(inObject, "actualPos", actualPos);
+    JsonHelper::getVector3(inObject, "velocity", velocity);
+    JsonHelper::getFloat(inObject, "horzDist", horzDist);
+    JsonHelper::getFloat(inObject, "vertDist", vertDist);
+    JsonHelper::getFloat(inObject, "targetDist", targetDist);
+    JsonHelper::getFloat(inObject, "springConstant", springConstant);
 }

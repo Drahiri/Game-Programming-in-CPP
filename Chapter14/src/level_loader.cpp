@@ -21,7 +21,7 @@ std::unordered_map<std::string, ActorFunc> LevelLoader::actorFactoryMap{
     { "FollowActor", &Actor::create<FollowActor> },
     { "PlaneActor", &Actor::create<PlaneActor> }, 
     { "TargetActor", &Actor::create<TargetActor> }
-    // clag-format on
+    // clang-format on
 };
 
 bool LevelLoader::loadLevel(Game* game, const std::string& fileName) {
@@ -107,11 +107,10 @@ void LevelLoader::loadActors(Game* game, const rapidjson::Value& inArray) {
             if(JsonHelper::getString(actorObj, "type", type)) {
                 // Is this type in the map?
                 auto iter = actorFactoryMap.find(type);
-                if(iter != actorFactoryMap.end() ) {
+                if(iter != actorFactoryMap.end()) {
                     // Construct with function stored in map
                     Actor* actor = iter->second(game, actorObj["properties"]);
-                }
-                else {
+                } else {
                     SDL_Log("Unknown actor type %s", type.c_str());
                 }
             }

@@ -25,6 +25,8 @@ public:
 
     Component::TypeID getType() const override;
 
+    void loadProperties(const rapidjson::Value& inObject) override;
+
 private:
     const Skeleton* skeleton;
 

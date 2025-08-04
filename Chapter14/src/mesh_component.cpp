@@ -2,6 +2,7 @@
 
 #include "actor.h"
 #include "game.h"
+#include "level_loader.h"
 #include "mesh.h"
 #include "renderer.h"
 #include "shader.h"
@@ -66,4 +67,21 @@ bool MeshComponent::getIsSkeletal() const {
 
 Component::TypeID MeshComponent::getType() const {
     return Component::TypeID::MeshComponent;
+}
+
+void MeshComponent::loadProperties(const rapidjson::Value& inObject) {
+    Component::loadProperties(inObject);
+
+    std::string meshFile;
+    if(JsonHelper::getString(inObject, "meshFile", meshFile)) {
+        setMesh(owner->getGame()->getRenderer()->getMesh(meshFile));
+    }
+
+    int idx;
+    if(JsonHelper::getInt(inObject, "textureIndex", idx)) {
+        textureIndex = static_cast<size_t>(idx);
+    }
+
+    JsonHelper::getBool(inObject, "visible", isVisible);
+    JsonHelper::getBool(inObject, "isSkeletal", isSkeletal);
 }
