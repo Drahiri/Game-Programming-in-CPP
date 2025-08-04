@@ -119,3 +119,28 @@ bool JsonHelper::getString(
 
     return true;
 }
+
+bool JsonHelper::getVector3(
+      const rapidjson::Value& inObject, const char* inProperty, Vector3& outVector) {
+    auto itr = inObject.FindMember(inProperty);
+    if(itr == inObject.MemberEnd()) {
+        return false;
+    }
+
+    auto& property = itr->value;
+    if(!property.IsArray() || property.Size() != 3) {
+        return false;
+    }
+
+    for(rapidjson::SizeType i = 0; i < 3; i++) {
+        if(!property[i].IsDouble()) {
+            return false;
+        }
+    }
+
+    outVector.x = property[0].GetDouble();
+    outVector.y = property[1].GetDouble();
+    outVector.z = property[2].GetDouble();
+
+    return true;
+}

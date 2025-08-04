@@ -29,6 +29,8 @@ public:
     static bool getBool(const rapidjson::Value& inObject, const char* inProperty, bool& outBool);
     static bool getString(
           const rapidjson::Value& inObject, const char* inProperty, std::string& outString);
+    static bool getVector3(
+          const rapidjson::Value& inObject, const char* inProperty, Vector3& outVector);
 };
 
 #endif
