@@ -86,3 +86,19 @@ bool JsonHelper::getFloat(
 
     return true;
 }
+
+bool JsonHelper::getBool(const rapidjson::Value& inObject, const char* inProperty, bool& outBool) {
+    auto itr = inObject.FindMember(inProperty);
+    if(itr == inObject.MemberEnd()) {
+        return false;
+    }
+
+    auto& property = itr->value;
+    if(!property.IsBool()) {
+        return false;
+    }
+
+    outBool = property.GetBool();
+
+    return true;
+}
