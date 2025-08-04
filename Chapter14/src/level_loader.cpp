@@ -4,6 +4,15 @@
 #include <SDL3/SDL_log.h>
 #include <vector>
 
+bool LevelLoader::loadLevel(Game* game, const std::string& fileName) {
+    rapidjson::Document doc;
+    if(!loadJSON(fileName, doc)) {
+        SDL_Log("Failed to load level %s", fileName.c_str());
+        return false;
+    }
+    return true;
+}
+
 bool LevelLoader::loadJSON(const std::string& fileName, rapidjson::Document& outDoc) {
     // Load the file from disk into an ifstream in binary mode,
     // loaded with stream buffer at the end (ate)
