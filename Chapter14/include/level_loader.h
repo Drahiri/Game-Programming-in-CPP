@@ -23,6 +23,7 @@ public:
 protected:
     // Helper to load global properties
     static void loadGloabalProperties(Game* game, const rapidjson::Value& inObject);
+    static void loadActors(Game* game, const rapidjson::Value& inObject);
     // Maps for data
     static std::unordered_map<std::string, ActorFunc> actorFactoryMap;
 };

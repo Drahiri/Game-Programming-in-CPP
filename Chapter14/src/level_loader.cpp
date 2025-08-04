@@ -42,6 +42,11 @@ bool LevelLoader::loadLevel(Game* game, const std::string& fileName) {
         loadGloabalProperties(game, globals);
     }
 
+    const rapidjson::Value& actors = doc["actors"];
+    if(actors.IsArray()) {
+        loadActors(game, actors);
+    }
+
     return true;
 }
 
@@ -88,6 +93,29 @@ void LevelLoader::loadGloabalProperties(Game* game, const rapidjson::Value& inOb
         // Set direction/color, if they exist
         JsonHelper::getVector3(dirObj, "direction", light.direction);
         JsonHelper::getVector3(dirObj, "color", light.diffuseColor);
+    }
+}
+
+void LevelLoader::loadActors(Game* game, const rapidjson::Value& inArray) {
+    // Loop throughg array of actors
+    for(rapidjson::SizeType i = 0; i < inArray.Size(); i++) {
+        const rapidjson::Value& actorObj = inArray[i];
+        if(actorObj.IsObject()) {
+            // Get the type
+            std::string type;
+
+            if(JsonHelper::getString(actorObj, "type", type)) {
+                // Is this type in the map?
+                auto iter = actorFactoryMap.find(type);
+                if(iter != actorFactoryMap.end() ) {
+                    // Construct with function stored in map
+                    Actor* actor = iter->second(game, actorObj["properties"]);
+                }
+                else {
+                    SDL_Log("Unknown actor type %s", type.c_str());
+                }
+            }
+        }
     }
 }
 
