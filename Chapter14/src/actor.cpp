@@ -183,12 +183,3 @@ void Actor::loadProperties(const rapidjson::Value& inObj) {
     JsonHelper::getFloat(inObj, "scale", scale);
     computeWorldTransform();
 }
-
-template<typename T>
-Actor* Actor::create(Game* game, const rapidjson::Value& inObj) {
-    // Dynamically allocate actor of type T
-    T* t = new T(game);
-    // Call loadProperties on new actor
-    t->loadProperties(inObj);
-    return t;
-}

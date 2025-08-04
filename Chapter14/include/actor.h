@@ -67,7 +67,13 @@ public:
     virtual void loadProperties(const rapidjson::Value& inObject);
 
     template<typename T>
-    static Actor* create(Game* game, const rapidjson::Value& inObject);
+    static Actor* create(Game* game, const rapidjson::Value& inObject) {
+        // Dynamically allocate actor of type T
+        T* t = new T(game);
+        // Call loadProperties on new actor
+        t->loadProperties(inObject);
+        return t;
+    };
 
 private:
     // Actor's state
