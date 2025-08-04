@@ -66,6 +66,9 @@ public:
     // Load
     virtual void loadProperties(const rapidjson::Value& inObject);
 
+    template<typename T>
+    static Actor* create(Game* game, const rapidjson::Value& inObject);
+
 private:
     // Actor's state
     State state;
