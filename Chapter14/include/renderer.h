@@ -1,0 +1,141 @@
+#ifndef RENDERER_H
+#define RENDERER_H
+
+#include "math.h"
+
+#include <SDL3/SDL.h>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+class Game;
+class GBuffer;
+class Mesh;
+class MeshComponent;
+class PointLightComponent;
+class Shader;
+class SkeletalMeshComponent;
+class SpriteComponent;
+class Texture;
+class VertexArray;
+
+struct DirectionalLight {
+    // Direction of light
+    Vector3 direction;
+    // Diffuse Color
+    Vector3 diffuseColor;
+    // Specular color;
+    Vector3 specColor;
+};
+
+class Renderer {
+public:
+    Renderer(Game* game);
+    ~Renderer();
+
+    // Initialize and shutdown renderer
+    bool initialize(float windowWidth, float windowHeight);
+    void shutdown();
+
+    // Unload all loaded textures/meshes
+    void unloadData();
+
+    // Draw the frame
+    void draw();
+
+    void addSprite(SpriteComponent* sprite);
+    void removeSprite(SpriteComponent* sprite);
+
+    void addMeshComp(MeshComponent* meshComp);
+    void removeMeshComp(MeshComponent* meshComp);
+
+    void addPointLight(PointLightComponent* lightComp);
+    void removePointLight(PointLightComponent* lightComp);
+
+    Texture* getTexture(const std::string& fileName);
+    Texture* getMirrorTexture();
+    Mesh* getMesh(const std::string& fileName);
+
+    float getScreenWidth() const;
+    float getScreenHeight() const;
+
+    void setViewMatrix(const Matrix4& view);
+    void setMirrorView(const Matrix4& view);
+    void setAmbientLight(const Vector3& light);
+
+    DirectionalLight& getDirectionalLight();
+
+    // Setting light uniforms
+    void setLightUniforms(Shader* shader, const Matrix4& view);
+
+    // Unprojection
+    Vector3 unproject(const Vector3& screenPoint) const;
+    // For picking
+    void getScreenDirection(Vector3& outStart, Vector3& outDir) const;
+
+    void setRelativeMouse(bool relative);
+
+    // Creating the mirror framebuffer
+    bool createMirrorTarget();
+
+private:
+    void draw3DScene(unsigned int framebuffer,
+          const Matrix4& view,
+          const Matrix4& proj,
+          float viewportScale,
+          bool lit = true);
+
+    void drawFromGBuffer();
+
+    bool loadShaders();
+    void createSpriteVerts();
+
+    float screenWidth;
+    float screenHeight;
+
+    std::unordered_map<std::string, Texture*> textures;
+
+    // View/Projection matrices
+    Matrix4 viewMatrix;
+    Matrix4 projectionMatrix;
+
+    // Sprite stuff
+    std::vector<SpriteComponent*> sprites;
+    Shader* spriteShader;
+    VertexArray* spriteVerts;
+
+    // Mesh stuff
+    std::unordered_map<std::string, Mesh*> meshes;
+    Shader* meshShader;
+    std::vector<MeshComponent*> meshComps;
+
+    // Skeletal stuff
+    std::vector<SkeletalMeshComponent*> skeletalMeshes;
+    Shader* skinnedShader;
+
+    Game* game;
+    SDL_Window* window;
+    SDL_GLContext context;
+
+    // Lights
+    Vector3 ambientLight;
+    DirectionalLight dirLight;
+
+    // Framebuffer object for the mirror
+    unsigned int mirrorBuffer;
+    // Texture for the mirror
+    Texture* mirrorTexture;
+    // Mirror view
+    Matrix4 mirrorView;
+
+    // G-buffer
+    GBuffer* gBuffer;
+    Shader* gGlobalShader;
+
+    // Point lights
+    std::vector<PointLightComponent*> pointLights;
+    Shader* gPointLightShader;
+    Mesh* pointLightMesh;
+};
+
+#endif
