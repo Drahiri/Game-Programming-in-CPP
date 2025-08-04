@@ -3,10 +3,15 @@
 
 #include "math.h"
 
+#include <functional>
 #include <rapidjson/document.h>
 #include <string>
+#include <unordered_map>
 
+class Actor;
 class Game;
+
+using ActorFunc = std::function<Actor*(Game*, const rapidjson::Value&)>;
 
 class LevelLoader {
 public:
@@ -18,6 +23,8 @@ public:
 protected:
     // Helper to load global properties
     static void loadGloabalProperties(Game* game, const rapidjson::Value& inObject);
+    // Maps for data
+    static std::unordered_map<std::string, ActorFunc> actorFactoryMap;
 };
 
 class JsonHelper {

@@ -1,13 +1,28 @@
 #include "level_loader.h"
 
+#include "actor.h"
+#include "ball_actor.h"
+#include "follow_actor.h"
 #include "game.h"
+#include "plane_actor.h"
 #include "renderer.h"
+#include "target_actor.h"
 
 #include <fstream>
 #include <SDL3/SDL_log.h>
 #include <vector>
 
 const int levelVersion = 1;
+
+std::unordered_map<std::string, ActorFunc> LevelLoader::actorFactoryMap{
+    // clang-format off
+    { "Actor", &Actor::create<Actor> },
+    { "BallActor", &Actor::create<BallActor> },
+    { "FollowActor", &Actor::create<FollowActor> },
+    { "PlaneActor", &Actor::create<PlaneActor> }, 
+    { "TargetActor", &Actor::create<TargetActor> }
+    // clag-format on
+};
 
 bool LevelLoader::loadLevel(Game* game, const std::string& fileName) {
     rapidjson::Document doc;
