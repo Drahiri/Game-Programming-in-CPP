@@ -1,6 +1,8 @@
 #ifndef LEVEL_LOADER_H
 #define LEVEL_LOADER_H
 
+#include "math.h"
+
 #include <rapidjson/document.h>
 #include <string>
 
@@ -23,6 +25,7 @@ class JsonHelper {
 
 public:
     static bool getInt(const rapidjson::Value& inObject, const char* inProperty, int& outInt);
+    static bool getFloat(const rapidjson::Value& inObject, const char* inProperty, float& outFloat);
 };
 
 #endif

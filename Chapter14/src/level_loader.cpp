@@ -69,3 +69,20 @@ bool JsonHelper::getInt(const rapidjson::Value& inObject, const char* inProperty
 
     return true;
 }
+
+bool JsonHelper::getFloat(
+      const rapidjson::Value& inObject, const char* inProperty, float& outFloat) {
+    auto itr = inObject.FindMember(inProperty);
+    if(itr == inObject.MemberEnd()) {
+        return false;
+    }
+
+    auto& property = itr->value;
+    if(!property.IsDouble()) {
+        return false;
+    }
+
+    outFloat = property.GetDouble();
+
+    return true;
+}
