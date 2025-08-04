@@ -3,6 +3,7 @@
 #include "audio_component.h"
 #include "ball_move.h"
 #include "game.h"
+#include "level_loader.h"
 #include "mesh.h"
 #include "mesh_component.h"
 #include "renderer.h"
@@ -31,4 +32,9 @@ void BallActor::setPlayer(Actor* player) {
 
 void BallActor::hitTarget() {
     audioComp->playEvent("event:/Ding");
+}
+
+void BallActor::loadProperties(const rapidjson::Value& inObj) {
+    Actor::loadProperties(inObj);
+    JsonHelper::getFloat(inObj, "lifespan", lifeSpan);
 }

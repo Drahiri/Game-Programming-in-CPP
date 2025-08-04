@@ -3,6 +3,7 @@
 
 #include "math.h"
 
+#include <rapidjson/document.h>
 #include <vector>
 
 class Component;
@@ -61,6 +62,9 @@ public:
     const Matrix4& getWorldTransform() const;
 
     void rotateToNewForward(const Vector3& forward);
+
+    // Load
+    virtual void loadProperties(const rapidjson::Value& inObject);
 
 private:
     // Actor's state

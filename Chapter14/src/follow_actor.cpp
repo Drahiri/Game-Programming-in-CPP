@@ -2,6 +2,7 @@
 
 #include "follow_camera.h"
 #include "game.h"
+#include "level_loader.h"
 #include "mirror_camera.h"
 #include "move_component.h"
 #include "renderer.h"
@@ -55,4 +56,9 @@ void FollowActor::actorInput(const bool* keys) {
 
 void FollowActor::setVisible(bool visible) {
     meshComp->setVisible(visible);
+}
+
+void FollowActor::loadProperties(const rapidjson::Value& inObj) {
+    Actor::loadProperties(inObj);
+    JsonHelper::getBool(inObj, "moving", moving);
 }

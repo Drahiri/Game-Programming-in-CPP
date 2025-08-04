@@ -2,6 +2,7 @@
 
 #include "component.h"
 #include "game.h"
+#include "level_loader.h"
 
 #include <algorithm>
 
@@ -161,4 +162,24 @@ void Actor::rotateToNewForward(const Vector3& forward) {
         axis.Normalize();
         setRotation(Quaternion(axis, angle));
     }
+}
+
+void Actor::loadProperties(const rapidjson::Value& inObj) {
+    // Use strings for different states
+    std::string state;
+    if(JsonHelper::getString(inObj, "state", state)) {
+        if(state == "active") {
+            setState(State::Active);
+        } else if(state == "paused") {
+            setState(State::Paused);
+        } else if(state == "dead") {
+            setState(State::Dead);
+        }
+    }
+
+    // Load position, rotation and scale, and compute transform
+    JsonHelper::getVector3(inObj, "position", position);
+    JsonHelper::getQuaternion(inObj, "rotation", rotation);
+    JsonHelper::getFloat(inObj, "scale", scale);
+    computeWorldTransform();
 }

@@ -16,6 +16,8 @@ public:
 
     void hitTarget();
 
+    void loadProperties(const rapidjson::Value& inObj) override;
+
 private:
     AudioComponent* audioComp;
     BallMove* myMove;

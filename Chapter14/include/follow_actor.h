@@ -16,6 +16,8 @@ public:
 
     void setVisible(bool visible);
 
+    void loadProperties(const rapidjson::Value& inObj) override;
+
 private:
     bool moving;
     MoveComponent* moveComp;
