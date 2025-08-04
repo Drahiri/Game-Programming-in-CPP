@@ -14,6 +14,10 @@ public:
     static bool loadLevel(Game* game, const std::string& fileName);
 
     static bool loadJSON(const std::string& fileName, rapidjson::Document& outDoc);
+
+protected:
+    // Helper to load global properties
+    static void loadGloabalProperties(Game* game, const rapidjson::Value& inObject);
 };
 
 class JsonHelper {

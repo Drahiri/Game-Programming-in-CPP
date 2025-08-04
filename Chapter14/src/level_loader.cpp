@@ -1,5 +1,8 @@
 #include "level_loader.h"
 
+#include "game.h"
+#include "renderer.h"
+
 #include <fstream>
 #include <SDL3/SDL_log.h>
 #include <vector>
@@ -17,6 +20,11 @@ bool LevelLoader::loadLevel(Game* game, const std::string& fileName) {
     if(!JsonHelper::getInt(doc, "version", version) || version != levelVersion) {
         SDL_Log("Incorrect level file version for %s", fileName.c_str());
         return false;
+    }
+
+    const rapidjson::Value& globals = doc["globalProperties"];
+    if(globals.IsObject()) {
+        loadGloabalProperties(game, globals);
     }
 
     return true;
@@ -49,6 +57,23 @@ bool LevelLoader::loadJSON(const std::string& fileName, rapidjson::Document& out
     }
 
     return true;
+}
+
+void LevelLoader::loadGloabalProperties(Game* game, const rapidjson::Value& inObject) {
+    // Get ambient light
+    Vector3 ambient;
+    if(JsonHelper::getVector3(inObject, "ambientLight", ambient)) {
+        game->getRenderer()->setAmbientLight(ambient);
+    }
+
+    // Get directional light
+    const rapidjson::Value& dirObj = inObject["directionalLight"];
+    if(dirObj.IsObject()) {
+        DirectionalLight& light = game->getRenderer()->getDirectionalLight();
+        // Set direction/color, if they exist
+        JsonHelper::getVector3(dirObj, "direction", light.direction);
+        JsonHelper::getVector3(dirObj, "color", light.diffuseColor);
+    }
 }
 
 bool JsonHelper::getInt(const rapidjson::Value& inObject, const char* inProperty, int& outInt) {
