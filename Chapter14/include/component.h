@@ -44,6 +44,15 @@ public:
 
     virtual void loadProperties(const rapidjson::Value& inObject);
 
+    template<typename T>
+    static Component* create(Actor* owner, const rapidjson::Value& inObject) {
+        // Dynamically allocate new component of type
+        T* t = new T(owner);
+        // Call loadProperties on new component
+        t->loadProperties(inObject);
+        return t;
+    }
+
 protected:
     // Owning Actor
     Actor* owner;
