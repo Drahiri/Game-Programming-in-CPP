@@ -31,6 +31,8 @@ public:
           const rapidjson::Value& inObject, const char* inProperty, std::string& outString);
     static bool getVector3(
           const rapidjson::Value& inObject, const char* inProperty, Vector3& outVector);
+    static bool getQuaternion(
+          const rapidjson::Value& inObject, const char* inProperty, Quaternion& outQuaterion);
 };
 
 #endif

@@ -144,3 +144,29 @@ bool JsonHelper::getVector3(
 
     return true;
 }
+
+bool JsonHelper::getQuaternion(
+      const rapidjson::Value& inObject, const char* inProperty, Quaternion& outQuaterion) {
+    auto itr = inObject.FindMember(inProperty);
+    if(itr == inObject.MemberEnd()) {
+        return false;
+    }
+
+    auto& property = itr->value;
+    if(!property.IsArray() || property.Size() != 4) {
+        return false;
+    }
+
+    for(rapidjson::SizeType i = 0; i < 4; i++) {
+        if(!property[i].IsDouble()) {
+            return false;
+        }
+    }
+
+    outQuaterion.x = property[0].GetDouble();
+    outQuaterion.y = property[1].GetDouble();
+    outQuaterion.z = property[2].GetDouble();
+    outQuaterion.w = property[3].GetDouble();
+
+    return true;
+}
