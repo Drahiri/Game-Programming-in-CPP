@@ -63,6 +63,7 @@ public:
     void setMirrorView(const Matrix4& view);
     void setAmbientLight(const Vector3& light);
 
+    Vector3& getAmbientLight();
     DirectionalLight& getDirectionalLight();
 
     // Setting light uniforms

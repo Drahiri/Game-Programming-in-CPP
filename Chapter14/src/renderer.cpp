@@ -395,6 +395,10 @@ void Renderer::setAmbientLight(const Vector3& light) {
     ambientLight = light;
 }
 
+Vector3& Renderer::getAmbientLight() {
+    return ambientLight;
+}
+
 DirectionalLight& Renderer::getDirectionalLight() {
     return dirLight;
 }
