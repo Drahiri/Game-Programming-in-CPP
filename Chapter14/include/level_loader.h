@@ -26,6 +26,7 @@ protected:
     // Helper to load global properties
     static void loadGloabalProperties(Game* game, const rapidjson::Value& inObject);
     static void loadActors(Game* game, const rapidjson::Value& inObject);
+    static void loadComponents(Actor* actor, const rapidjson::Value& inArray);
     // Maps for data
     static std::unordered_map<std::string, ActorFunc> actorFactoryMap;
     static std::unordered_map<std::string, std::pair<Component::TypeID, ComponentFunc>>

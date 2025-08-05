@@ -134,17 +134,56 @@ void LevelLoader::loadActors(Game* game, const rapidjson::Value& inArray) {
         if(actorObj.IsObject()) {
             // Get the type
             std::string type;
-
             if(JsonHelper::getString(actorObj, "type", type)) {
                 // Is this type in the map?
                 auto iter = actorFactoryMap.find(type);
                 if(iter != actorFactoryMap.end()) {
                     // Construct with function stored in map
                     Actor* actor = iter->second(game, actorObj["properties"]);
+                    // Get the actor's components
+                    if(actorObj.HasMember("components")) {
+                        const rapidjson::Value& components = actorObj["components"];
+                        if(components.IsArray()) {
+                            loadComponents(actor, components);
+                        }
+                    }
                 } else {
                     SDL_Log("Unknown actor type %s", type.c_str());
                 }
             }
+        }
+    }
+}
+
+void LevelLoader::loadComponents(Actor* actor, const rapidjson::Value& inArray) {
+    // Loop through array of components
+    for(rapidjson::SizeType i = 0; i < inArray.Size(); i++) {
+        const rapidjson::Value& compObj = inArray[i];
+        if(!compObj.IsObject()) {
+            continue;
+        }
+
+        // Get the type
+        std::string type;
+        if(!JsonHelper::getString(compObj, "type", type)) {
+            continue;
+        }
+
+        auto iter = componentFactoryMap.find(type);
+        if(iter == componentFactoryMap.end()) {
+            SDL_Log("Unknown component type %s", type.c_str());
+            continue;
+        }
+        // Get the typeid of component
+        Component::TypeID tid = iter->second.first;
+        // Does the actor already have a component of this type?
+        Component* comp = actor->getComponentOfType(tid);
+        if(comp == nullptr) {
+            // It's a new component, call function from map
+            comp = iter->second.second(actor, compObj["properties"]);
+        } else {
+            // It's already exists, just load properties
+            comp->loadProperties(compObj["properties"]);
         }
     }
 }
