@@ -128,6 +128,10 @@ void Actor::removeComponent(Component* component) {
     }
 }
 
+const std::vector<Component*> Actor::getComponents() const {
+    return components;
+}
+
 void Actor::computeWorldTransform() {
     if(recomputeWorldTransform) {
         recomputeWorldTransform = false;

@@ -62,6 +62,7 @@ public:
     // Add/remove components
     void addComponent(Component* component);
     void removeComponent(Component* component);
+    const std::vector<Component*> getComponents() const;
 
     // ProcessInput function called from Game (not overridable)
     void processInput(const bool* keyState);
