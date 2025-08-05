@@ -109,3 +109,11 @@ unsigned int VertexArray::getNumIndices() const {
 unsigned int VertexArray::getNumVerts() const {
     return numVerts;
 }
+
+unsigned int VertexArray::getVertexSize(const Layout& layout) {
+    unsigned vertexSize = 8 * sizeof(float);
+    if(layout == Layout::PosNormSkinTex) {
+        vertexSize = 8 * sizeof(float) + 8 * sizeof(char);
+    }
+    return vertexSize;
+}

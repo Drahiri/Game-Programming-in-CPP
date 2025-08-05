@@ -20,6 +20,7 @@ public:
 
     unsigned int getNumIndices() const;
     unsigned int getNumVerts() const;
+    static unsigned int getVertexSize(const Layout& layout);
 
 private:
     // How many vertices in the vertex buffer?
