@@ -3,6 +3,22 @@
 #include "actor.h"
 #include "level_loader.h"
 
+const char* Component::typeNames[static_cast<int>(Component::TypeID::NUM_COMPONENT_TYPES)]{
+    "Component",
+    "AudioComponent",
+    "BallMove",
+    "BoxComponent",
+    "CameraComponent",
+    "FollowCamera",
+    "MeshComponent",
+    "MoveComponent",
+    "SkeletalMeshComponent",
+    "SpriteComponent",
+    "MirrorCamera",
+    "PointLightComponent",
+    "TargetComponent",
+};
+
 Component::Component(Actor* owner, int updateOrder) : owner(owner), updateOrder(updateOrder) {
     owner->addComponent(this);
 }

@@ -25,6 +25,8 @@ public:
         NUM_COMPONENT_TYPES
     };
 
+    static const char* typeNames[static_cast<int>(TypeID::NUM_COMPONENT_TYPES)];
+
     // Contructor
     // (the lower the update order, the ealier the component updates)
     Component(Actor* owner, int updateOrder = 100);
