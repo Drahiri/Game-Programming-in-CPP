@@ -45,13 +45,13 @@ std::unordered_map<std::string, std::pair<Component::TypeID, ComponentFunc>>
     { "BoxComponent", { Component::TypeID::BoxComponent, &Component::create<BoxComponent> } },
     { "CameraComponent", { Component::TypeID::CameraComponent, &Component::create<CameraComponent> } },
     { "FollowCamera", { Component::TypeID::FollowCamera, &Component::create<FollowCamera> } },
-    { "MeshComponent>", { Component::TypeID::MeshComponent, &Component::create<MeshComponent> } },
-    { "MoveComponent>", { Component::TypeID::MoveComponent, &Component::create<MoveComponent> } },
-    { "SkeletalMeshComponent>", { Component::TypeID::SkeletalMeshComponent, &Component::create<SkeletalMeshComponent> } },
-    { "SpriteComponent>", { Component::TypeID::SpriteComponent, &Component::create<SpriteComponent> } },
-    { "MirrorCamera>", { Component::TypeID::MirrorCamera, &Component::create<MirrorCamera> } },
-    { "PointLightComponent>", { Component::TypeID::PointLightComponent, &Component::create<PointLightComponent> } },
-    { "TargetComponent>", { Component::TypeID::TargetComponent, &Component::create<TargetComponent> } }
+    { "MeshComponent", { Component::TypeID::MeshComponent, &Component::create<MeshComponent> } },
+    { "MoveComponent", { Component::TypeID::MoveComponent, &Component::create<MoveComponent> } },
+    { "SkeletalMeshComponent", { Component::TypeID::SkeletalMeshComponent, &Component::create<SkeletalMeshComponent> } },
+    { "SpriteComponent", { Component::TypeID::SpriteComponent, &Component::create<SpriteComponent> } },
+    { "MirrorCamera", { Component::TypeID::MirrorCamera, &Component::create<MirrorCamera> } },
+    { "PointLightComponent", { Component::TypeID::PointLightComponent, &Component::create<PointLightComponent> } },
+    { "TargetComponent", { Component::TypeID::TargetComponent, &Component::create<TargetComponent> } }
           // clang-format on
 };
 
