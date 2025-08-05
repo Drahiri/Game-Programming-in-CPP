@@ -255,7 +255,7 @@ void LevelLoader::saveActors(
         obj.AddMember("properties", props, alloc);
 
         // Save components
-        rapidjson::Value components(rapidjson::kObjectType);
+        rapidjson::Value components(rapidjson::kArrayType);
         saveComponents(alloc, actor, components);
         obj.AddMember("components", components, alloc);
 
