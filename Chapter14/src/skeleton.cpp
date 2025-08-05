@@ -14,6 +14,8 @@ bool Skeleton::load(const std::string& fileName) {
         return false;
     }
 
+    this->fileName = fileName;
+
     std::stringstream fileStream;
     fileStream << file.rdbuf();
     std::string contents = fileStream.str();
@@ -138,4 +140,8 @@ const std::vector<Skeleton::Bone>& Skeleton::getBones() const {
 
 const std::vector<Matrix4>& Skeleton::getGlobalInvBindPoses() const {
     return globalInvBindPoses;
+}
+
+const std::string& Skeleton::getFileName() const {
+    return fileName;
 }
