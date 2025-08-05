@@ -32,6 +32,10 @@ protected:
     // Helpers to save
     static void saveGlobalProperties(
           rapidjson::Document::AllocatorType& alloc, Game* game, rapidjson::Value& inObject);
+    static void saveActors(
+          rapidjson::Document::AllocatorType& alloc, Game* game, rapidjson::Value& inArray);
+    static void saveComponents(
+          rapidjson::Document::AllocatorType& alloc, const Actor* actor, rapidjson::Value& inArray);
 
     // Maps for data
     static std::unordered_map<std::string, ActorFunc> actorFactoryMap;

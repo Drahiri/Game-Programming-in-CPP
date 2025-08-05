@@ -126,6 +126,10 @@ void LevelLoader::saveLevel(Game* game, const std::string& fileName) {
     saveGlobalProperties(doc.GetAllocator(), game, globals);
     doc.AddMember("globalProperties", globals, doc.GetAllocator());
 
+    rapidjson::Value actors(rapidjson::kArrayType);
+    saveActors(doc.GetAllocator(), game, actors);
+    doc.AddMember("actors", actors, doc.GetAllocator());
+
     // Save JSON to string buffer
     rapidjson::StringBuffer buffer;
     // Use PrettyWriter for pretty output (otherwise use Writer)
@@ -231,6 +235,33 @@ void LevelLoader::saveGlobalProperties(
     JsonHelper::addVector3(alloc, dirObj, "direction", dirLight.direction);
     JsonHelper::addVector3(alloc, dirObj, "color", dirLight.diffuseColor);
     inObject.AddMember("directionalLight", inObject, alloc);
+}
+
+void LevelLoader::saveActors(
+      rapidjson::Document::AllocatorType& alloc, Game* game, rapidjson::Value& inArray) {
+    const auto& actors = game->getActors();
+    for(const Actor* actor: actors) {
+        // Make a JSON object
+        rapidjson::Value obj(rapidjson::kObjectType);
+        // Add type
+        JsonHelper::addString(
+              alloc, obj, "type", Actor::typeNames[static_cast<int>(actor->getType())]);
+
+        // Make object for properties
+        rapidjson::Value props(rapidjson::kObjectType);
+        // Save properties
+        actor->saveProperties(alloc, props);
+        // Add the properties to the JSON object
+        obj.AddMember("properties", props, alloc);
+
+        // Save components
+        rapidjson::Value components(rapidjson::kObjectType);
+        saveComponents(alloc, actor, components);
+        obj.AddMember("components", components, alloc);
+
+        // Add actor to inArray
+        inArray.PushBack(obj, alloc);
+    }
 }
 
 bool JsonHelper::getInt(const rapidjson::Value& inObject, const char* inProperty, int& outInt) {
