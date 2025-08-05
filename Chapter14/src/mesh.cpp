@@ -33,6 +33,8 @@ bool Mesh::load(const std::string& fileName, Renderer* renderer) {
         return false;
     }
 
+    this->fileName = fileName;
+
     std::stringstream fileStream;
     fileStream << file.rdbuf();
     std::string contents = fileStream.str();
@@ -193,6 +195,10 @@ Texture* Mesh::getTexture(size_t index) {
 
 const std::string& Mesh::getShaderName() const {
     return shaderName;
+}
+
+const std::string& Mesh::getFileName() const {
+    return fileName;
 }
 
 float Mesh::getRadius() const {

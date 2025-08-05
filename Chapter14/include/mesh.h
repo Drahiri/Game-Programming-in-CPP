@@ -27,6 +27,8 @@ public:
 
     // Get name of shader
     const std::string& getShaderName() const;
+    // Get file name
+    const std::string& getFileName() const;
 
     // Get object space bounding sphere radius
     float getRadius() const;
@@ -45,6 +47,9 @@ private:
 
     // Name of shader specified by mesh
     std::string shaderName;
+
+    // Mesh file name
+    std::string fileName;
 
     // Stores object space bounding sphere radius
     float radius;
