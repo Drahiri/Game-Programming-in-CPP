@@ -131,25 +131,27 @@ void LevelLoader::loadActors(Game* game, const rapidjson::Value& inArray) {
     // Loop throughg array of actors
     for(rapidjson::SizeType i = 0; i < inArray.Size(); i++) {
         const rapidjson::Value& actorObj = inArray[i];
-        if(actorObj.IsObject()) {
-            // Get the type
-            std::string type;
-            if(JsonHelper::getString(actorObj, "type", type)) {
-                // Is this type in the map?
-                auto iter = actorFactoryMap.find(type);
-                if(iter != actorFactoryMap.end()) {
-                    // Construct with function stored in map
-                    Actor* actor = iter->second(game, actorObj["properties"]);
-                    // Get the actor's components
-                    if(actorObj.HasMember("components")) {
-                        const rapidjson::Value& components = actorObj["components"];
-                        if(components.IsArray()) {
-                            loadComponents(actor, components);
-                        }
-                    }
-                } else {
-                    SDL_Log("Unknown actor type %s", type.c_str());
-                }
+        if(!actorObj.IsObject()) {
+            continue;
+        }
+        // Get the type
+        std::string type;
+        if(!JsonHelper::getString(actorObj, "type", type)) {
+            continue;
+        }
+        // Is this type in the map?
+        auto iter = actorFactoryMap.find(type);
+        if(iter == actorFactoryMap.end()) {
+            SDL_Log("Unknown actor type %s", type.c_str());
+            continue;
+        }
+        // Construct with function stored in map
+        Actor* actor = iter->second(game, actorObj["properties"]);
+        // Get the actor's components
+        if(actorObj.HasMember("components")) {
+            const rapidjson::Value& components = actorObj["components"];
+            if(components.IsArray()) {
+                loadComponents(actor, components);
             }
         }
     }
