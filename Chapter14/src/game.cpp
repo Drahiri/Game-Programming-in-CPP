@@ -329,13 +329,22 @@ void Game::handleKeyPress(int key) {
         break;
     }
 
-    case '1':
+    case '1': {
         loadText("assets/English.gptext");
         break;
+    }
 
-    case '2':
+    case '2': {
         loadText("assets/Russian.gptext");
         break;
+    }
+
+    case 'r': {
+        // Save level
+        LevelLoader::saveLevel(this, "assets/Saved.gplevel");
+        break;
+    }
+
     case SDL_BUTTON_LEFT: {
         break;
     }
