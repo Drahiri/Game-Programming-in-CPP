@@ -18,6 +18,18 @@ public:
         Dead
     };
 
+    enum class TypeID {
+        Actor = 0,
+        BallActor,
+        FollowActor,
+        PlaneActor,
+        TargetActor,
+
+        NUM_ACTOR_TYPES
+    };
+
+    static const char* typeNames[static_cast<int>(TypeID::NUM_ACTOR_TYPES)];
+
     // Constructor/destructor
     Actor(Game* game);
     virtual ~Actor();
@@ -77,6 +89,7 @@ public:
 
     // Get component by type
     Component* getComponentOfType(Component::TypeID type);
+    virtual TypeID getType() const;
 
 private:
     // Actor's state

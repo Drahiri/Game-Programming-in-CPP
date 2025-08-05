@@ -17,3 +17,7 @@ TargetActor::TargetActor(Game* game) : Actor(game) {
     bc->setObjectBox(mesh->getBox());
     TargetComponent* tc = new TargetComponent(this);
 }
+
+Actor::TypeID TargetActor::getType() const {
+    return TypeID::TargetActor;
+}

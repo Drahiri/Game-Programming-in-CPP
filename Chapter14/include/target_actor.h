@@ -8,6 +8,7 @@ class Game;
 class TargetActor : public Actor {
 public:
     TargetActor(Game* game);
+    TypeID getType() const override;
 };
 
 #endif

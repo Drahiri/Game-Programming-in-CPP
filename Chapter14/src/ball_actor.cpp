@@ -38,3 +38,7 @@ void BallActor::loadProperties(const rapidjson::Value& inObj) {
     Actor::loadProperties(inObj);
     JsonHelper::getFloat(inObj, "lifespan", lifeSpan);
 }
+
+Actor::TypeID BallActor::getType() const {
+    return TypeID::BallActor;
+}

@@ -17,6 +17,7 @@ public:
     void hitTarget();
 
     void loadProperties(const rapidjson::Value& inObj) override;
+    TypeID getType() const override;
 
 private:
     AudioComponent* audioComp;

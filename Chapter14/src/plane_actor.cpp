@@ -25,3 +25,7 @@ PlaneActor::~PlaneActor() {
 BoxComponent* PlaneActor::getBox() {
     return box;
 }
+
+Actor::TypeID PlaneActor::getType() const {
+    return TypeID::PlaneActor;
+}

@@ -6,6 +6,10 @@
 
 #include <algorithm>
 
+const char* Actor::typeNames[static_cast<int>(Actor::TypeID::NUM_ACTOR_TYPES)]{
+    "Actor", "BallActor", "FollowActor", "PlaneActor", "TargetActor"
+};
+
 Actor::Actor(Game* game) :
     state(State::Active),
     position(Vector3::Zero),
@@ -195,4 +199,8 @@ Component* Actor::getComponentOfType(Component::TypeID type) {
     }
 
     return comp;
+}
+
+Actor::TypeID Actor::getType() const {
+    return TypeID::Actor;
 }

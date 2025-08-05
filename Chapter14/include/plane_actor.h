@@ -12,6 +12,8 @@ public:
     ~PlaneActor();
     BoxComponent* getBox();
 
+    TypeID getType() const override;
+
 private:
     BoxComponent* box;
 };
