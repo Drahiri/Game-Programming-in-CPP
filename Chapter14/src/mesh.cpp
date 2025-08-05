@@ -1,6 +1,7 @@
 #include "mesh.h"
 
 #include "game.h"
+#include "level_loader.h"
 #include "math.h"
 #include "renderer.h"
 #include "texture.h"
@@ -51,18 +52,11 @@ bool Mesh::load(const std::string& fileName, Renderer* renderer) {
         return true;
     }
 
-    std::ifstream file(fileName);
-    if(!file.is_open()) {
-        SDL_Log("File not found: Mesh %s", fileName.c_str());
+    rapidjson::Document doc;
+    if(!LevelLoader::loadJSON(fileName, doc)) {
+        SDL_Log("Failed to load mesh %s", fileName.c_str());
         return false;
     }
-
-    std::stringstream fileStream;
-    fileStream << file.rdbuf();
-    std::string contents = fileStream.str();
-    rapidjson::StringStream jsonStr(contents.c_str());
-    rapidjson::Document doc;
-    doc.ParseStream(jsonStr);
 
     if(!doc.IsObject()) {
         SDL_Log("Mesh %s is not valid json", fileName.c_str());

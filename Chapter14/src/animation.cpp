@@ -1,5 +1,6 @@
 #include "animation.h"
 
+#include "level_loader.h"
 #include "skeleton.h"
 
 #include <fstream>
@@ -8,20 +9,11 @@
 #include <sstream>
 
 bool Animation::load(const std::string& fileName) {
-    std::ifstream file(fileName);
-    if(!file.is_open()) {
+    rapidjson::Document doc;
+    if(!LevelLoader::loadJSON(fileName, doc)) {
         SDL_Log("Failed to found: Animation %s", fileName.c_str());
         return false;
     }
-
-    this->fileName = fileName;
-
-    std::stringstream fileStream;
-    fileStream << file.rdbuf();
-    std::string contents = fileStream.str();
-    rapidjson::StringStream jsonStr(contents.c_str());
-    rapidjson::Document doc;
-    doc.ParseStream(jsonStr);
 
     if(!doc.IsObject()) {
         SDL_Log("Animation %s is not valid json", fileName.c_str());

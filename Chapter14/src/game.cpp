@@ -225,20 +225,12 @@ void Game::loadText(const std::string& fileName) {
     // Clear the existing map if already loaded
     textMap.clear();
     // Try to open the file
-    std::ifstream file(fileName);
-    if(!file.is_open()) {
+    rapidjson::Document doc;
+    if(!LevelLoader::loadJSON(fileName, doc)) {
         SDL_Log("Text file %s not found", fileName.c_str());
         return;
     }
 
-    // Read the entire file to a string stream
-    std::stringstream fileStream;
-    fileStream << file.rdbuf();
-    std::string content = fileStream.str();
-    // Open this file in rapidJSON
-    rapidjson::StringStream jsonStr(content.c_str());
-    rapidjson::Document doc;
-    doc.ParseStream(jsonStr);
     if(!doc.IsObject()) {
         SDL_Log("Text file %s is not valid JSON", fileName.c_str());
         return;

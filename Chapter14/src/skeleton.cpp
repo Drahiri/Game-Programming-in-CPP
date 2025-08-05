@@ -1,5 +1,6 @@
 #include "skeleton.h"
 
+#include "level_loader.h"
 #include "matrix_palette.h"
 
 #include <fstream>
@@ -8,20 +9,12 @@
 #include <sstream>
 
 bool Skeleton::load(const std::string& fileName) {
-    std::ifstream file(fileName);
-    if(!file.is_open()) {
+    this->fileName = fileName;
+    rapidjson::Document doc;
+    if(!LevelLoader::loadJSON(fileName, doc)) {
         SDL_Log("File not found: Skeleton %s", fileName.c_str());
         return false;
     }
-
-    this->fileName = fileName;
-
-    std::stringstream fileStream;
-    fileStream << file.rdbuf();
-    std::string contents = fileStream.str();
-    rapidjson::StringStream jsonStr(contents.c_str());
-    rapidjson::Document doc;
-    doc.ParseStream(jsonStr);
 
     if(!doc.IsObject()) {
         SDL_Log("Skeleton %s is not valid json", fileName.c_str());
