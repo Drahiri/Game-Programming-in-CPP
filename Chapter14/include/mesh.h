@@ -2,12 +2,13 @@
 #define MESH_H
 
 #include "collision.h"
+#include "vertex_array.h"
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
 class Texture;
-class VertexArray;
 class Renderer;
 
 class Mesh {
@@ -37,6 +38,16 @@ public:
     float getSpecPower() const;
 
     const AABB& getBox() const;
+
+    void saveBinary(const std::string& fileName,
+          const void* verts,
+          uint32_t numVerts,
+          VertexArray::Layout layout,
+          const uint32_t* indices,
+          uint32_t numIndices,
+          const std::vector<std::string>& textureNames,
+          const AABB& box,
+          float radius);
 
 private:
     // Textures associated with this mesh

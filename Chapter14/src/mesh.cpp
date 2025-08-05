@@ -89,9 +89,12 @@ bool Mesh::load(const std::string& fileName, Renderer* renderer) {
         return false;
     }
 
+    std::vector<std::string> textureNames;
+
     for(rapidjson::SizeType i = 0; i < texJson.Size(); i++) {
         // Is this texture already loaded?
         std::string texName = texJson[i].GetString();
+        textureNames.emplace_back(texName);
         Texture* t = renderer->getTexture(texName);
         if(t == nullptr) {
             // Try loading the texture
@@ -181,15 +184,27 @@ bool Mesh::load(const std::string& fileName, Renderer* renderer) {
     }
 
     // Now create a vertex array
+    unsigned int numVerts = static_cast<unsigned>(vertices.size()) / vertSize;
     vertexArray = new VertexArray(vertexLayout,
           vertices.data(),
-          static_cast<unsigned>(vertices.size()) / vertSize,
+          numVerts,
           indices.data(),
           static_cast<unsigned>(indices.size()));
 
     // Reading spec power
     const rapidjson::Value& specJSON = doc["specularPower"];
     specPower = static_cast<float>(specJSON.GetDouble());
+
+    // Save the binary mesh
+    saveBinary(fileName + ".bin",
+          vertices.data(),
+          numVerts,
+          vertexLayout,
+          indices.data(),
+          static_cast<unsigned>(indices.size()),
+          textureNames,
+          box,
+          radius);
 
     return true;
 }
@@ -229,4 +244,45 @@ float Mesh::getSpecPower() const {
 
 const AABB& Mesh::getBox() const {
     return box;
+}
+
+void Mesh::saveBinary(const std::string& fileName,
+      const void* verts,
+      uint32_t numVerts,
+      VertexArray::Layout layout,
+      const uint32_t* indices,
+      uint32_t numIndices,
+      const std::vector<std::string>& textureNames,
+      const AABB& box,
+      float radius) {
+    // Create header struct
+    MeshBinHeader header;
+    header.layout = layout;
+    header.numTextures = static_cast<unsigned>(textureNames.size());
+    header.numVerts = numVerts;
+    header.numIndices = numIndices;
+    header.box = box;
+    header.radius = radius;
+
+    // Open binary file for writing
+    std::ofstream outFile(fileName, std::ios::out | std::ios::binary);
+    if(outFile.is_open()) {
+        // Write the header
+        outFile.write(reinterpret_cast<char*>(&header), sizeof(header));
+        // For each texture, we need to write the size of the name
+        // followed by the string, followed by null terminator
+        for(const auto& tex: textureNames) {
+            uint16_t nameSize = static_cast<uint16_t>(tex.length()) + 1;
+            outFile.write(reinterpret_cast<char*>(&nameSize), sizeof(nameSize));
+            outFile.write(tex.c_str(), nameSize - 1);
+            outFile.write("\0", 1);
+        }
+
+        // Figure out number of bytes for each vertex, based on layout
+        unsigned vertexSize = VertexArray::getVertexSize(layout);
+        // Write vertices
+        outFile.write(reinterpret_cast<const char*>(verts), numVerts * vertexSize);
+        // Write indices
+        outFile.write(reinterpret_cast<const char*>(indices), numIndices * sizeof(uint32_t));
+    }
 }
