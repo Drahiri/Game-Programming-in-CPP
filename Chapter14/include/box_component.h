@@ -21,6 +21,8 @@ public:
     Component::TypeID getType() const override;
 
     void loadProperties(const rapidjson::Value& inObject) override;
+    void saveProperties(
+          rapidjson::Document::AllocatorType& alloc, rapidjson::Value& inObject) const override;
 
 private:
     AABB objectBox;

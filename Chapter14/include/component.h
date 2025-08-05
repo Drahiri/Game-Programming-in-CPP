@@ -45,6 +45,8 @@ public:
     virtual TypeID getType() const = 0;
 
     virtual void loadProperties(const rapidjson::Value& inObject);
+    virtual void saveProperties(
+          rapidjson::Document::AllocatorType& alloc, rapidjson::Value& inObject) const;
 
     template<typename T>
     static Component* create(Actor* owner, const rapidjson::Value& inObject) {

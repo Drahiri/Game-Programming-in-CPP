@@ -88,3 +88,15 @@ void FollowCamera::loadProperties(const rapidjson::Value& inObject) {
     JsonHelper::getFloat(inObject, "targetDist", targetDist);
     JsonHelper::getFloat(inObject, "springConstant", springConstant);
 }
+
+void FollowCamera::saveProperties(
+      rapidjson::Document::AllocatorType& alloc, rapidjson::Value& inObject) const {
+    CameraComponent::saveProperties(alloc, inObject);
+
+    JsonHelper::addVector3(alloc, inObject, "actualPos", actualPos);
+    JsonHelper::addVector3(alloc, inObject, "velocity", velocity);
+    JsonHelper::addFloat(alloc, inObject, "horzDist", horzDist);
+    JsonHelper::addFloat(alloc, inObject, "vertDist", vertDist);
+    JsonHelper::addFloat(alloc, inObject, "targetDist", targetDist);
+    JsonHelper::addFloat(alloc, inObject, "springConstant", springConstant);
+}

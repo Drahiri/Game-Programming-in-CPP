@@ -85,3 +85,15 @@ void MeshComponent::loadProperties(const rapidjson::Value& inObject) {
     JsonHelper::getBool(inObject, "visible", isVisible);
     JsonHelper::getBool(inObject, "isSkeletal", isSkeletal);
 }
+
+void MeshComponent::saveProperties(
+      rapidjson::Document::AllocatorType& alloc, rapidjson::Value& inObject) const {
+    Component::saveProperties(alloc, inObject);
+
+    if(mesh) {
+        JsonHelper::addString(alloc, inObject, "meshFile", mesh->getFileName());
+    }
+    JsonHelper::addInt(alloc, inObject, "textureIndex", static_cast<int>(textureIndex));
+    JsonHelper::addBool(alloc, inObject, "visible", isVisible);
+    JsonHelper::addBool(alloc, inObject, "isSkeletal", isSkeletal);
+}

@@ -67,3 +67,12 @@ void MirrorCamera::loadProperties(const rapidjson::Value& inObject) {
     JsonHelper::getFloat(inObject, "vertDist", vertDist);
     JsonHelper::getFloat(inObject, "targetDist", targetDist);
 }
+
+void MirrorCamera::saveProperties(
+      rapidjson::Document::AllocatorType& alloc, rapidjson::Value& inObject) const {
+    CameraComponent::saveProperties(alloc, inObject);
+
+    JsonHelper::addFloat(alloc, inObject, "horzDist", horzDist);
+    JsonHelper::addFloat(alloc, inObject, "vertDist", vertDist);
+    JsonHelper::addFloat(alloc, inObject, "targetDist", targetDist);
+}

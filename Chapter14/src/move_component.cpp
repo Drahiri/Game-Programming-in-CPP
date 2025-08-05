@@ -70,3 +70,12 @@ void MoveComponent::loadProperties(const rapidjson::Value& inObject) {
     JsonHelper::getFloat(inObject, "forwardSpeed", forwardSpeed);
     JsonHelper::getFloat(inObject, "strafeSpeed", strafeSpeed);
 }
+
+void MoveComponent::saveProperties(
+      rapidjson::Document::AllocatorType& alloc, rapidjson::Value& inObject) const {
+    Component::saveProperties(alloc, inObject);
+
+    JsonHelper::addFloat(alloc, inObject, "angularSpeed", angularSpeed);
+    JsonHelper::addFloat(alloc, inObject, "forwardSpeed", forwardSpeed);
+    JsonHelper::addFloat(alloc, inObject, "strafeSpeed", strafeSpeed);
+}

@@ -19,6 +19,8 @@ public:
     Component::TypeID getType() const;
 
     void loadProperties(const rapidjson::Value& inObject) override;
+    void saveProperties(
+          rapidjson::Document::AllocatorType& alloc, rapidjson::Value& inObject) const override;
 
     // Diffuse color
     Vector3 diffuseColor;

@@ -83,3 +83,18 @@ void SkeletalMeshComponent::loadProperties(const rapidjson::Value& inObject) {
     JsonHelper::getFloat(inObject, "animPlayRate", animPlayRate);
     JsonHelper::getFloat(inObject, "animTime", animTime);
 }
+
+void SkeletalMeshComponent::saveProperties(
+      rapidjson::Document::AllocatorType& alloc, rapidjson::Value& inObject) const {
+    MeshComponent::saveProperties(alloc, inObject);
+
+    if(skeleton) {
+        JsonHelper::addString(alloc, inObject, "skelFile", skeleton->getFileName());
+    }
+    if(animation) {
+        JsonHelper::addString(alloc, inObject, "animFile", animation->getFileName());
+    }
+
+    JsonHelper::addFloat(alloc, inObject, "animPlayRate", animPlayRate);
+    JsonHelper::addFloat(alloc, inObject, "animTime", animTime);
+}

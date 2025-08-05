@@ -44,3 +44,8 @@ Actor* Component::getOwner() {
 void Component::loadProperties(const rapidjson::Value& inObject) {
     JsonHelper::getInt(inObject, "updateOrder", updateOrder);
 }
+
+void Component::saveProperties(
+      rapidjson::Document::AllocatorType& alloc, rapidjson::Value& inObject) const {
+    JsonHelper::addInt(alloc, inObject, "drawOrder", updateOrder);
+}

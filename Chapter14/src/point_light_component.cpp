@@ -44,3 +44,12 @@ void PointLightComponent::loadProperties(const rapidjson::Value& inObject) {
     JsonHelper::getFloat(inObject, "innerRadius", innerRadius);
     JsonHelper::getFloat(inObject, "outerRadius", outerRadius);
 }
+
+void PointLightComponent::saveProperties(
+      rapidjson::Document::AllocatorType& alloc, rapidjson::Value& inObject) const {
+    Component::saveProperties(alloc, inObject);
+
+    JsonHelper::addVector3(alloc, inObject, "color", diffuseColor);
+    JsonHelper::addFloat(alloc, inObject, "innerRadius", innerRadius);
+    JsonHelper::addFloat(alloc, inObject, "outerRadius", outerRadius);
+}

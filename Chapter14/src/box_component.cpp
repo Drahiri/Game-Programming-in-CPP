@@ -57,3 +57,14 @@ void BoxComponent::loadProperties(const rapidjson::Value& inObj) {
     JsonHelper::getVector3(inObj, "worldMax", worldBox.max);
     JsonHelper::getBool(inObj, "shouldRotate", shouldRotate);
 }
+
+void BoxComponent::saveProperties(
+      rapidjson::Document::AllocatorType& alloc, rapidjson::Value& inObject) const {
+    Component::saveProperties(alloc, inObject);
+
+    JsonHelper::addVector3(alloc, inObject, "objectMin", objectBox.min);
+    JsonHelper::addVector3(alloc, inObject, "objectMax", objectBox.max);
+    JsonHelper::addVector3(alloc, inObject, "worldMin", worldBox.min);
+    JsonHelper::addVector3(alloc, inObject, "worldMax", worldBox.max);
+    JsonHelper::addBool(alloc, inObject, "shouldRotate", shouldRotate);
+}

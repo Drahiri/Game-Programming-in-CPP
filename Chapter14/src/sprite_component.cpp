@@ -85,3 +85,15 @@ void SpriteComponent::loadProperties(const rapidjson::Value& inObject) {
     JsonHelper::getInt(inObject, "drawOrder", drawOrder);
     JsonHelper::getBool(inObject, "visible", isVisible);
 }
+
+void SpriteComponent::saveProperties(
+      rapidjson::Document::AllocatorType& alloc, rapidjson::Value& inObject) const {
+    Component::saveProperties(alloc, inObject);
+
+    if(texture) {
+        JsonHelper::addString(alloc, inObject, "textureFile", texture->getFileName());
+    }
+
+    JsonHelper::addInt(alloc, inObject, "drawOrder", drawOrder);
+    JsonHelper::addBool(alloc, inObject, "visible", isVisible);
+}
