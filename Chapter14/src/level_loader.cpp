@@ -264,6 +264,27 @@ void LevelLoader::saveActors(
     }
 }
 
+void LevelLoader::saveComponents(
+      rapidjson::Document::AllocatorType& alloc, const Actor* actor, rapidjson::Value& inArray) {
+    const auto& components = actor->getComponents();
+    for(const Component* comp: components) {
+        // Make a JSON object
+        rapidjson::Value obj(rapidjson::kObjectType);
+        // Add type
+        JsonHelper::addString(
+              alloc, obj, "type", Component::typeNames[static_cast<int>(comp->getType())]);
+
+        // Make an object for properties
+        rapidjson::Value props(rapidjson::kObjectType);
+        // Save rest of properties
+        comp->saveProperties(alloc, props);
+        obj.AddMember("properties", props, alloc);
+
+        // Add component to array
+        inArray.PushBack(obj, alloc);
+    }
+}
+
 bool JsonHelper::getInt(const rapidjson::Value& inObject, const char* inProperty, int& outInt) {
     // Check if this property exists
     auto itr = inObject.FindMember(inProperty);
