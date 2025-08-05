@@ -38,6 +38,7 @@ public:
 
     void addActor(Actor* actor);
     void removeActor(Actor* actor);
+    const std::vector<Actor*>& getActors() const;
 
     Renderer* getRenderer();
     AudioSystem* getAudioSystem();

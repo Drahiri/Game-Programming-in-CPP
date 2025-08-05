@@ -117,6 +117,10 @@ void Game::removeActor(Actor* actor) {
     }
 }
 
+const std::vector<Actor*>& Game::getActors() const {
+    return actors;
+}
+
 FollowActor* Game::getPlayer() const {
     return followActor;
 }
