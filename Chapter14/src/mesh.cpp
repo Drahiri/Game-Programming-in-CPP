@@ -16,6 +16,24 @@ union Vertex {
     float f;
     uint8_t b[4];
 };
+
+const uint32_t binaryVersion = 1;
+
+struct MeshBinHeader {
+    // Signature for file type
+    char signature[4] = { 'G', 'M', 'S', 'H' };
+    // Version
+    uint32_t version = binaryVersion;
+    // Vertex layout type
+    VertexArray::Layout layout = VertexArray::Layout::PosNormTex;
+    // Info about how many of each you have;
+    uint32_t numTextures = 0;
+    uint32_t numVerts = 0;
+    uint32_t numIndices = 0;
+    // Box/radius of mesh, used for collision
+    AABB box{ Vector3::Zero, Vector3::Zero };
+    float radius = 0.0f;
+};
 } // namespace
 
 Mesh::Mesh() :
