@@ -26,6 +26,8 @@ bool Texture::load(const std::string& fileName) {
         return false;
     }
 
+    this->fileName = fileName;
+
     int format = GL_RGB;
     if(channels == 4) {
         format = GL_RGBA;
@@ -132,4 +134,8 @@ void Texture::createForRendering(int width, int height, unsigned int format) {
 
 unsigned int Texture::getTextureID() const {
     return textureID;
+}
+
+const std::string& Texture::getFileName() const {
+    return fileName;
 }
