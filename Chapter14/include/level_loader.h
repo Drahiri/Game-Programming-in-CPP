@@ -19,8 +19,10 @@ class LevelLoader {
 public:
     // Load the level - returns true if successful
     static bool loadLevel(Game* game, const std::string& fileName);
-
     static bool loadJSON(const std::string& fileName, rapidjson::Document& outDoc);
+
+    // Saving the level
+    static void saveLevel(Game* game, const std::string& fileName);
 
 protected:
     // Helper to load global properties

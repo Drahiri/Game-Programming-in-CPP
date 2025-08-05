@@ -22,6 +22,8 @@
 #include "target_component.h"
 
 #include <fstream>
+#include <rapidjson/prettywriter.h>
+#include <rapidjson/stringbuffer.h>
 #include <SDL3/SDL_log.h>
 #include <vector>
 
@@ -108,6 +110,30 @@ bool LevelLoader::loadJSON(const std::string& fileName, rapidjson::Document& out
     }
 
     return true;
+}
+
+void LevelLoader::saveLevel(Game* game, const std::string& fileName) {
+    // Create the document and root object
+    rapidjson::Document doc;
+    doc.SetObject();
+
+    // Write the version
+    JsonHelper::addInt(doc.GetAllocator(), doc, "version", 1);
+
+    // TODO: Create the rest of the file
+
+    // Save JSON to string buffer
+    rapidjson::StringBuffer buffer;
+    // Use PrettyWriter for pretty output (otherwise use Writer)
+    rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
+    doc.Accept(writer);
+    const char* output = buffer.GetString();
+
+    // Write output to file
+    std::ofstream outFile(fileName);
+    if(outFile.is_open()) {
+        outFile << output;
+    }
 }
 
 void LevelLoader::loadGloabalProperties(Game* game, const rapidjson::Value& inObject) {
