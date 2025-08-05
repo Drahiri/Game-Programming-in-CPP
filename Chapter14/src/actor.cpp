@@ -188,6 +188,21 @@ void Actor::loadProperties(const rapidjson::Value& inObj) {
     computeWorldTransform();
 }
 
+void Actor::saveProperties(
+      rapidjson::Document::AllocatorType& alloc, rapidjson::Value& inObj) const {
+    std::string stateStr = "active";
+    if(state == State::Paused) {
+        stateStr = "paused";
+    } else if(state == State::Dead) {
+        stateStr = "dead";
+    }
+
+    JsonHelper::addString(alloc, inObj, "state", stateStr);
+    JsonHelper::addVector3(alloc, inObj, "position", position);
+    JsonHelper::addQuaternion(alloc, inObj, "rotation", rotation);
+    JsonHelper::addFloat(alloc, inObj, "scale", scale);
+}
+
 Component* Actor::getComponentOfType(Component::TypeID type) {
     Component* comp = nullptr;
 

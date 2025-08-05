@@ -39,6 +39,12 @@ void BallActor::loadProperties(const rapidjson::Value& inObj) {
     JsonHelper::getFloat(inObj, "lifespan", lifeSpan);
 }
 
+void BallActor::saveProperties(
+      rapidjson::Document::AllocatorType& alloc, rapidjson::Value& inObj) const {
+    Actor::saveProperties(alloc, inObj);
+    JsonHelper::addFloat(alloc, inObj, "lifespan", lifeSpan);
+}
+
 Actor::TypeID BallActor::getType() const {
     return TypeID::BallActor;
 }

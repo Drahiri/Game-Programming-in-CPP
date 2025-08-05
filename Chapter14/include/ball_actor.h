@@ -18,6 +18,8 @@ public:
 
     void loadProperties(const rapidjson::Value& inObj) override;
     TypeID getType() const override;
+    void saveProperties(
+          rapidjson::Document::AllocatorType& alloc, rapidjson::Value& inObj) const override;
 
 private:
     AudioComponent* audioComp;

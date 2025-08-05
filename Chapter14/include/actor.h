@@ -77,6 +77,8 @@ public:
 
     // Load
     virtual void loadProperties(const rapidjson::Value& inObject);
+    virtual void saveProperties(
+          rapidjson::Document::AllocatorType& alloc, rapidjson::Value& inObj) const;
 
     template<typename T>
     static Actor* create(Game* game, const rapidjson::Value& inObject) {

@@ -17,6 +17,8 @@ public:
     void setVisible(bool visible);
 
     void loadProperties(const rapidjson::Value& inObj) override;
+    void saveProperties(
+          rapidjson::Document::AllocatorType& alloc, rapidjson::Value& inObj) const override;
 
     TypeID getType() const override;
 

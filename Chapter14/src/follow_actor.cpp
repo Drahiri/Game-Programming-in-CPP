@@ -63,6 +63,12 @@ void FollowActor::loadProperties(const rapidjson::Value& inObj) {
     JsonHelper::getBool(inObj, "moving", moving);
 }
 
+void FollowActor::saveProperties(
+      rapidjson::Document::AllocatorType& alloc, rapidjson::Value& inObj) const {
+    Actor::saveProperties(alloc, inObj);
+    JsonHelper::addBool(alloc, inObj, "moving", moving);
+}
+
 Actor::TypeID FollowActor::getType() const {
     return TypeID::FollowActor;
 }
