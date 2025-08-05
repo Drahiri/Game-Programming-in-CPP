@@ -25,7 +25,7 @@ public:
     static void saveLevel(Game* game, const std::string& fileName);
 
 protected:
-    // Helper to load global properties
+    // Helper to load
     static void loadGloabalProperties(Game* game, const rapidjson::Value& inObject);
     static void loadActors(Game* game, const rapidjson::Value& inObject);
     static void loadComponents(Actor* actor, const rapidjson::Value& inArray);
@@ -58,23 +58,23 @@ public:
           rapidjson::Value& inObject,
           const char* name,
           int value);
-    static void setFloat(rapidjson::Document::AllocatorType& alloc,
+    static void addFloat(rapidjson::Document::AllocatorType& alloc,
           rapidjson::Value& inObject,
           const char* name,
           float value);
-    static void setBool(rapidjson::Document::AllocatorType& alloc,
+    static void addBool(rapidjson::Document::AllocatorType& alloc,
           rapidjson::Value& inObject,
           const char* name,
           bool value);
-    static void setString(rapidjson::Document::AllocatorType& alloc,
+    static void addString(rapidjson::Document::AllocatorType& alloc,
           rapidjson::Value& inObject,
           const char* name,
           const std::string& value);
-    static void setVector3(rapidjson::Document::AllocatorType& alloc,
+    static void addVector3(rapidjson::Document::AllocatorType& alloc,
           rapidjson::Value& inObject,
           const char* name,
           const Vector3& value);
-    static void setQuaternion(rapidjson::Document::AllocatorType& alloc,
+    static void addQuaternion(rapidjson::Document::AllocatorType& alloc,
           rapidjson::Value& inObject,
           const char* name,
           const Quaternion& value);

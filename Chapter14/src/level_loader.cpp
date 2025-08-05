@@ -344,7 +344,7 @@ void JsonHelper::addInt(rapidjson::Document::AllocatorType& alloc,
     inObject.AddMember(rapidjson::StringRef(name), v, alloc);
 }
 
-void JsonHelper::setFloat(rapidjson::Document::AllocatorType& alloc,
+void JsonHelper::addFloat(rapidjson::Document::AllocatorType& alloc,
       rapidjson::Value& inObject,
       const char* name,
       float value) {
@@ -352,7 +352,7 @@ void JsonHelper::setFloat(rapidjson::Document::AllocatorType& alloc,
     inObject.AddMember(rapidjson::StringRef(name), v, alloc);
 }
 
-void JsonHelper::setBool(rapidjson::Document::AllocatorType& alloc,
+void JsonHelper::addBool(rapidjson::Document::AllocatorType& alloc,
       rapidjson::Value& inObject,
       const char* name,
       bool value) {
@@ -360,7 +360,7 @@ void JsonHelper::setBool(rapidjson::Document::AllocatorType& alloc,
     inObject.AddMember(rapidjson::StringRef(name), v, alloc);
 }
 
-void JsonHelper::setString(rapidjson::Document::AllocatorType& alloc,
+void JsonHelper::addString(rapidjson::Document::AllocatorType& alloc,
       rapidjson::Value& inObject,
       const char* name,
       const std::string& value) {
@@ -369,7 +369,7 @@ void JsonHelper::setString(rapidjson::Document::AllocatorType& alloc,
     inObject.AddMember(rapidjson::StringRef(name), v, alloc);
 }
 
-void JsonHelper::setVector3(rapidjson::Document::AllocatorType& alloc,
+void JsonHelper::addVector3(rapidjson::Document::AllocatorType& alloc,
       rapidjson::Value& inObject,
       const char* name,
       const Vector3& value) {
@@ -384,7 +384,7 @@ void JsonHelper::setVector3(rapidjson::Document::AllocatorType& alloc,
     inObject.AddMember(rapidjson::StringRef(name), v, alloc);
 }
 
-void JsonHelper::setQuaternion(rapidjson::Document::AllocatorType& alloc,
+void JsonHelper::addQuaternion(rapidjson::Document::AllocatorType& alloc,
       rapidjson::Value& inObject,
       const char* name,
       const Quaternion& value) {
