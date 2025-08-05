@@ -309,3 +309,67 @@ bool JsonHelper::getQuaternion(
 
     return true;
 }
+
+void JsonHelper::addInt(rapidjson::Document::AllocatorType& alloc,
+      rapidjson::Value& inObject,
+      const char* name,
+      int value) {
+    rapidjson::Value v(value);
+    inObject.AddMember(rapidjson::StringRef(name), v, alloc);
+}
+
+void JsonHelper::setFloat(rapidjson::Document::AllocatorType& alloc,
+      rapidjson::Value& inObject,
+      const char* name,
+      float value) {
+    rapidjson::Value v(value);
+    inObject.AddMember(rapidjson::StringRef(name), v, alloc);
+}
+
+void JsonHelper::setBool(rapidjson::Document::AllocatorType& alloc,
+      rapidjson::Value& inObject,
+      const char* name,
+      bool value) {
+    rapidjson::Value v(value);
+    inObject.AddMember(rapidjson::StringRef(name), v, alloc);
+}
+
+void JsonHelper::setString(rapidjson::Document::AllocatorType& alloc,
+      rapidjson::Value& inObject,
+      const char* name,
+      const std::string& value) {
+    rapidjson::Value v;
+    v.SetString(value.c_str(), static_cast<rapidjson::SizeType>(value.length()), alloc);
+    inObject.AddMember(rapidjson::StringRef(name), v, alloc);
+}
+
+void JsonHelper::setVector3(rapidjson::Document::AllocatorType& alloc,
+      rapidjson::Value& inObject,
+      const char* name,
+      const Vector3& value) {
+    // Create an array
+    rapidjson::Value v(rapidjson::kArrayType);
+    // Push back elements
+    v.PushBack(rapidjson::Value(value.x).Move(), alloc);
+    v.PushBack(rapidjson::Value(value.y).Move(), alloc);
+    v.PushBack(rapidjson::Value(value.z).Move(), alloc);
+
+    // Add array to inObject
+    inObject.AddMember(rapidjson::StringRef(name), v, alloc);
+}
+
+void JsonHelper::setQuaternion(rapidjson::Document::AllocatorType& alloc,
+      rapidjson::Value& inObject,
+      const char* name,
+      const Quaternion& value) {
+    // Create an array
+    rapidjson::Value v(rapidjson::kArrayType);
+    // Push back elements
+    v.PushBack(rapidjson::Value(value.x).Move(), alloc);
+    v.PushBack(rapidjson::Value(value.y).Move(), alloc);
+    v.PushBack(rapidjson::Value(value.z).Move(), alloc);
+    v.PushBack(rapidjson::Value(value.w).Move(), alloc);
+
+    // Add array to inObject
+    inObject.AddMember(rapidjson::StringRef(name), v, alloc);
+}
