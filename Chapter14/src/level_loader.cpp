@@ -121,6 +121,10 @@ void LevelLoader::saveLevel(Game* game, const std::string& fileName) {
     JsonHelper::addInt(doc.GetAllocator(), doc, "version", 1);
 
     // TODO: Create the rest of the file
+    // Saving global light properties
+    rapidjson::Value globals(rapidjson::kObjectType);
+    saveGlobalProperties(doc.GetAllocator(), game, globals);
+    doc.AddMember("globalProperties", globals, doc.GetAllocator());
 
     // Save JSON to string buffer
     rapidjson::StringBuffer buffer;
@@ -214,6 +218,19 @@ void LevelLoader::loadComponents(Actor* actor, const rapidjson::Value& inArray) 
             comp->loadProperties(compObj["properties"]);
         }
     }
+}
+
+void LevelLoader::saveGlobalProperties(
+      rapidjson::Document::AllocatorType& alloc, Game* game, rapidjson::Value& inObject) {
+    // Ambient light
+    JsonHelper::addVector3(alloc, inObject, "ambientLight", game->getRenderer()->getAmbientLight());
+
+    // Directional light
+    DirectionalLight& dirLight = game->getRenderer()->getDirectionalLight();
+    rapidjson::Value dirObj(rapidjson::kObjectType);
+    JsonHelper::addVector3(alloc, dirObj, "direction", dirLight.direction);
+    JsonHelper::addVector3(alloc, dirObj, "color", dirLight.diffuseColor);
+    inObject.AddMember("directionalLight", inObject, alloc);
 }
 
 bool JsonHelper::getInt(const rapidjson::Value& inObject, const char* inProperty, int& outInt) {

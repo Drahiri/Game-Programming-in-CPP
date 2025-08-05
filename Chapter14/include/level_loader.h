@@ -29,6 +29,10 @@ protected:
     static void loadGloabalProperties(Game* game, const rapidjson::Value& inObject);
     static void loadActors(Game* game, const rapidjson::Value& inObject);
     static void loadComponents(Actor* actor, const rapidjson::Value& inArray);
+    // Helpers to save
+    static void saveGlobalProperties(
+          rapidjson::Document::AllocatorType& alloc, Game* game, rapidjson::Value& inObject);
+
     // Maps for data
     static std::unordered_map<std::string, ActorFunc> actorFactoryMap;
     static std::unordered_map<std::string, std::pair<Component::TypeID, ComponentFunc>>
