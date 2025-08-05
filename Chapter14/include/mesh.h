@@ -39,6 +39,7 @@ public:
 
     const AABB& getBox() const;
 
+    bool loadBinary(const std::string& fileName, Renderer* renderer);
     void saveBinary(const std::string& fileName,
           const void* verts,
           uint32_t numVerts,

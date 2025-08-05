@@ -45,13 +45,17 @@ Mesh::Mesh() :
 Mesh::~Mesh() {}
 
 bool Mesh::load(const std::string& fileName, Renderer* renderer) {
+    this->fileName = fileName;
+    // Try loading the binary file first
+    if(loadBinary(fileName + ".bin", renderer)) {
+        return true;
+    }
+
     std::ifstream file(fileName);
     if(!file.is_open()) {
         SDL_Log("File not found: Mesh %s", fileName.c_str());
         return false;
     }
-
-    this->fileName = fileName;
 
     std::stringstream fileStream;
     fileStream << file.rdbuf();
@@ -244,6 +248,68 @@ float Mesh::getSpecPower() const {
 
 const AABB& Mesh::getBox() const {
     return box;
+}
+
+bool Mesh::loadBinary(const std::string& fileName, Renderer* renderer) {
+    std::ifstream inFile(fileName, std::ios::in | std::ios::binary);
+    if(inFile.is_open()) {
+        MeshBinHeader header;
+        inFile.read(reinterpret_cast<char*>(&header), sizeof(header));
+
+        // Validate the header signature and version
+        char* sig = header.signature;
+        if(sig[0] != 'G' || sig[1] != 'M' || sig[2] != 'S' || sig[3] != 'H'
+              || header.version != binaryVersion) {
+            return false;
+        }
+
+        // Read in the texture file names
+        for(uint32_t i = 0; i < header.numTextures; i++) {
+            // Get the file name size
+            uint16_t nameSize = 0;
+            inFile.read(reinterpret_cast<char*>(&nameSize), sizeof(nameSize));
+
+            // Make a buffer of this size
+            char* texName = new char[nameSize];
+            // Read in the texture name
+            inFile.read(texName, nameSize);
+
+            // Get this texture
+            Texture* t = renderer->getTexture(texName);
+            if(t == nullptr) {
+                // If it's null, use the default texture
+                t = renderer->getTexture("assets/Default.png");
+            }
+            textures.emplace_back(t);
+            delete[] texName;
+        }
+
+        // Now read in the vertices
+        unsigned vertexSize = VertexArray::getVertexSize(header.layout);
+        char* verts = new char[header.numVerts * vertexSize];
+        inFile.read(verts, header.numVerts * vertexSize);
+
+        // Now read in the indices
+        uint32_t* indices = new uint32_t[header.numIndices];
+        inFile.read(reinterpret_cast<char*>(indices), header.numIndices * sizeof(uint32_t));
+
+        VertexArray::Layout layout = reinterpret_cast<VertexArray::Layout>(header.layout);
+
+        // Now create the vertex array
+        vertexArray = new VertexArray(layout, verts, header.numVerts, indices, header.numIndices);
+
+        // Cleanup memory
+        delete[] verts;
+        delete[] indices;
+
+        // Set box/radius/specular from header
+        box = header.box;
+        radius = header.radius;
+
+        return true;
+    }
+
+    return false;
 }
 
 void Mesh::saveBinary(const std::string& fileName,
