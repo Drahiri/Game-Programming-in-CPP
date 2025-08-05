@@ -18,6 +18,7 @@ public:
 
     float getDuration() const;
     float getFrameDuration() const;
+    const std::string& getFileName() const;
 
     // Fills the provided vector with the global (current) pose matrices
     // for each bones at the specific time in the animation.
@@ -36,6 +37,8 @@ private:
     // Transform information for each frame on the track
     // Each index in the outer vector is a bone, inner vector is a frame
     std::vector<std::vector<BoneTransform>> tracks;
+
+    std::string fileName;
 };
 
 #endif

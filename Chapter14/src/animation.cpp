@@ -14,6 +14,8 @@ bool Animation::load(const std::string& fileName) {
         return false;
     }
 
+    this->fileName = fileName;
+
     std::stringstream fileStream;
     fileStream << file.rdbuf();
     std::string contents = fileStream.str();
@@ -124,6 +126,10 @@ float Animation::getDuration() const {
 
 float Animation::getFrameDuration() const {
     return frameDuration;
+}
+
+const std::string& Animation::getFileName() const {
+    return fileName;
 }
 
 void Animation::getGlobalPoseAtTime(
