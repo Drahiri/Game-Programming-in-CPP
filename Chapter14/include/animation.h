@@ -25,6 +25,13 @@ public:
     void getGlobalPoseAtTime(
           std::vector<Matrix4>& outPoses, const Skeleton* inSkeleton, float inTime) const;
 
+    bool loadBinary(const std::string& fileName);
+    void saveBinary(const std::string& fileName,
+          size_t frames,
+          float length,
+          size_t numBones,
+          std::vector<std::vector<BoneTransform>>& tracks);
+
 private:
     // Number of bones for the animation
     size_t numBones;

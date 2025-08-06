@@ -8,7 +8,26 @@
 #include <SDL3/SDL_log.h>
 #include <sstream>
 
+namespace {
+const uint32_t binaryVersion = 1;
+
+struct AnimationBinHeader {
+    char signature[4] = { 'G', 'M', 'S', 'H' };
+    uint32_t version = binaryVersion;
+    uint32_t frames = 0;
+    float length = 0.0f;
+    uint32_t boneCount = 0;
+};
+
+} // namespace
+
 bool Animation::load(const std::string& fileName) {
+    this->fileName = fileName;
+
+    if(loadBinary(fileName + ".bin")) {
+        return true;
+    }
+
     rapidjson::Document doc;
     if(!LevelLoader::loadJSON(fileName, doc)) {
         SDL_Log("Failed to found: Animation %s", fileName.c_str());
@@ -101,6 +120,9 @@ bool Animation::load(const std::string& fileName) {
         }
     }
 
+    // Save the binary animation
+    saveBinary(fileName + ".bin", numFrames, duration, numBones, tracks);
+
     return true;
 }
 
@@ -159,5 +181,67 @@ void Animation::getGlobalPoseAtTime(
             localMat = interp.toMatrix();
         }
         outPoses[bone] = localMat * outPoses[bones[bone].parent];
+    }
+}
+
+bool Animation::loadBinary(const std::string& fileName) {
+    std::ifstream inFile(fileName, std::ios::in | std::ios::binary);
+    if(inFile.is_open()) {
+        AnimationBinHeader header;
+        inFile.read(reinterpret_cast<char*>(&header), sizeof(header));
+
+        char* sig = header.signature;
+        if(sig[0] != 'G' || sig[1] != 'M' || sig[2] != 'S' || sig[3] != 'H'
+              || header.version != binaryVersion) {
+            return false;
+        }
+
+        numFrames = header.frames;
+        duration = header.length;
+        numBones = header.boneCount;
+        frameDuration = duration / (numFrames - 1);
+
+        tracks.resize(numBones);
+
+        for(size_t i = 0; i < tracks.size(); i++) {
+            unsigned boneTransformCount = 0;
+            inFile.read(reinterpret_cast<char*>(&boneTransformCount), sizeof(unsigned));
+
+            for(size_t j = 0; j < boneTransformCount; j++) {
+                BoneTransform transform;
+                inFile.read(reinterpret_cast<char*>(&transform), sizeof(BoneTransform));
+
+                tracks[i].emplace_back(transform);
+            }
+        }
+        return true;
+    }
+
+    return false;
+}
+
+void Animation::saveBinary(const std::string& fileName,
+      size_t frames,
+      float length,
+      size_t numBones,
+      std::vector<std::vector<BoneTransform>>& tracks) {
+    AnimationBinHeader header;
+    header.boneCount = numBones;
+    header.frames = numFrames;
+    header.length = duration;
+
+    std::ofstream outFile(fileName, std::ios::out | std::ios::binary);
+    if(outFile.is_open()) {
+        outFile.write(reinterpret_cast<char*>(&header), sizeof(header));
+
+        for(size_t i = 0; i < tracks.size(); i++) {
+            // Write track count for bone
+            unsigned bonesTranformsCount = static_cast<unsigned>(tracks[i].size());
+            outFile.write(reinterpret_cast<char*>(&bonesTranformsCount), sizeof(unsigned));
+
+            for(size_t j = 0; j < tracks[i].size(); j++) {
+                outFile.write(reinterpret_cast<char*>(&tracks[i][j]), sizeof(BoneTransform));
+            }
+        }
     }
 }
